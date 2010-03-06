@@ -1,0 +1,453 @@
+<!-- This comment will put IE 6, 7 and 8 in quirks mode -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>yandex.fotki: Исходный файл Yandex/yandex/yandex_fotki_photo.php</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- Создано системой Doxygen 1.6.3 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
+--></script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Титульная&nbsp;страница</span></a></li>
+      <li><a href="pages.html"><span>Описания</span></a></li>
+      <li><a href="modules.html"><span>Группы</span></a></li>
+      <li><a href="annotated.html"><span>Структуры&nbsp;данных</span></a></li>
+      <li class="current"><a href="files.html"><span>Файлы</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <img id="MSearchSelect" src="search/search.png"
+             onmouseover="return searchBox.OnSearchSelectShow()"
+             onmouseout="return searchBox.OnSearchSelectHide()"
+             alt=""/>
+        <input type="text" id="MSearchField" value="Поиск" accesskey="S"
+             onfocus="searchBox.OnSearchFieldFocus(true)" 
+             onblur="searchBox.OnSearchFieldFocus(false)" 
+             onkeyup="searchBox.OnSearchFieldChange(event)"/>
+        <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="tabs">
+    <ul>
+      <li><a href="files.html"><span>Файлы</span></a></li>
+    </ul>
+  </div>
+<h1>Yandex/yandex/yandex_fotki_photo.php</h1><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 &lt;?php
+<a name="l00003"></a>00003 
+<a name="l00010"></a><a class="code" href="classyandex__fotki__photo.html">00010</a>         <span class="keyword">class </span><a class="code" href="classyandex__fotki__photo.html" title="Класс, который позволяет вам работать с фотографией...">yandex_fotki_photo</a>{
+<a name="l00012"></a>00012                 <span class="keyword">private</span> $id=null;
+<a name="l00014"></a>00014                 <span class="keyword">private</span> $author=null;
+<a name="l00016"></a>00016                 <span class="keyword">private</span> $title=null;
+<a name="l00018"></a>00018                 <span class="keyword">private</span> $created_date=null;
+<a name="l00020"></a>00020                 <span class="keyword">private</span> $published_date=null;
+<a name="l00022"></a>00022                 <span class="keyword">private</span> $edited_date=null;
+<a name="l00024"></a>00024                 <span class="keyword">private</span> $updated_date=null;
+<a name="l00026"></a>00026                 <span class="keyword">private</span> $access=null;
+<a name="l00028"></a>00028                 <span class="keyword">private</span> $xxx=null;
+<a name="l00030"></a>00030                 <span class="keyword">private</span> $hide_original=null;
+<a name="l00032"></a>00032                 <span class="keyword">private</span> $disable_comments=null;
+<a name="l00034"></a>00034                 <span class="keyword">private</span> $content=null;
+<a name="l00036"></a>00036                 <span class="keyword">private</span> $photo_orig=null;
+<a name="l00038"></a>00038                 <span class="keyword">private</span> $photo_XL=null;
+<a name="l00040"></a>00040                 <span class="keyword">private</span> $photo_L=null;
+<a name="l00042"></a>00042                 <span class="keyword">private</span> $photo_M=null;
+<a name="l00044"></a>00044                 <span class="keyword">private</span> $photo_S=null;
+<a name="l00046"></a>00046                 <span class="keyword">private</span> $photo_XS=null;
+<a name="l00048"></a>00048                 <span class="keyword">private</span> $photo_XXS=null;
+<a name="l00050"></a>00050                 <span class="keyword">private</span> $photo_XXXS=null;
+<a name="l00052"></a>00052                 <span class="keyword">private</span> $self_url = null;
+<a name="l00054"></a>00054                 <span class="keyword">private</span> $edit_url = null;
+<a name="l00056"></a>00056                 <span class="keyword">private</span> $alternate_url = null;
+<a name="l00058"></a>00058                 <span class="keyword">private</span> $edit_media_url = null;
+<a name="l00060"></a>00060                 <span class="keyword">private</span> $album_url = null;
+<a name="l00062"></a>00062                 <span class="keyword">private</span> $dead = <span class="keyword">false</span>;
+<a name="l00063"></a>00063                 
+<a name="l00065"></a>00065 
+<a name="l00068"></a><a class="code" href="classyandex__fotki__photo.html#a8a94003b9d888b085c68d6eac44be175">00068</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a8a94003b9d888b085c68d6eac44be175" title="Возвращает идентификатор Atom Entry фотографии.">get_id</a>(){
+<a name="l00069"></a>00069                         <span class="keywordflow">return</span> $this-&gt;id;
+<a name="l00070"></a>00070                 }
+<a name="l00071"></a>00071                 
+<a name="l00073"></a>00073 
+<a name="l00076"></a><a class="code" href="classyandex__fotki__photo.html#a85e8dbce2eb4cccb9d6810d433186422">00076</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a85e8dbce2eb4cccb9d6810d433186422" title="Возвращает информацию о владельце фотографии...">get_author</a>(){
+<a name="l00077"></a>00077                         <span class="keywordflow">return</span> $this-&gt;author;
+<a name="l00078"></a>00078                 }
+<a name="l00079"></a>00079 
+<a name="l00081"></a>00081 
+<a name="l00084"></a><a class="code" href="classyandex__fotki__photo.html#ac01f0421cdf853d8bdac45fcd181dc28">00084</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#ac01f0421cdf853d8bdac45fcd181dc28" title="Возвращает название фотографии.">get_title</a>(){
+<a name="l00085"></a>00085                         <span class="keywordflow">return</span> $this-&gt;title;
+<a name="l00086"></a>00086                 }
+<a name="l00087"></a>00087 
+<a name="l00089"></a>00089 
+<a name="l00092"></a><a class="code" href="classyandex__fotki__photo.html#a3de873b569ef300cd78c68997c849deb">00092</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a3de873b569ef300cd78c68997c849deb" title="Возвращает время последнего редактирования...">get_published_date</a>(){
+<a name="l00093"></a>00093                         <span class="keywordflow">return</span> $this-&gt;published_date;
+<a name="l00094"></a>00094                 }
+<a name="l00095"></a>00095 
+<a name="l00097"></a>00097 
+<a name="l00100"></a><a class="code" href="classyandex__fotki__photo.html#abac936830931ef9e66ea2990d6ceeb87">00100</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#abac936830931ef9e66ea2990d6ceeb87" title="Возвращает время загрузки фотографии.">get_edited_date</a>(){
+<a name="l00101"></a>00101                         <span class="keywordflow">return</span> $this-&gt;edited_date;
+<a name="l00102"></a>00102                 }
+<a name="l00103"></a>00103                 
+<a name="l00105"></a>00105 
+<a name="l00108"></a><a class="code" href="classyandex__fotki__photo.html#a6a6b5228894cddc11e7c323b0b68e631">00108</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a6a6b5228894cddc11e7c323b0b68e631" title="Возвращает время последнего значимого с точки...">get_updated_date</a>(){
+<a name="l00109"></a>00109                         <span class="keywordflow">return</span> $this-&gt;updated_date;
+<a name="l00110"></a>00110                 }
+<a name="l00111"></a>00111                 
+<a name="l00113"></a>00113 
+<a name="l00116"></a><a class="code" href="classyandex__fotki__photo.html#a71996993058c9993e5e6aebd0455c68c">00116</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a71996993058c9993e5e6aebd0455c68c" title="Возвращает уровень доступа к фотографии.">get_access</a>(){
+<a name="l00117"></a>00117                         <span class="keywordflow">return</span> $this-&gt;access;
+<a name="l00118"></a>00118                 }
+<a name="l00119"></a>00119 
+<a name="l00121"></a>00121 
+<a name="l00124"></a><a class="code" href="classyandex__fotki__photo.html#a1cf52987da670eac7d67afaa860cd93e">00124</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a1cf52987da670eac7d67afaa860cd93e" title="Возвращает флаг доступности фотографии только...">get_xxx</a>(){
+<a name="l00125"></a>00125                         <span class="keywordflow">return</span> $this-&gt;xxx;
+<a name="l00126"></a>00126                 }
+<a name="l00127"></a>00127 
+<a name="l00129"></a>00129 
+<a name="l00132"></a><a class="code" href="classyandex__fotki__photo.html#a3befca9159eaa7113388c83b6f3e4232">00132</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a3befca9159eaa7113388c83b6f3e4232" title="Возвращает флаг, запрещающий показ оригинала...">get_hide_original</a>(){
+<a name="l00133"></a>00133                         <span class="keywordflow">return</span> $this-&gt;hide_original;
+<a name="l00134"></a>00134                 }
+<a name="l00135"></a>00135                 
+<a name="l00137"></a>00137 
+<a name="l00140"></a><a class="code" href="classyandex__fotki__photo.html#aec2c2f3d789abad670cedb611ff95bc6">00140</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#aec2c2f3d789abad670cedb611ff95bc6" title="Возвращает флаг, запрещающий комментирование...">get_disable_comments</a>(){
+<a name="l00141"></a>00141                         <span class="keywordflow">return</span> $this-&gt;disable_comments;
+<a name="l00142"></a>00142                 }
+<a name="l00143"></a>00143                 
+<a name="l00145"></a>00145 
+<a name="l00148"></a><a class="code" href="classyandex__fotki__photo.html#ae5c96b134b24ec7120296945f11f251e">00148</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#ae5c96b134b24ec7120296945f11f251e" title="Возвращает ссылку на графический файл фотографии...">get_content</a>(){
+<a name="l00149"></a>00149                         <span class="keywordflow">return</span> $this-&gt;content;
+<a name="l00150"></a>00150                 }
+<a name="l00151"></a>00151                 
+<a name="l00153"></a>00153 
+<a name="l00156"></a><a class="code" href="classyandex__fotki__photo.html#a839479a39965c32e5ccf9cea57b754c0">00156</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a839479a39965c32e5ccf9cea57b754c0" title="Возвращает ссылку на графический файл фотографии...">get_orig</a>(){
+<a name="l00157"></a>00157                         <span class="keywordflow">return</span> $this-&gt;photo_orig;
+<a name="l00158"></a>00158                 }
+<a name="l00159"></a>00159 
+<a name="l00161"></a>00161 
+<a name="l00164"></a><a class="code" href="classyandex__fotki__photo.html#acd893ae3a328bd4fd0471471d22b0070">00164</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#acd893ae3a328bd4fd0471471d22b0070" title="Возвращает ссылку на графический файл фотографии...">get_XL</a>(){
+<a name="l00165"></a>00165                         <span class="keywordflow">return</span> $this-&gt;photo_XL;
+<a name="l00166"></a>00166                 }
+<a name="l00167"></a>00167                 
+<a name="l00169"></a>00169 
+<a name="l00172"></a><a class="code" href="classyandex__fotki__photo.html#ad5d8e0ed7f5d9714fa124832665fde34">00172</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#ad5d8e0ed7f5d9714fa124832665fde34" title="Возвращает ссылку на графический файл фотографии...">get_L</a>(){
+<a name="l00173"></a>00173                         <span class="keywordflow">return</span> $this-&gt;photo_L;
+<a name="l00174"></a>00174                 }
+<a name="l00175"></a>00175                 
+<a name="l00177"></a>00177 
+<a name="l00180"></a><a class="code" href="classyandex__fotki__photo.html#a25aa09868b3adc5fc22774baaaf12724">00180</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a25aa09868b3adc5fc22774baaaf12724" title="Возвращает ссылку на графический файл фотографии...">get_M</a>(){
+<a name="l00181"></a>00181                         <span class="keywordflow">return</span> $this-&gt;photo_M;
+<a name="l00182"></a>00182                 }
+<a name="l00183"></a>00183                 
+<a name="l00185"></a>00185 
+<a name="l00188"></a><a class="code" href="classyandex__fotki__photo.html#a95100587a020e976534d08340f7ab241">00188</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a95100587a020e976534d08340f7ab241" title="Возвращает ссылку на графический файл фотографии...">get_S</a>(){
+<a name="l00189"></a>00189                         <span class="keywordflow">return</span> $this-&gt;photo_S;
+<a name="l00190"></a>00190                 }
+<a name="l00191"></a>00191                 
+<a name="l00193"></a>00193 
+<a name="l00196"></a><a class="code" href="classyandex__fotki__photo.html#abd0ac1b346447ac345196291f6b62869">00196</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#abd0ac1b346447ac345196291f6b62869" title="Возвращает ссылку на графический файл фотографии...">get_XS</a>(){
+<a name="l00197"></a>00197                         <span class="keywordflow">return</span> $this-&gt;photo_XS;
+<a name="l00198"></a>00198                 }
+<a name="l00199"></a>00199                 
+<a name="l00201"></a>00201 
+<a name="l00204"></a><a class="code" href="classyandex__fotki__photo.html#a269522c03964ef1f53c9c2774236ffa1">00204</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a269522c03964ef1f53c9c2774236ffa1" title="Возвращает ссылку на графический файл фотографии...">get_XXS</a>(){
+<a name="l00205"></a>00205                         <span class="keywordflow">return</span> $this-&gt;photo_XXS;
+<a name="l00206"></a>00206                 }
+<a name="l00207"></a>00207                 
+<a name="l00209"></a>00209 
+<a name="l00212"></a><a class="code" href="classyandex__fotki__photo.html#a7fa6e322c8c952b7f9429e2fb194609a">00212</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a7fa6e322c8c952b7f9429e2fb194609a" title="Возвращает ссылку на графический файл фотографии...">get_XXXS</a>(){
+<a name="l00213"></a>00213                         <span class="keywordflow">return</span> $this-&gt;photo_XXXS;
+<a name="l00214"></a>00214                 }
+<a name="l00215"></a>00215                 
+<a name="l00217"></a>00217 
+<a name="l00220"></a><a class="code" href="classyandex__fotki__photo.html#a852e12a65a6cc76db3f51d83e6f7f765">00220</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a852e12a65a6cc76db3f51d83e6f7f765" title="Возвращает ссылку на ресурс фотографии.">get_self_url</a>(){
+<a name="l00221"></a>00221                         <span class="keywordflow">return</span> $this-&gt;self_url;
+<a name="l00222"></a>00222                 }
+<a name="l00223"></a>00223                 
+<a name="l00225"></a>00225 
+<a name="l00228"></a><a class="code" href="classyandex__fotki__photo.html#acb8a0fa5697303e3bae453619ac02a0e">00228</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#acb8a0fa5697303e3bae453619ac02a0e" title="Возвращает ссылку для редактирования ресурса...">get_edit_url</a>(){
+<a name="l00229"></a>00229                         <span class="keywordflow">return</span> $this-&gt;edit_url;
+<a name="l00230"></a>00230                 }
+<a name="l00231"></a>00231                 
+<a name="l00233"></a>00233 
+<a name="l00236"></a><a class="code" href="classyandex__fotki__photo.html#a50d598d3c86c3300c2a2212cdfef1c8e">00236</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a50d598d3c86c3300c2a2212cdfef1c8e" title="Возвращает ссылку на web-страницу фотографии...">get_alternate_url</a>(){
+<a name="l00237"></a>00237                         <span class="keywordflow">return</span> $this-&gt;alternate_url;
+<a name="l00238"></a>00238                 }
+<a name="l00239"></a>00239                 
+<a name="l00241"></a>00241 
+<a name="l00244"></a><a class="code" href="classyandex__fotki__photo.html#a93a4b1c7be8e337b37ac5b8ce4d4b95f">00244</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a93a4b1c7be8e337b37ac5b8ce4d4b95f" title="Возвращает ссылку для редактирования содержания...">get_edit_media_url</a>(){
+<a name="l00245"></a>00245                         <span class="keywordflow">return</span> $this-&gt;edit_media_url;
+<a name="l00246"></a>00246                 }
+<a name="l00247"></a>00247                 
+<a name="l00249"></a>00249 
+<a name="l00252"></a><a class="code" href="classyandex__fotki__photo.html#a13df9c8031ac35ef0f3e1557f057d168">00252</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a13df9c8031ac35ef0f3e1557f057d168" title="Возвращает ссылку на альбом, в котором содержится...">get_album_url</a>(){
+<a name="l00253"></a>00253                         <span class="keywordflow">return</span> $this-&gt;album_url;
+<a name="l00254"></a>00254                 }
+<a name="l00255"></a>00255                 
+<a name="l00257"></a>00257 
+<a name="l00260"></a><a class="code" href="classyandex__fotki__photo.html#ac49943f42402ca0b92a8acfcbf241b7c">00260</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#ac49943f42402ca0b92a8acfcbf241b7c" title="Проверяет был ли альбом удален.">is_dead</a>(){
+<a name="l00261"></a>00261                         <span class="keywordflow">return</span> $this-&gt;dead;     
+<a name="l00262"></a>00262                 }
+<a name="l00263"></a>00263                 
+<a name="l00265"></a>00265 
+<a name="l00269"></a><a class="code" href="classyandex__fotki__photo.html#a9f27b603f4eee8bfebf08b8579cdc981">00269</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a9f27b603f4eee8bfebf08b8579cdc981" title="Конструктор фотографии.">__construct</a>($xml=null,$token=null){
+<a name="l00270"></a>00270                         $this-&gt;token=$token;
+<a name="l00271"></a>00271                         $this-&gt;reload_xml($xml);
+<a name="l00272"></a>00272                 }
+<a name="l00273"></a>00273                 
+<a name="l00275"></a>00275 
+<a name="l00278"></a><a class="code" href="classyandex__fotki__photo.html#a5ad6694fbc664f22119a63d68a6cea44">00278</a>                 <span class="keyword">public</span> function <span class="keyword">delete</span>($token){
+<a name="l00279"></a>00279                         <span class="keywordflow">if</span>($token!==null){
+<a name="l00280"></a>00280                                 $this-&gt;token = $token;
+<a name="l00281"></a>00281                         }
+<a name="l00282"></a>00282                         <span class="keywordflow">if</span>($this-&gt;token===null){
+<a name="l00283"></a>00283                                 <span class="keywordflow">throw</span> <span class="keyword">new</span> Exception(<span class="stringliteral">&quot;Эта операция доступна только для аутентифицированных пользователей&quot;</span>,E_ERROR);
+<a name="l00284"></a>00284                         }
+<a name="l00285"></a>00285                         $curl = curl_init();
+<a name="l00286"></a>00286                         curl_setopt($curl, CURLOPT_URL, $this-&gt;edit_url);
+<a name="l00287"></a>00287                         curl_setopt($curl, CURLOPT_HEADER, <span class="keyword">false</span>);
+<a name="l00288"></a>00288                         curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+<a name="l00289"></a>00289                         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, <span class="stringliteral">&quot;DELETE&quot;</span>);
+<a name="l00290"></a>00290                         curl_setopt($curl, CURLOPT_RETURNTRANSFER, <span class="keyword">true</span>);
+<a name="l00291"></a>00291                         curl_setopt($curl, CURLINFO_HEADER_OUT, <span class="keyword">true</span>);
+<a name="l00292"></a>00292                         curl_setopt($curl, CURLOPT_HTTPHEADER,array(
+<a name="l00293"></a>00293                                 <span class="stringliteral">&#39;Authorization: FimpToken realm=&quot;fotki.yandex.ru&quot;, token=&quot;&#39;</span>.$this-&gt;token.<span class="charliteral">&#39;&quot;&#39;</span>
+<a name="l00294"></a>00294                         ));
+<a name="l00295"></a>00295                         $error = curl_exec($curl);
+<a name="l00296"></a>00296                         <span class="keywordflow">if</span>(curl_getinfo($curl,CURLINFO_HTTP_CODE)!=204){
+<a name="l00297"></a>00297                                 <span class="keywordflow">throw</span> <span class="keyword">new</span> Exception($error,E_ERROR);
+<a name="l00298"></a>00298                         }
+<a name="l00299"></a>00299                         curl_close($curl);
+<a name="l00300"></a>00300                         $this-&gt;dead=<span class="keyword">true</span>;
+<a name="l00301"></a>00301                 }
+<a name="l00302"></a>00302                 
+<a name="l00304"></a>00304 
+<a name="l00313"></a><a class="code" href="classyandex__fotki__photo.html#ac308fd0cdc3d717df63c66dc33c241f3">00313</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#ac308fd0cdc3d717df63c66dc33c241f3" title="Редактирует свойства фотографии.">edit</a>($title=null,$xxx=<span class="keyword">false</span>,$disable_comments=<span class="keyword">false</span>,$hide_original=<span class="keyword">false</span>,$access=<span class="stringliteral">&quot;public&quot;</span>,$album_url=null,$token=null){
+<a name="l00314"></a>00314                         
+<a name="l00315"></a>00315                         $changes = <span class="keyword">false</span>;
+<a name="l00316"></a>00316                         
+<a name="l00317"></a>00317                         <span class="keywordflow">if</span>($token!==null){
+<a name="l00318"></a>00318                                 $this-&gt;token = $token;
+<a name="l00319"></a>00319                         }
+<a name="l00320"></a>00320                         <span class="keywordflow">if</span>($this-&gt;token===null){
+<a name="l00321"></a>00321                                 <span class="keywordflow">throw</span> <span class="keyword">new</span> Exception(<span class="stringliteral">&quot;Эта операция доступна только для аутентифицированных пользователей&quot;</span>,E_ERROR);
+<a name="l00322"></a>00322                         }
+<a name="l00323"></a>00323                         
+<a name="l00324"></a>00324                         <span class="keywordflow">if</span>($title!=null&amp;&amp;$title!=$this-&gt;title){
+<a name="l00325"></a>00325                                 $this-&gt;title = $title;
+<a name="l00326"></a>00326                                 $changes = <span class="keyword">true</span>;
+<a name="l00327"></a>00327                         }
+<a name="l00328"></a>00328 
+<a name="l00329"></a>00329                         <span class="keywordflow">if</span>((<span class="keywordtype">boolean</span>)$xxx!=$this-&gt;xxx){
+<a name="l00330"></a>00330                                 $this-&gt;xxx = (boolean)$xxx;
+<a name="l00331"></a>00331                                 $changes = <span class="keyword">true</span>;
+<a name="l00332"></a>00332                         }
+<a name="l00333"></a>00333                         
+<a name="l00334"></a>00334                         <span class="keywordflow">if</span>((<span class="keywordtype">boolean</span>)$disable_comments!=$this-&gt;disable_comments){
+<a name="l00335"></a>00335                                 $this-&gt;disable_comments = (boolean)$disable_comments;
+<a name="l00336"></a>00336                                 $changes = <span class="keyword">true</span>;
+<a name="l00337"></a>00337                         }
+<a name="l00338"></a>00338                         
+<a name="l00339"></a>00339                         <span class="keywordflow">if</span>((<span class="keywordtype">boolean</span>)$hide_original!=$this-&gt;hide_original){
+<a name="l00340"></a>00340                                 $this-&gt;hide_original = (boolean)$hide_original;
+<a name="l00341"></a>00341                                 $changes = <span class="keyword">true</span>;
+<a name="l00342"></a>00342                         }
+<a name="l00343"></a>00343                         
+<a name="l00344"></a>00344                         <span class="keywordflow">if</span>(!in_array($access,array(<span class="stringliteral">&quot;public&quot;</span>,<span class="stringliteral">&quot;friends&quot;</span>,<span class="stringliteral">&quot;private&quot;</span>))){
+<a name="l00345"></a>00345                                 $access=<span class="stringliteral">&quot;public&quot;</span>;
+<a name="l00346"></a>00346                         }
+<a name="l00347"></a>00347                         
+<a name="l00348"></a>00348                         <span class="keywordflow">if</span>($access!=$this-&gt;access){
+<a name="l00349"></a>00349                                 $this-&gt;access = $access;
+<a name="l00350"></a>00350                                 $changes = <span class="keyword">true</span>;
+<a name="l00351"></a>00351                         }
+<a name="l00352"></a>00352                         
+<a name="l00353"></a>00353                         <span class="keywordflow">if</span>($album_url!=null&amp;&amp;$album_url!=$this-&gt;album_url){
+<a name="l00354"></a>00354                                 $this-&gt;album_url = $album_url;
+<a name="l00355"></a>00355                                 $changes = <span class="keyword">true</span>;
+<a name="l00356"></a>00356                         }
+<a name="l00357"></a>00357                         
+<a name="l00358"></a>00358                         <span class="keywordflow">if</span>($changes === <span class="keyword">false</span>){
+<a name="l00359"></a>00359                                 <span class="keywordflow">throw</span> <span class="keyword">new</span> Exception(<span class="stringliteral">&quot;Никаких изменений сделано не было&quot;</span>,E_ERROR);
+<a name="l00360"></a>00360                         }
+<a name="l00361"></a>00361                         
+<a name="l00362"></a>00362                         $message = <span class="stringliteral">&#39;</span>
+<a name="l00363"></a>00363 <span class="stringliteral">                                                &lt;entry&gt;</span>
+<a name="l00364"></a>00364 <span class="stringliteral">                                                        &lt;id&gt;&#39;</span>.$this-&gt;id.<span class="stringliteral">&#39;&lt;/id&gt;</span>
+<a name="l00365"></a>00365 <span class="stringliteral">                                                        &lt;title&gt;&#39;</span>.$this-&gt;title.<span class="stringliteral">&#39;&lt;/title&gt;</span>
+<a name="l00366"></a>00366 <span class="stringliteral">                                                        &lt;author&gt;</span>
+<a name="l00367"></a>00367 <span class="stringliteral">                                                                &lt;name&gt;&#39;</span>.$this-&gt;author.<span class="stringliteral">&#39;&lt;/name&gt;</span>
+<a name="l00368"></a>00368 <span class="stringliteral">                                                        &lt;/author&gt;</span>
+<a name="l00369"></a>00369 <span class="stringliteral">                                                        &lt;link href=&quot;&#39;</span>.$this-&gt;self_url.<span class="stringliteral">&#39;&quot; rel=&quot;self&quot; /&gt;</span>
+<a name="l00370"></a>00370 <span class="stringliteral">                                                        &lt;link href=&quot;&#39;</span>.$this-&gt;author.<span class="stringliteral">&#39;&quot; rel=&quot;edit&quot; /&gt;</span>
+<a name="l00371"></a>00371 <span class="stringliteral">                                                        &lt;link href=&quot;&#39;</span>.$this-&gt;author.<span class="stringliteral">&#39;&quot; rel=&quot;alternate&quot; /&gt;</span>
+<a name="l00372"></a>00372 <span class="stringliteral">                                                        &lt;link href=&quot;&#39;</span>.$this-&gt;author.<span class="stringliteral">&#39;&quot; rel=&quot;edit-media&quot; /&gt;</span>
+<a name="l00373"></a>00373 <span class="stringliteral">                                                        &lt;link href=&quot;&#39;</span>.$this-&gt;author.<span class="stringliteral">&#39;&quot; rel=&quot;album&quot; /&gt;</span>
+<a name="l00374"></a>00374 <span class="stringliteral">                                                        &lt;published&gt;&#39;</span>.$this-&gt;author.<span class="stringliteral">&#39;&lt;/published&gt;</span>
+<a name="l00375"></a>00375 <span class="stringliteral">                                                        &lt;app:edited&gt;&#39;</span>.$this-&gt;author.<span class="stringliteral">&#39;&lt;/app:edited&gt;</span>
+<a name="l00376"></a>00376 <span class="stringliteral">                                                        &lt;updated&gt;&#39;</span>.$this-&gt;author.<span class="stringliteral">&#39;&lt;/updated&gt;</span>
+<a name="l00377"></a>00377 <span class="stringliteral">                                                        &lt;f:created&gt;&#39;</span>.$this-&gt;author.<span class="stringliteral">&#39;&lt;/f:created&gt;</span>
+<a name="l00378"></a>00378 <span class="stringliteral">                                                        &lt;f:access value=&quot;&#39;</span>.$this-&gt;author.<span class="stringliteral">&#39;&quot; /&gt;</span>
+<a name="l00379"></a>00379 <span class="stringliteral">                                                        &lt;f:xxx value=&quot;&#39;</span>.$this-&gt;author.<span class="stringliteral">&#39;&quot; /&gt;</span>
+<a name="l00380"></a>00380 <span class="stringliteral">                                                        &lt;f:hide_original value=&quot;&#39;</span>.$this-&gt;author.<span class="stringliteral">&#39;&quot; /&gt;</span>
+<a name="l00381"></a>00381 <span class="stringliteral">                                                        &lt;f:disable_comments value=&quot;&#39;</span>.$this-&gt;author.<span class="stringliteral">&#39;&quot; /&gt;</span>
+<a name="l00382"></a>00382 <span class="stringliteral">                                                        &lt;content src=&quot;&#39;</span>.$this-&gt;author.<span class="stringliteral">&#39;&quot; type=&quot;image/*&quot; /&gt;</span>
+<a name="l00383"></a>00383 <span class="stringliteral">                                                &lt;/entry&gt;&#39;</span>;
+<a name="l00384"></a>00384                         
+<a name="l00385"></a>00385                         fwrite($putData, $message);
+<a name="l00386"></a>00386                         fseek($putData, 0); 
+<a name="l00387"></a>00387                         $curl = curl_init();
+<a name="l00388"></a>00388                         curl_setopt($curl, CURLOPT_URL, $this-&gt;edit_url);
+<a name="l00389"></a>00389                         curl_setopt($curl, CURLOPT_HEADER, <span class="keyword">false</span>);
+<a name="l00390"></a>00390                         curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+<a name="l00391"></a>00391                         curl_setopt($curl, CURLOPT_PUT, <span class="keyword">true</span>);
+<a name="l00392"></a>00392                         curl_setopt($curl, CURLINFO_HEADER_OUT, <span class="keyword">true</span>);
+<a name="l00393"></a>00393                         curl_setopt($curl, CURLOPT_INFILE, $putData);
+<a name="l00394"></a>00394                         curl_setopt($curl, CURLOPT_INFILESIZE, strlen($message));
+<a name="l00395"></a>00395                         curl_setopt($curl, CURLOPT_RETURNTRANSFER, <span class="keyword">true</span>);
+<a name="l00396"></a>00396                         curl_setopt($curl, CURLOPT_HTTPHEADER,array(
+<a name="l00397"></a>00397                                 <span class="stringliteral">&#39;Authorization: FimpToken realm=&quot;fotki.yandex.ru&quot;, token=&quot;&#39;</span>.$this-&gt;token.<span class="charliteral">&#39;&quot;&#39;</span>,
+<a name="l00398"></a>00398                                 <span class="stringliteral">&#39;Content-Type: application/atom+xml; charset=utf-8; type=entry&#39;</span>,
+<a name="l00399"></a>00399                                 <span class="stringliteral">&#39;Expect:&#39;</span>
+<a name="l00400"></a>00400                         ));
+<a name="l00401"></a>00401                         $response = curl_exec($curl);
+<a name="l00402"></a>00402                         <span class="keywordflow">if</span>(curl_getinfo($curl,CURLINFO_HTTP_CODE)!=200){
+<a name="l00403"></a>00403                                 <span class="keywordflow">throw</span> <span class="keyword">new</span> Exception($response,E_ERROR);
+<a name="l00404"></a>00404                         }
+<a name="l00405"></a>00405                         
+<a name="l00406"></a>00406                         $this-&gt;xml = $this-&gt;delete_ns($response);
+<a name="l00407"></a>00407                         fclose($putData); 
+<a name="l00408"></a>00408                         curl_close($curl);
+<a name="l00409"></a>00409                         $this-&gt;<a class="code" href="classyandex__fotki__photo.html#a2aff0844db6d9b56e6ba96123e1dd11c" title="Обновлеяет свойства фотографии.">refresh</a>();
+<a name="l00410"></a>00410                 }
+<a name="l00411"></a>00411                 
+<a name="l00412"></a>00412                 
+<a name="l00414"></a><a class="code" href="classyandex__fotki__photo.html#a2aff0844db6d9b56e6ba96123e1dd11c">00414</a>                 <span class="keyword">public</span> function <a class="code" href="classyandex__fotki__photo.html#a2aff0844db6d9b56e6ba96123e1dd11c" title="Обновлеяет свойства фотографии.">refresh</a>(){
+<a name="l00415"></a>00415                         $curl = curl_init();
+<a name="l00416"></a>00416                         curl_setopt($curl, CURLOPT_URL, $this-&gt;edit_url);
+<a name="l00417"></a>00417                         curl_setopt($curl, CURLOPT_HEADER, <span class="keyword">false</span>);
+<a name="l00418"></a>00418                         curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+<a name="l00419"></a>00419                         curl_setopt($curl, CURLOPT_HTTPGET, <span class="keyword">true</span>);
+<a name="l00420"></a>00420                         curl_setopt($curl, CURLOPT_RETURNTRANSFER, <span class="keyword">true</span>);
+<a name="l00421"></a>00421                         <span class="keywordflow">if</span>($this-&gt;token!=null){
+<a name="l00422"></a>00422                                 curl_setopt($curl, CURLOPT_HTTPHEADER,array(
+<a name="l00423"></a>00423                                         <span class="stringliteral">&#39;Authorization: FimpToken realm=&quot;fotki.yandex.ru&quot;, token=&quot;&#39;</span>.$this-&gt;token.<span class="charliteral">&#39;&quot;&#39;</span>
+<a name="l00424"></a>00424                                 ));
+<a name="l00425"></a>00425                         }                       
+<a name="l00426"></a>00426                         $response = curl_exec($curl);
+<a name="l00427"></a>00427                         <span class="keywordflow">if</span>(curl_getinfo($curl,CURLINFO_HTTP_CODE)!=200){
+<a name="l00428"></a>00428                                 <span class="keywordflow">throw</span> <span class="keyword">new</span> Exception($response,E_ERROR);
+<a name="l00429"></a>00429                         }
+<a name="l00430"></a>00430                         curl_close($curl);
+<a name="l00431"></a>00431                         $this-&gt;reload_xml($this-&gt;delete_ns($response));
+<a name="l00432"></a>00432                 }
+<a name="l00433"></a>00433                 
+<a name="l00435"></a>00435 
+<a name="l00438"></a>00438                 <span class="keyword">private</span> function reload_xml($xml){
+<a name="l00439"></a>00439                         <span class="comment">//Не проверяется формат XML. Вот неясно стоит ли его проверять или нет.</span>
+<a name="l00440"></a>00440                         $this-&gt;xml = <span class="stringliteral">&#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#39;</span>.$xml;
+<a name="l00441"></a>00441                         
+<a name="l00442"></a>00442                         $sxml = <span class="keyword">new</span> SimpleXMLElement($xml);
+<a name="l00443"></a>00443                         $this-&gt;<span class="keywordtype">id</span> = $sxml-&gt;id;
+<a name="l00444"></a>00444                         $this-&gt;author = $sxml-&gt;author-&gt;name;
+<a name="l00445"></a>00445                         $this-&gt;title = $sxml-&gt;title;
+<a name="l00446"></a>00446                         $this-&gt;published_date = $sxml-&gt;published;
+<a name="l00447"></a>00447                         $this-&gt;edited_date = $sxml-&gt;edited;
+<a name="l00448"></a>00448                         $this-&gt;created_date = $sxml-&gt;created;
+<a name="l00449"></a>00449                         $this-&gt;updated_date = $sxml-&gt;updated;
+<a name="l00450"></a>00450                         
+<a name="l00451"></a>00451                         <span class="keywordflow">if</span>($sxml-&gt;xxx-&gt;attributes()-&gt;value==<span class="stringliteral">&quot;false&quot;</span>){
+<a name="l00452"></a>00452                                 $this-&gt;xxx = <span class="keyword">false</span>;
+<a name="l00453"></a>00453                         }<span class="keywordflow">else</span>{
+<a name="l00454"></a>00454                                 $this-&gt;xxx = <span class="keyword">true</span>;
+<a name="l00455"></a>00455                         }
+<a name="l00456"></a>00456                         
+<a name="l00457"></a>00457                         <span class="keywordflow">if</span>($sxml-&gt;hide_original-&gt;attributes()-&gt;value==<span class="stringliteral">&quot;false&quot;</span>){
+<a name="l00458"></a>00458                                 $this-&gt;hide_original = <span class="keyword">false</span>;
+<a name="l00459"></a>00459                         }<span class="keywordflow">else</span>{
+<a name="l00460"></a>00460                                 $this-&gt;hide_original = <span class="keyword">true</span>;
+<a name="l00461"></a>00461                         }
+<a name="l00462"></a>00462                         
+<a name="l00463"></a>00463                         <span class="keywordflow">if</span>($sxml-&gt;disable_comments-&gt;attributes()-&gt;value==<span class="stringliteral">&quot;false&quot;</span>){
+<a name="l00464"></a>00464                                 $this-&gt;disable_comments = <span class="keyword">false</span>;
+<a name="l00465"></a>00465                         }<span class="keywordflow">else</span>{
+<a name="l00466"></a>00466                                 $this-&gt;disable_comments = <span class="keyword">true</span>;
+<a name="l00467"></a>00467                         }
+<a name="l00468"></a>00468                         
+<a name="l00469"></a>00469                         $this-&gt;access  = $sxml-&gt;access-&gt;attributes()-&gt;value;
+<a name="l00470"></a>00470                         $this-&gt;content = $sxml-&gt;content-&gt;attributes()-&gt;src;
+<a name="l00471"></a>00471                         
+<a name="l00472"></a>00472                         $photos_resourse = substr($sxml-&gt;content-&gt;attributes()-&gt;src,0,strlen($sxml-&gt;content-&gt;attributes()-&gt;src)-2);
+<a name="l00473"></a>00473                         $this-&gt;photo_orig = $photos_resourse.<span class="stringliteral">&quot;_orig&quot;</span>;
+<a name="l00474"></a>00474                         $this-&gt;photo_XL = $sxml-&gt;content-&gt;attributes()-&gt;src;
+<a name="l00475"></a>00475                         $this-&gt;photo_L = $photos_resourse.<span class="stringliteral">&quot;_L&quot;</span>;
+<a name="l00476"></a>00476                         $this-&gt;photo_M = $photos_resourse.<span class="stringliteral">&quot;_M&quot;</span>;
+<a name="l00477"></a>00477                         $this-&gt;photo_S = $photos_resourse.<span class="stringliteral">&quot;_S&quot;</span>;
+<a name="l00478"></a>00478                         $this-&gt;photo_XS = $photos_resourse.<span class="stringliteral">&quot;_XS&quot;</span>;
+<a name="l00479"></a>00479                         $this-&gt;photo_XXS = $photos_resourse.<span class="stringliteral">&quot;_XXS&quot;</span>;
+<a name="l00480"></a>00480                         $this-&gt;photo_XXXS = $photos_resourse.<span class="stringliteral">&quot;_XXXS&quot;</span>;
+<a name="l00481"></a>00481                         
+<a name="l00482"></a>00482                 
+<a name="l00483"></a>00483                         <span class="keywordflow">foreach</span>($sxml-&gt;link as $link){
+<a name="l00484"></a>00484                                 <span class="keywordflow">switch</span>($link-&gt;attributes()-&gt;rel){
+<a name="l00485"></a>00485                                         <span class="keywordflow">case</span> <span class="stringliteral">&quot;self&quot;</span>:
+<a name="l00486"></a>00486                                                 $this-&gt;self_url = $link-&gt;attributes()-&gt;href;
+<a name="l00487"></a>00487                                                 <span class="keywordflow">break</span>;
+<a name="l00488"></a>00488                                         <span class="keywordflow">case</span> <span class="stringliteral">&quot;edit&quot;</span>:
+<a name="l00489"></a>00489                                                 $this-&gt;edit_url = $link-&gt;attributes()-&gt;href;
+<a name="l00490"></a>00490                                                 <span class="keywordflow">break</span>;
+<a name="l00491"></a>00491                                         <span class="keywordflow">case</span> <span class="stringliteral">&quot;edit-media&quot;</span>:
+<a name="l00492"></a>00492                                                 $this-&gt;edit_media_url = $link-&gt;attributes()-&gt;href;
+<a name="l00493"></a>00493                                                 <span class="keywordflow">break</span>;
+<a name="l00494"></a>00494                                         <span class="keywordflow">case</span> <span class="stringliteral">&quot;album&quot;</span>:
+<a name="l00495"></a>00495                                                 $this-&gt;album_url = $link-&gt;attributes()-&gt;href;
+<a name="l00496"></a>00496                                                 <span class="keywordflow">break</span>;
+<a name="l00497"></a>00497                                         <span class="keywordflow">case</span> <span class="stringliteral">&quot;alternate&quot;</span>:
+<a name="l00498"></a>00498                                                 $this-&gt;alternate_url = $link-&gt;attributes()-&gt;href;
+<a name="l00499"></a>00499                                                 <span class="keywordflow">break</span>;
+<a name="l00500"></a>00500                                 }
+<a name="l00501"></a>00501                         }
+<a name="l00502"></a>00502                 }
+<a name="l00503"></a>00503                 
+<a name="l00505"></a>00505 
+<a name="l00508"></a>00508                 <span class="keyword">private</span> function delete_ns($xml){
+<a name="l00509"></a>00509                         $pattern = <span class="stringliteral">&quot;|(&lt;[/]*)[a-z][^:\s&gt;]*:([^:\s&gt;])[\s]*|sui&quot;</span>;
+<a name="l00510"></a>00510                         $replacement=<span class="stringliteral">&quot;\\1\\2&quot;</span>;
+<a name="l00511"></a>00511                         $xml = preg_replace($pattern,$replacement,$xml);
+<a name="l00512"></a>00512                         $pattern = <span class="stringliteral">&quot;|(&lt;[/]*[a-z]+)[-]|sui&quot;</span>;
+<a name="l00513"></a>00513                         $replacement=<span class="stringliteral">&quot;\\1_&quot;</span>;
+<a name="l00514"></a>00514                         $xml = preg_replace($pattern,$replacement,$xml);
+<a name="l00515"></a>00515                         $pattern = <span class="stringliteral">&quot;|xmlns[:a-z]*=\&quot;[^\&quot;]*\&quot;|isu&quot;</span>;
+<a name="l00516"></a>00516                         $replacement=<span class="stringliteral">&quot;&quot;</span>;
+<a name="l00517"></a>00517                         <span class="keywordflow">return</span> preg_replace($pattern,$replacement,$xml);
+<a name="l00518"></a>00518                 }
+<a name="l00519"></a>00519         }
+<a name="l00520"></a>00520 ?&gt;
+</pre></div></div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Указатель</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Структуры данных</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Функции</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr class="footer"/><address style="text-align: right;"><small>Документация по yandex.fotki. Последние изменения: Sat Mar 6 13:33:44 2010. Создано системой&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
+</body>
+</html>
