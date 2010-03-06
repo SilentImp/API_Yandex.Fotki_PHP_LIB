@@ -1,0 +1,237 @@
+<!-- This comment will put IE 6, 7 and 8 in quirks mode -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>yandex.fotki: Класс yandex_fotki</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- Создано системой Doxygen 1.6.3 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
+--></script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Титульная&nbsp;страница</span></a></li>
+      <li><a href="pages.html"><span>Описания</span></a></li>
+      <li><a href="modules.html"><span>Группы</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Структуры&nbsp;данных</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <img id="MSearchSelect" src="search/search.png"
+             onmouseover="return searchBox.OnSearchSelectShow()"
+             onmouseout="return searchBox.OnSearchSelectHide()"
+             alt=""/>
+        <input type="text" id="MSearchField" value="Поиск" accesskey="S"
+             onfocus="searchBox.OnSearchFieldFocus(true)" 
+             onblur="searchBox.OnSearchFieldFocus(false)" 
+             onkeyup="searchBox.OnSearchFieldChange(event)"/>
+        <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="tabs">
+    <ul>
+      <li><a href="annotated.html"><span>Структуры&nbsp;данных</span></a></li>
+      <li><a href="functions.html"><span>Поля&nbsp;структур</span></a></li>
+    </ul>
+  </div>
+</div>
+<div class="contents">
+<h1>Класс yandex_fotki<br/>
+<small>
+[<a class="el" href="group__yandex__fotki.html">Классы для работы c сервисом Яндекс.Фотки</a>]</small>
+</h1><!-- doxytag: class="yandex_fotki" -->
+<p>Класс, который позволяет вам управлять пользователями, от литца которых осуществляется работа с сервисом Яндекс.Фотки.  
+<a href="#_details">Подробнее...</a></p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><h2>Открытые члены</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki.html#a948066e39ddeffd971277c340fb2b0f1">__construct</a> ($login=null, $password=null)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Конструктор. Позволяет сразу создать первого пользователя. Если он создан, то автоматически становится текущим.  <a href="#a948066e39ddeffd971277c340fb2b0f1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki.html#ae8a275690ff1b618e1947378b0ed73ae">user</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Возвращает текущего пользователя.  <a href="#ae8a275690ff1b618e1947378b0ed73ae"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki.html#ad24e0530ada137f10a5e712f18f92103">remove_user</a> ($login=null)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Удаляет пользователя. Если пользователь был выбран как текущий, текщий пользователь сбрасывается в NULL.  <a href="#ad24e0530ada137f10a5e712f18f92103"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki.html#a36c6eb4f26e90f2c112065341af4e5af">add_user</a> ($login=null, $password=null)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Создает нового пользователя.  <a href="#a36c6eb4f26e90f2c112065341af4e5af"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki.html#a57fa7f894c1b44c2a64c8f3c3d1e876f">select_user</a> ($login=null)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Выбирает пользователя как текущего.  <a href="#a57fa7f894c1b44c2a64c8f3c3d1e876f"></a><br/></td></tr>
+</table>
+<hr/><a name="_details"></a><h2>Подробное описание</h2>
+<p>Класс, который позволяет вам управлять пользователями, от литца которых осуществляется работа с сервисом Яндекс.Фотки. </p>
+<hr/><h2>Конструктор(ы)</h2>
+<a class="anchor" id="a948066e39ddeffd971277c340fb2b0f1"></a><!-- doxytag: member="yandex_fotki::__construct" ref="a948066e39ddeffd971277c340fb2b0f1" args="($login=null, $password=null)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__construct </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>login</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>password</em> = <code>null</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Конструктор. Позволяет сразу создать первого пользователя. Если он создан, то автоматически становится текущим. </p>
+<dl><dt><b>Аргументы:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>login</em>&nbsp;</td><td>строка, содержащая логин пользователя. Необязательный аргумент. Если не указан, пользователь создан не будет. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>password</em>&nbsp;</td><td>строка, содержащая пароль пользователя. Необязательный аргумент. Если указан логин, но не указан пароль, то пользователь будет создан, но не будет аутентифицирован. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/><h2>Методы</h2>
+<a class="anchor" id="a36c6eb4f26e90f2c112065341af4e5af"></a><!-- doxytag: member="yandex_fotki::add_user" ref="a36c6eb4f26e90f2c112065341af4e5af" args="($login=null, $password=null)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">add_user </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>login</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>password</em> = <code>null</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Создает нового пользователя. </p>
+<dl><dt><b>Аргументы:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>login</em>&nbsp;</td><td>строка, содержащая логин пользователя. Обязательный аргумент. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>password</em>&nbsp;</td><td>строка, содержащая пароль пользователя. Необязательный аргумент. Если не указан пароль, то пользователь будет создан, но не будет аутентифицирован. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ad24e0530ada137f10a5e712f18f92103"></a><!-- doxytag: member="yandex_fotki::remove_user" ref="ad24e0530ada137f10a5e712f18f92103" args="($login=null)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">remove_user </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>login</em> = <code>null</code></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Удаляет пользователя. Если пользователь был выбран как текущий, текщий пользователь сбрасывается в NULL. </p>
+<dl><dt><b>Аргументы:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>login</em>&nbsp;</td><td>строка, содержащая логин пользователя. Обязательный аргумент. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a57fa7f894c1b44c2a64c8f3c3d1e876f"></a><!-- doxytag: member="yandex_fotki::select_user" ref="a57fa7f894c1b44c2a64c8f3c3d1e876f" args="($login=null)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">select_user </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>login</em> = <code>null</code></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Выбирает пользователя как текущего. </p>
+<dl><dt><b>Аргументы:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>login</em>&nbsp;</td><td>строка, содержащая логин пользователя. Обязательный аргумент. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ae8a275690ff1b618e1947378b0ed73ae"></a><!-- doxytag: member="yandex_fotki::user" ref="ae8a275690ff1b618e1947378b0ed73ae" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">user </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Возвращает текущего пользователя. </p>
+<dl class="return"><dt><b>Возвращает:</b></dt><dd>экземпляр объекта <a class="el" href="classyandex__fotki__user.html" title="Класс, который позволяет вам провести аутентификацию...">yandex_fotki_user</a>, содержащий текущего пользователя </dd></dl>
+<dl class="see"><dt><b>См. также:</b></dt><dd><a class="el" href="classyandex__fotki__user.html" title="Класс, который позволяет вам провести аутентификацию...">yandex_fotki_user</a> </dd></dl>
+
+</div>
+</div>
+<hr/>Объявления и описания членов класса находятся в файле:<ul>
+<li>Yandex/yandex/yandex_fotki.php</li>
+</ul>
+</div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Указатель</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Структуры данных</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Функции</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr class="footer"/><address style="text-align: right;"><small>Создано системой&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
+</body>
+</html>

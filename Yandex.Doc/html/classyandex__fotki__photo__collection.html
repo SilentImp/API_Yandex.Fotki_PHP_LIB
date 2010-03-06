@@ -1,0 +1,449 @@
+<!-- This comment will put IE 6, 7 and 8 in quirks mode -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>yandex.fotki: Класс yandex_fotki_photo_collection</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<!-- Создано системой Doxygen 1.6.3 -->
+<script type="text/javascript"><!--
+var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
+--></script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Титульная&nbsp;страница</span></a></li>
+      <li><a href="pages.html"><span>Описания</span></a></li>
+      <li><a href="modules.html"><span>Группы</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Структуры&nbsp;данных</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <img id="MSearchSelect" src="search/search.png"
+             onmouseover="return searchBox.OnSearchSelectShow()"
+             onmouseout="return searchBox.OnSearchSelectHide()"
+             alt=""/>
+        <input type="text" id="MSearchField" value="Поиск" accesskey="S"
+             onfocus="searchBox.OnSearchFieldFocus(true)" 
+             onblur="searchBox.OnSearchFieldFocus(false)" 
+             onkeyup="searchBox.OnSearchFieldChange(event)"/>
+        <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="tabs">
+    <ul>
+      <li><a href="annotated.html"><span>Структуры&nbsp;данных</span></a></li>
+      <li><a href="functions.html"><span>Поля&nbsp;структур</span></a></li>
+    </ul>
+  </div>
+</div>
+<div class="contents">
+<h1>Класс yandex_fotki_photo_collection<br/>
+<small>
+[<a class="el" href="group__yandex__fotki.html">Классы для работы c сервисом Яндекс.Фотки</a>]</small>
+</h1><!-- doxytag: class="yandex_fotki_photo_collection" -->
+<p>Класс, который позволяет вам работать с коллекцией фотографий.  
+<a href="#_details">Подробнее...</a></p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><h2>Открытые члены</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__photo__collection.html#a74eeea2d6a5b48cf338d252d990fcb02">__construct</a> ($url=null, $token=null)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Конструктор коллекции.  <a href="#a74eeea2d6a5b48cf338d252d990fcb02"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__photo__collection.html#a4268fac3b7a1ddc45196ad6be1e20afe">photo_list</a> ($page=null, $index=null)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">В зависимости от переданных аргументов возвращает массив страниц, содержащих альбомы, страницу с альбомами или конкретный альбом.  <a href="#a4268fac3b7a1ddc45196ad6be1e20afe"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__photo__collection.html#a3acaaafb141cf254da5705890f084571">get_by_title</a> ($title=null, $limit=null)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Осуществляет поиск по коллекции фотографий с заданным заголовком.  <a href="#a3acaaafb141cf254da5705890f084571"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__photo__collection.html#a6d348b3746a94a8128d5b63ac4636348">delete_photo_by_id</a> ($id=null)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Удаляет фотографию с указанным идентификатором.  <a href="#a6d348b3746a94a8128d5b63ac4636348"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__photo__collection.html#af624f6bc45489099b96acbfa4fc1aa02">delete_photo_by_title</a> ($title=null)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Удаляет фотографию с указанным названием. Внимание! Будут удалены все фотографии с этим заголовком. Фотографии сами не исчезают из коллекции. Не забудьте ее обновить. Удаленная фотография при вызова метода is_dead аозвращает true.  <a href="#af624f6bc45489099b96acbfa4fc1aa02"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__photo__collection.html#a0ad8347790d7742acb27ff534360e008">add_photo</a> ($path=null, $pub_channel=null, $app_platform=null, $app_version=null, $title=null, $tags=array(), $yaru=1, $access_type=&quot;public&quot;, $album=null, $disable_comments=false, $xxx=false, $hide_orig=false, $storage_private=false, $token=null)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Добавляет ноую фотографию в коллекцию.  <a href="#a0ad8347790d7742acb27ff534360e008"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acea62048bfee7b3cd80ed446c86fb78a"></a><!-- doxytag: member="yandex_fotki_photo_collection::next" ref="acea62048bfee7b3cd80ed446c86fb78a" args="()" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__photo__collection.html#acea62048bfee7b3cd80ed446c86fb78a">next</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Получает следующую страницу коллекции. Если ее нет или вы предварительно не вызвали метод search, выполняющий поиск по коллекции, то метод вызовет исключение. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__photo__collection.html#a37a322131ae92f1ac507a28783487d0c">search</a> ($order=&quot;updated&quot;, $offset_time=null, $offset_id=&quot;&quot;, $limit=100, $token=null)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Выполняет поиск по коллекции с заданными условиями.  <a href="#a37a322131ae92f1ac507a28783487d0c"></a><br/></td></tr>
+</table>
+<hr/><a name="_details"></a><h2>Подробное описание</h2>
+<p>Класс, который позволяет вам работать с коллекцией фотографий. </p>
+<dl class="author"><dt><b>Автор:</b></dt><dd>SilentImp </dd>
+<dd>
+<a href="http://twitter.com/SilentImp">http://twitter.com/SilentImp</a> </dd>
+<dd>
+<a href="http://silentimp.habrahabr.ru/">http://silentimp.habrahabr.ru/</a> </dd>
+<dd>
+<a href="mailto:ravenb@mail.ru">ravenb@mail.ru</a> </dd></dl>
+<hr/><h2>Конструктор(ы)</h2>
+<a class="anchor" id="a74eeea2d6a5b48cf338d252d990fcb02"></a><!-- doxytag: member="yandex_fotki_photo_collection::__construct" ref="a74eeea2d6a5b48cf338d252d990fcb02" args="($url=null, $token=null)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__construct </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>url</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>token</em> = <code>null</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Конструктор коллекции. </p>
+<dl><dt><b>Аргументы:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>url</em>&nbsp;</td><td>адрес коллекции </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>token</em>&nbsp;</td><td>токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то в коллекции будут показаны только ресурсы с уровнем доступа "для всех" </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/><h2>Методы</h2>
+<a class="anchor" id="a0ad8347790d7742acb27ff534360e008"></a><!-- doxytag: member="yandex_fotki_photo_collection::add_photo" ref="a0ad8347790d7742acb27ff534360e008" args="($path=null, $pub_channel=null, $app_platform=null, $app_version=null, $title=null, $tags=array(), $yaru=1, $access_type=&quot;public&quot;, $album=null, $disable_comments=false, $xxx=false, $hide_orig=false, $storage_private=false, $token=null)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">add_photo </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>path</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>pub_channel</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>app_platform</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>app_version</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>title</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>tags</em> = <code>array()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>yaru</em> = <code>1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>access_type</em> = <code>&quot;public&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>album</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>disable_comments</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>xxx</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>hide_orig</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>storage_private</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>token</em> = <code>null</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Добавляет ноую фотографию в коллекцию. </p>
+<dl><dt><b>Аргументы:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>path</em>&nbsp;</td><td>путь к файлу, содержащему изображения </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>pub_channel</em>&nbsp;</td><td>Уникальное имя-маркер клиентского приложения, осуществляющего загрузку фотографии. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>app_platform</em>&nbsp;</td><td>Дополнительная информация о платформе клиентского приложения, осуществляющего загрузку. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>app_version</em>&nbsp;</td><td>Версия клиентского приложения, осуществляющего загрузку. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>title</em>&nbsp;</td><td>Название фотографии. Не может быть пустой строкой. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>tags</em>&nbsp;</td><td>Массив содержащий теги (метки), уточняющие смысл фотографии. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>yaru</em>&nbsp;</td><td>Флаг публикации фотографии на странице пользователя на Я.ру. Допустимые значения: "1" - опубликовать (по умолчанию); "0" - не опубликовывать. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>access_type</em>&nbsp;</td><td>Уровень доступа к фотографии. Допустимые значения: public (по умолчанию) - для всех; friends - для друзей; private - для себя. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>album</em>&nbsp;</td><td>Идентификатор альбома для загрузки фотографии. Альбом должен существовать. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>disable_comments</em>&nbsp;</td><td>Флаг запрета комментариев. Значение по умолчанию: false. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>xxx</em>&nbsp;</td><td>Флаг «только для взрослых» (можно только установить, снять нельзя). Значение по умолчанию: false. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>hide_orig</em>&nbsp;</td><td>Флаг запрета публичного доступа к оригиналу фотографии. Значение по умолчанию: false. Если данный флаг установлен в true, автор не сможет получить оригинал фотографии при помощи API Фоток. Для этого нужно воспользоваться возможностями сервиса Яндекс.Фотки. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>storage_private</em>&nbsp;</td><td>Флаг, закрывающий доступ к фотографии по URL со страниц вне домена Яндекс.Фоток. Значение по умолчанию: false. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>token</em>&nbsp;</td><td>токен, подтверждающий аутентификацию пользователя. Обязательный аргумент. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Возвращает:</b></dt><dd>ассоциативный массив. Если yaru==0, то возвращается array('image_id'=&gt;photo_id), где {photo_id} - численный идентификатор фотографии. Если yaru==1 то возвращается array('image_id'=&gt;photo_id,'post_id'=&gt;post_id), где {photo_id} - идентификатор фотографии, а {post_id} - идентификатор поста на Я.ру. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6d348b3746a94a8128d5b63ac4636348"></a><!-- doxytag: member="yandex_fotki_photo_collection::delete_photo_by_id" ref="a6d348b3746a94a8128d5b63ac4636348" args="($id=null)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">delete_photo_by_id </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id</em> = <code>null</code></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Удаляет фотографию с указанным идентификатором. </p>
+<dl><dt><b>Аргументы:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>id</em>&nbsp;</td><td>идентификатор фотографии, которую вы хотите удалить </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="af624f6bc45489099b96acbfa4fc1aa02"></a><!-- doxytag: member="yandex_fotki_photo_collection::delete_photo_by_title" ref="af624f6bc45489099b96acbfa4fc1aa02" args="($title=null)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">delete_photo_by_title </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>title</em> = <code>null</code></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Удаляет фотографию с указанным названием. Внимание! Будут удалены все фотографии с этим заголовком. Фотографии сами не исчезают из коллекции. Не забудьте ее обновить. Удаленная фотография при вызова метода is_dead аозвращает true. </p>
+<dl><dt><b>Аргументы:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>title</em>&nbsp;</td><td>Название фотогрфии, который вы хотите удалить </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="see"><dt><b>См. также:</b></dt><dd><a class="el" href="classyandex__fotki__album.html" title="Класс, который позволяет вам работать с альбомом...">yandex_fotki_album</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a3acaaafb141cf254da5705890f084571"></a><!-- doxytag: member="yandex_fotki_photo_collection::get_by_title" ref="a3acaaafb141cf254da5705890f084571" args="($title=null, $limit=null)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">get_by_title </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>title</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>limit</em> = <code>null</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Осуществляет поиск по коллекции фотографий с заданным заголовком. </p>
+<dl><dt><b>Аргументы:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>title</em>&nbsp;</td><td>название фотографии. Обязательный аргумент. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>limit</em>&nbsp;</td><td>максимально допустимое количество элементов выборки. Если установлено, то по достижении указанного числа найденных фотографий поиск будет завершен. В противном случае будут проверены все альбомы выборки на всех страницах. Если равно 0, то игнорируется. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Возвращает:</b></dt><dd>FALSE если альбомов с таким названием не найдено, альбом, если найдено единственное соответствие и массив альбомов, если найдено более одного вхождения. </dd></dl>
+<dl class="see"><dt><b>См. также:</b></dt><dd><a class="el" href="classyandex__fotki__photo.html" title="Класс, который позволяет вам работать с фотографией...">yandex_fotki_photo</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a4268fac3b7a1ddc45196ad6be1e20afe"></a><!-- doxytag: member="yandex_fotki_photo_collection::photo_list" ref="a4268fac3b7a1ddc45196ad6be1e20afe" args="($page=null, $index=null)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">photo_list </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>page</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>index</em> = <code>null</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>В зависимости от переданных аргументов возвращает массив страниц, содержащих альбомы, страницу с альбомами или конкретный альбом. </p>
+<dl><dt><b>Аргументы:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>page</em>&nbsp;</td><td>числовой индекс страницы начиная с 0. Необязательный аргумент. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>index</em>&nbsp;</td><td>числовой индекс альбома начиная с 0. Необязательный аргумент. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Возвращает:</b></dt><dd>В зависимости от переданных аргументов возвращает массив страниц, содержащих альбомы, страницу с альбомами или конкретный альбом </dd></dl>
+<dl class="see"><dt><b>См. также:</b></dt><dd><a class="el" href="classyandex__fotki__album.html" title="Класс, который позволяет вам работать с альбомом...">yandex_fotki_album</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a37a322131ae92f1ac507a28783487d0c"></a><!-- doxytag: member="yandex_fotki_photo_collection::search" ref="a37a322131ae92f1ac507a28783487d0c" args="($order=&quot;updated&quot;, $offset_time=null, $offset_id=&quot;&quot;, $limit=100, $token=null)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">search </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>order</em> = <code>&quot;updated&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>offset_time</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>offset_id</em> = <code>&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>limit</em> = <code>100</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>token</em> = <code>null</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Выполняет поиск по коллекции с заданными условиями. </p>
+<dl><dt><b>Аргументы:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>order</em>&nbsp;</td><td>Порядок отображения элементов выдачи. Допустимые значения: updated (по умолчанию) - по времени последнего изменения, от новых к старым; rupdated - по времени последнего изменения, от старых к новым; published - по времени загрузки (для фотографии) или создания (для альбома), от новых к старым; rpublished - по времени загрузки (для фотографии) или создания (для альбома), от старых к новым; created - по времени создания согласно EXIF-данным, от новых к старым; rcreated - по времени создания согласно EXIF-данным, от старых к новым. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>offset_time</em>&nbsp;</td><td>Время создания ресурса в формате UTC с точностью до секунды. Исключение: ссылки с order равным created или rcreated, в которых время указывается без часового пояса. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>offset_id</em>&nbsp;</td><td>Численный идентификатор ресурса на Яндекс.Фотках. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>limit</em>&nbsp;</td><td>Количество элементов на странице выдачи. </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>token</em>&nbsp;</td><td>Токен, подтверждающий аутентификацию пользователя. Если не задан, используется токен, который был передан конструктору. Если не задан и он, то метод вызовет исключение. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>Объявления и описания членов класса находятся в файле:<ul>
+<li>Yandex/yandex/yandex_fotki_photo_collection.php</li>
+</ul>
+</div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Указатель</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Структуры данных</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Функции</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<hr class="footer"/><address style="text-align: right;"><small>Создано системой&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
+</body>
+</html>
