@@ -178,7 +178,7 @@
 			@param xml Atom Entry альбома
 			@param token токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то в коллекции будут показаны только ресурсы с уровнем доступа "для всех"
 		*/
-		public function __construct($xml=null, $token=null){
+		public function __construct($xml, $token=null){
 			$this->token = $token;
 			$this->reload_xml($xml);
 		}
@@ -189,10 +189,7 @@
 			@return созданную коллекцию
 			@see yandex_fotki_photo_collection
 		*/
-		public function add_photo_collection($collection_name=null){
-			if($collection_name===null){
-				throw new Exception("Не выбрано имя коллекции", E_ERROR);
-			}
+		public function add_photo_collection($collection_name){
 			$id = explode(":", $this->id);
 			$id = $id[count($id)-1];
 			$this->photo_collection[$collection_name] = new yandex_fotki_photo_collection($this->photos_url, $this->token, $id);
@@ -219,10 +216,7 @@
 			@param collection_name содержит строку содержащую имя коллекции фотографий, которую вы хотите удалить. Обязательный аргумент.
 			@see yandex_fotki_photo_collection
 		*/
-		public function remove_photo_collection($collection_name=null){
-			if($collection_name===null){
-				throw new Exception("Не выбрано имя коллекции", E_ERROR);
-			}
+		public function remove_photo_collection($collection_name){
 			unset($this->photo_collection[$collection_name]);
 		}
 		

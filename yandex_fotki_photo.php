@@ -266,7 +266,7 @@
 			@param xml Atom Entry фотографии
 			@param token токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то нельзя будет удалить или отредактировать фотографию, если не введете токен в функцию редактирования или удаления
 		*/
-		public function __construct($xml=null, $token=null){
+		public function __construct($xml, $token=null){
 			$this->token=$token;
 			$this->reload_xml($xml);
 		}

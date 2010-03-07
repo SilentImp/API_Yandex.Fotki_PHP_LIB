@@ -9,13 +9,15 @@
 	Тут собраны несколько классов, которые позволят вам организовать работу с Яндекс.Фотки.<br/>
 	Полное описание API вы можете найти тут: http://api.yandex.ru/fotki/<br/>
 	Вопросы по работе классов и API вы можете отправлять мне или задавать в <a href="http://clubs.ya.ru/api-fotki">Клубе API Яндекс.Фоток</a><br/><br/>
-	Огромное спасибо <a href="http://ar2r.habrahabr.ru/">ar2r</a> и <a href="http://nickmitin.habrahabr.ru/">nickmitin</a> за помощь с портированием алгоритма шифрования, <a href="http://ijon-c.ya.ru/">proto</a> за разьяснения по поводу проекта <a href="http://api.yandex.ru/fotki/">API Яндекс.Фотки</a>, комментарии и всем всем всем за уделенное мне время.
+	Огромное спасибо <a href="http://ar2r.habrahabr.ru/">ar2r</a> и <a href="http://nickmitin.habrahabr.ru/">nickmitin</a> за помощь с портированием алгоритма шифрования, <a href="http://ijon-c.ya.ru/">proto</a> за разьяснения по поводу проекта <a href="http://api.yandex.ru/fotki/">API Яндекс.Фотки</a>, комментарии и всем всем всем за уделенное мне время. И не менее большое спасибо тем людям с канала irc://irc.anarxi.st:7771/php, которые дали моей работе экспертную оценку и посоветовали, что можно сделать лучше. mz, avz, focusshifter Спасибо вам.
 	
 	\defgroup yandex_fotki Классы для работы c сервисом Яндекс.Фотки
 	С помощью классов этой группы происходит работа с сервисом Яндекс.Фотки
 	
 	@todo	
 	- протестировать
+	- разделить исключения по типам
+	- подумать над тем, что нужно выделить в отдельные классы
 	*/
 	
 	//!	Класс, который позволяет вам управлять пользователями, от литца которых осуществляется работа с сервисом Яндекс.Фотки
@@ -33,10 +35,8 @@
 			@param login строка, содержащая логин пользователя. Необязательный аргумент. Если не указан, пользователь создан не будет.
 			@param password строка, содержащая пароль пользователя. Необязательный аргумент. Если указан логин, но не указан пароль, то пользователь будет создан, но не будет аутентифицирован.
 		*/
-		public function __construct($login=null, $password=null){
-			if($login!==null){
-				$this->add_user($login, $password);
-			}
+		public function __construct($login, $password=null){
+			$this->add_user($login, $password);
 		}
 		
 		//! Возвращает текущего пользователя
@@ -52,10 +52,7 @@
 		/*!
 			@param login строка, содержащая логин пользователя. Обязательный аргумент.
 		*/
-		public function remove_user($login=null){
-			if($login==null){
-				throw new Exception("Не задан логин пользователя", E_ERROR);
-			}
+		public function remove_user($login){
 			if(!array_key_exists($login, $this->user_list)){
 				throw new Exception("Пользователь не найден", E_ERROR);
 			}
@@ -70,10 +67,7 @@
 			@param login строка, содержащая логин пользователя. Обязательный аргумент.
 			@param password строка, содержащая пароль пользователя. Необязательный аргумент. Если не указан пароль, то пользователь будет создан, но не будет аутентифицирован.
 		*/
-		public function add_user($login=null, $password=null){
-			if($login==null){
-				throw new Exception("Не задан логин пользователя", E_ERROR);
-			}
+		public function add_user($login, $password=null){
 			if(array_key_exists($login, $this->user_list)){
 				throw new Exception("Пользователь с таким логином уже существует", E_ERROR);
 			}
@@ -89,10 +83,7 @@
 		/*!
 			@param login строка, содержащая логин пользователя. Обязательный аргумент.
 		*/
-		public function select_user($login=null){
-			if($login==null){
-				throw new Exception("Не задан логин пользователя",E_ERROR);
-			}
+		public function select_user($login){
 			if(!array_key_exists($login,$this->user_list)){
 				throw new Exception("Пользователь не найден",E_ERROR);
 			}

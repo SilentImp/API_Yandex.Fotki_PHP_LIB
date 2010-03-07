@@ -22,10 +22,7 @@
 			@param url адрес коллекции
 			@param token токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то в коллекции будут показаны только ресурсы с уровнем доступа "для всех"
 		*/
-		public function __construct($url=null, $token=null){
-			if($url===null){
-				throw new Exception("Не задан URL коллекции", E_ERROR);
-			}
+		public function __construct($url, $token=null){
 			$this->url = $url;
 			$this->token = $token;
 		}
@@ -63,10 +60,7 @@
 			@return FALSE если альбомов с таким названием не найдено, альбом, если найдено единственное соответствие и массив альбомов, если найдено более одного вхождения.
 			@see yandex_fotki_album
 		*/
-		public function get_by_title($title=null, $limit=null){
-			if($title===null){
-				throw new Exception("Не задано название альбома", E_ERROR);
-			}
+		public function get_by_title($title, $limit=null){
 			$albums = array();
 			foreach($this->album_list as $album_page){
 				foreach($album_page as $album){
@@ -95,10 +89,7 @@
 		/*!
 			@param id идентификатор альбома, который вы хотите удалить
 		*/
-		public function delete_album_by_id($id=null){
-			if($id===null){
-				throw new Exception("Не задан идентификатор альбома", E_ERROR);
-			}
+		public function delete_album_by_id($id){
 			foreach($this->album_list as $album_page){
 				foreach($album_page as $album){
 					$parts = explode(":", $album->get_id());
@@ -115,10 +106,7 @@
 			@param title заголовок альбома, который вы хотите удалить
 			@see yandex_fotki_album
 		*/
-		public function delete_album_by_title($title=null){
-			if($title===null){
-				throw new Exception("Не задан заголовок альбома", E_ERROR);
-			}
+		public function delete_album_by_title($title){
 			foreach($this->album_list as $album_page){
 				foreach($album_page as $album){
 					if($album->get_title()==$title){
@@ -135,7 +123,7 @@
 			@param password Пароль альбома. Необязательный аргумент.
 			@param token Токен, подтверждающий аутентификацию пользователя. Если не задан, используется токен, который был передан конструктору. Если не задан и он, то метод вызовет исключение.
 		*/
-		public function add_album($title="", $summary="", $password="", $token=null){
+		public function add_album($title, $summary="", $password="", $token=null){
 			$title=trim($title);
 			$summary=trim($summary);
 			$password=trim($password);

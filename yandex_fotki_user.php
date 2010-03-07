@@ -36,10 +36,7 @@
 			@param login строка, содержащая логин пользователя. Обязательный аргумент.
 			@param password строка, содержащая пароль пользователя. Необязательный аргумент.
 		*/
-		public function __construct($login=null, $password=null){
-			if($login===null){
-				throw new Exception("Не задан логин пользователя", E_ERROR);
-			}
+		public function __construct($login, $password=null){
 			$this->login = $login;
 			$this->password = $password;
 		}
@@ -85,10 +82,7 @@
 			@param collection_name содержит строку содержащую имя коллекции фотографий, которую вы хотите удалить. Обязательный аргумент.
 			@see yandex_fotki_photo_collection
 		*/
-		public function remove_photo_collection($collection_name=null){
-			if($collection_name===null){
-				throw new Exception("Не выбрано имя коллекции", E_ERROR);
-			}
+		public function remove_photo_collection($collection_name){
 			unset($this->photo_collection[$collection_name]);
 		}
 
@@ -97,10 +91,7 @@
 			@param collection_name содержит строку содержащую имя коллекции альбомов, которую вы хотите удалить. Обязательный аргумент.
 			@see yandex_fotki_album_collection
 		*/		
-		public function remove_album_collection($collection_name=null){
-			if($collection_name===null){
-				throw new Exception("Не выбрано имя коллекции", E_ERROR);
-			}
+		public function remove_album_collection($collection_name){
 			unset($this->album_collection[$collection_name]);
 		}
 		
@@ -110,11 +101,7 @@
 			@return созданную коллекцию
 			@see yandex_fotki_photo_collection			
 		*/	
-		public function add_photo_collection($collection_name=null){
-			if($collection_name===null){
-				throw new Exception("Не выбрано имя коллекции", E_ERROR);
-			}
-			
+		public function add_photo_collection($collection_name){
 			$this->photo_collection[$collection_name] = new yandex_fotki_photo_collection($this->photo_collection_href, $this->token);
 			$this->photo_collection[$collection_name]->search($this->token);
 			return $this->photo_collection[$collection_name];
@@ -126,10 +113,7 @@
 			@return созданную коллекцию
 			@see yandex_fotki_album_collection
 		*/	
-		public function add_album_collection($collection_name=null){
-			if($collection_name===null){
-				throw new Exception("Не выбрано имя коллекции", E_ERROR);
-			}
+		public function add_album_collection($collection_name){
 			$this->album_collection[$collection_name] = new yandex_fotki_album_collection($this->album_collection_href, $this->token);
 			$this->album_collection[$collection_name]->search($this->token);
 			return $this->album_collection[$collection_name];

@@ -25,10 +25,7 @@
 			@param album_id числовой идентификатор альбома
 			@param token токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то в коллекции будут показаны только ресурсы с уровнем доступа "для всех"
 		*/
-		public function __construct($url=null, $token=null, $album_id=null){
-			if($url===null){
-				throw new Exception("Не задан URL коллекции", E_ERROR);
-			}
+		public function __construct($url, $token=null, $album_id=null){
 			$this->url = $url;
 			$this->token = $token;
 			$this->album_id = $album_id;
@@ -67,10 +64,7 @@
 			@return FALSE если альбомов с таким названием не найдено, альбом, если найдено единственное соответствие и массив альбомов, если найдено более одного вхождения.
 			@see yandex_fotki_photo
 		*/
-		public function get_by_title($title=null, $limit=null){
-			if($title===null){
-				throw new Exception("Не задано название фотографии", E_ERROR);
-			}
+		public function get_by_title($title, $limit=null){
 			$photos = array();
 			foreach($this->photo_list as $photo_page){
 				foreach($photo_page as $photo){
@@ -99,10 +93,7 @@
 		/*!
 			@param id идентификатор фотографии, которую вы хотите удалить
 		*/
-		public function delete_photo_by_id($id=null){
-			if($id===null){
-				throw new Exception("Не задан идентификатор фотографии", E_ERROR);
-			}
+		public function delete_photo_by_id($id){
 			foreach($this->photo_list as $photo_page){
 				foreach($photo_page as $photo){
 					$parts = explode(":", $photo->get_id());
@@ -119,10 +110,7 @@
 			@param title Название фотогрфии, который вы хотите удалить
 			@see yandex_fotki_album
 		*/
-		public function delete_photo_by_title($title=null){
-			if($title===null){
-				throw new Exception("Не задано название фотографии", E_ERROR);
-			}
+		public function delete_photo_by_title($title){
 			foreach($this->photo_list as $photo_page){
 				foreach($photo_page as $photo){
 					if($photo->get_title()==$title){
@@ -141,7 +129,7 @@
 			if(!array_key_exists($args, "path")){
 				$path=$args["path"];
 			}else{
-				$path=null;
+				throw new Exception("Не задан путь к файлу, содержащему изображение", E_ERROR);
 			}
 			
 			if(!array_key_exists($args, "channel")){
@@ -243,10 +231,7 @@
 			@param token токен, подтверждающий аутентификацию пользователя. Обязательный аргумент.
 			@return ассоциативный массив. Если yaru==0, то возвращается array('image_id'=>photo_id), где {photo_id} - численный идентификатор фотографии. Если yaru==1 то возвращается array('image_id'=>photo_id,'post_id'=>post_id), где {photo_id} - идентификатор фотографии, а {post_id} - идентификатор поста на Я.ру.
 		*/
-		public function add_photo($path=null, $pub_channel=null, $app_platform=null, $app_version=null, $title=null, $tags=array(), $yaru=1, $access_type="public", $album=null, $disable_comments=false, $xxx=false, $hide_orig=false, $storage_private=false, $token=null){
-			if($path===null){
-				throw new Exception("Не задан путь к файлу, содержащему изображение", E_ERROR);
-			}
+		public function add_photo($path, $pub_channel=null, $app_platform=null, $app_version=null, $title=null, $tags=array(), $yaru=1, $access_type="public", $album=null, $disable_comments=false, $xxx=false, $hide_orig=false, $storage_private=false, $token=null){
 			$path = realpath($path);
 			if(!file_exists($path)){
 				throw new Exception("Файл, содержащий изображение, не найден", E_ERROR);
