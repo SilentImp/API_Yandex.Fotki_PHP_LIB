@@ -178,7 +178,7 @@
 			@param xml Atom Entry альбома
 			@param token токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то в коллекции будут показаны только ресурсы с уровнем доступа "для всех"
 		*/
-		public function __construct($xml=null,$token=null){
+		public function __construct($xml=null, $token=null){
 			$this->token = $token;
 			$this->reload_xml($xml);
 		}
@@ -191,11 +191,11 @@
 		*/
 		public function add_photo_collection($collection_name=null){
 			if($collection_name===null){
-				throw new Exception("Не выбрано имя коллекции",E_ERROR);
+				throw new Exception("Не выбрано имя коллекции", E_ERROR);
 			}
-			$id = explode(":",$this->id);
+			$id = explode(":", $this->id);
 			$id = $id[count($id)-1];
-			$this->photo_collection[$collection_name] = new yandex_fotki_photo_collection($this->photos_url,$this->token,$id);
+			$this->photo_collection[$collection_name] = new yandex_fotki_photo_collection($this->photos_url, $this->token, $id);
 			$this->photo_collection[$collection_name]->search($this->token);
 			return $this->photo_collection[$collection_name];
 		}
@@ -221,7 +221,7 @@
 		*/
 		public function remove_photo_collection($collection_name=null){
 			if($collection_name===null){
-				throw new Exception("Не выбрано имя коллекции",E_ERROR);
+				throw new Exception("Не выбрано имя коллекции", E_ERROR);
 			}
 			unset($this->photo_collection[$collection_name]);
 		}
@@ -235,13 +235,13 @@
 			curl_setopt($curl, CURLOPT_HTTPGET, true);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			if($this->token!=null){
-				curl_setopt($curl, CURLOPT_HTTPHEADER,array(
+				curl_setopt($curl, CURLOPT_HTTPHEADER, array(
 					'Authorization: FimpToken realm="fotki.yandex.ru", token="'.$this->token.'"'
 				));
 			}			
 			$response = curl_exec($curl);
-			if(curl_getinfo($curl,CURLINFO_HTTP_CODE)!=200){
-				throw new Exception($response,E_ERROR);
+			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
+				throw new Exception($response, E_ERROR);
 			}
 			curl_close($curl);
 			$this->reload_xml($this->delete_ns($response));
@@ -254,9 +254,9 @@
 			@param password Пароль альбома. Если выставлена пустая строка, то пароль будет снят.
 			@param token токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то будет использован токен, переданный конструктору. Если не задан и он, то метод вызовет исключение.
 		*/
-		public function edit($title=null,$summary=null,$password=null,$token=null){
+		public function edit($title=null, $summary=null, $password=null, $token=null){
 			if($title===null&&$summary===null&&$password===null){
-				throw new Exception("Метод должен изменить заголовок, описание или пароль альбома",E_ERROR);
+				throw new Exception("Метод должен изменить заголовок, описание или пароль альбома", E_ERROR);
 			}
 			
 			if($token!==null){
@@ -264,7 +264,7 @@
 			}
 			
 			if($this->token===null){
-				throw new Exception("Эта операция доступна только для аутентифицированных пользователей",E_ERROR);
+				throw new Exception("Эта операция доступна только для аутентифицированных пользователей", E_ERROR);
 			}
 			
 			if($title!=null){
@@ -322,14 +322,14 @@
 			curl_setopt($curl, CURLOPT_INFILE, $putData);
 			curl_setopt($curl, CURLOPT_INFILESIZE, strlen($message));
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($curl, CURLOPT_HTTPHEADER,array(
+			curl_setopt($curl, CURLOPT_HTTPHEADER, array(
 				'Authorization: FimpToken realm="fotki.yandex.ru", token="'.$this->token.'"',
 				'Content-Type: application/atom+xml; charset=utf-8; type=entry',
 				'Expect:'
 			));
 			$response = curl_exec($curl);
-			if(curl_getinfo($curl,CURLINFO_HTTP_CODE)!=200){
-				throw new Exception($response,E_ERROR);
+			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
+				throw new Exception($response, E_ERROR);
 			}
 			
 			$this->xml = $this->delete_ns($response);
@@ -347,7 +347,7 @@
 				$this->token = $token;
 			}
 			if($this->token===null){
-				throw new Exception("Эта операция доступна только для аутентифицированных пользователей",E_ERROR);
+				throw new Exception("Эта операция доступна только для аутентифицированных пользователей", E_ERROR);
 			}
 			$curl = curl_init();
 			curl_setopt($curl, CURLOPT_URL, $this->edit_url);
@@ -356,12 +356,12 @@
 			curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($curl, CURLINFO_HEADER_OUT, true);
-			curl_setopt($curl, CURLOPT_HTTPHEADER,array(
+			curl_setopt($curl, CURLOPT_HTTPHEADER, array(
 				'Authorization: FimpToken realm="fotki.yandex.ru", token="'.$this->token.'"'
 			));
 			$error = curl_exec($curl);
-			if(curl_getinfo($curl,CURLINFO_HTTP_CODE)!=204){
-				throw new Exception($error,E_ERROR);
+			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=204){
+				throw new Exception($error, E_ERROR);
 			}
 			
 			curl_close($curl);
@@ -376,7 +376,7 @@
 			$this->xml = '<?xml version="1.0" encoding="UTF-8"?>'.$xml;
 			
 			if(($sxml=simplexml_load_string($xml))===false){
-				throw new Exception("Ответ не well-formed XML.".$response,E_ERROR);
+				throw new Exception("Ответ не well-formed XML.".$response, E_ERROR);
 			}
 			$this->id = $sxml->id;
 			$this->author = $sxml->author->name;
@@ -420,13 +420,13 @@
 		private function delete_ns($xml){
 			$pattern = "|(<[/]*)[a-z][^:\s>]*:([^:\s>])[\s]*|sui";
 			$replacement="\\1\\2";
-			$xml = preg_replace($pattern,$replacement,$xml);
+			$xml = preg_replace($pattern, $replacement, $xml);
 			$pattern = "|(<[/]*[^\s>]+)[-]|sui";
 			$replacement="\\1_";
-			$xml = preg_replace($pattern,$replacement,$xml);
+			$xml = preg_replace($pattern, $replacement, $xml);
 			$pattern = "|xmlns[:a-z]*=\"[^\"]*\"|isu";
 			$replacement="";
-			return preg_replace($pattern,$replacement,$xml);
+			return preg_replace($pattern, $replacement, $xml);
 		}
 	}
 ?>

@@ -106,6 +106,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Конструктор фотографии.  <a href="#a9f27b603f4eee8bfebf08b8579cdc981"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__photo.html#a5ad6694fbc664f22119a63d68a6cea44">delete</a> ($token)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Удаляет фотографию. В случае успешного удаления фотография будет помечена, как удаленная. Провреить удлаен ли объект можно с помощью метода is_dead.  <a href="#a5ad6694fbc664f22119a63d68a6cea44"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__photo.html#ad6ad5bfc3882608e64cda23977929e6b">ed</a> ($args=array())</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Метод является оберткой для edit и должен упростить работу с его аргументами.  <a href="#ad6ad5bfc3882608e64cda23977929e6b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__photo.html#ac308fd0cdc3d717df63c66dc33c241f3">edit</a> ($title=null, $xxx=false, $disable_comments=false, $hide_original=false, $access=&quot;public&quot;, $album_url=null, $token=null)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Редактирует свойства фотографии.  <a href="#ac308fd0cdc3d717df63c66dc33c241f3"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2aff0844db6d9b56e6ba96123e1dd11c"></a><!-- doxytag: member="yandex_fotki_photo::refresh" ref="a2aff0844db6d9b56e6ba96123e1dd11c" args="()" -->
@@ -179,6 +181,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 <dl><dt><b>Аргументы:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>token</em>&nbsp;</td><td>токен, подтверждающий аутентификацию пользователя. Необязательный аргумент. Если не задан, то будет использован токен, который был передан конструктору. Если он тоже не был задан, то метод вызовет исключение. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ad6ad5bfc3882608e64cda23977929e6b"></a><!-- doxytag: member="yandex_fotki_photo::ed" ref="ad6ad5bfc3882608e64cda23977929e6b" args="($args=array())" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ed </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>args</em> = <code>array()</code></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Метод является оберткой для edit и должен упростить работу с его аргументами. </p>
+<dl><dt><b>Аргументы:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>args</em>&nbsp;</td><td>ассоциативный массив, в котором хранятся аргументы, значения которых отличаются от значений по умолчанию. Ключи ассоциативного массива: title, xxx, comments, hide, access, album, token. Точное описание аргументов смотрите в описании метода edit </td></tr>
   </table>
   </dd>
 </dl>
@@ -757,7 +785,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 </div>
 </div>
 <hr/>Объявления и описания членов класса находятся в файле:<ul>
-<li>yandex_fotki_photo.php</li>
+<li>Yandex/API_Yandex.Fotki_PHP_LIB/yandex_fotki_photo.php</li>
 </ul>
 </div>
 <!--- window showing the filter options -->
@@ -774,7 +802,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 </iframe>
 </div>
 
-<hr class="footer"/><address style="text-align: right;"><small>Документация по Яндекс.Фотки. Последние изменения: Sun Mar 7 00:50:39 2010. Создано системой&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Документация по Яндекс.Фотки. Последние изменения: Sun Mar 7 13:47:45 2010. Создано системой&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

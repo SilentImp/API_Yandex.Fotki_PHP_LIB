@@ -33,9 +33,9 @@
 			@param login строка, содержащая логин пользователя. Необязательный аргумент. Если не указан, пользователь создан не будет.
 			@param password строка, содержащая пароль пользователя. Необязательный аргумент. Если указан логин, но не указан пароль, то пользователь будет создан, но не будет аутентифицирован.
 		*/
-		public function __construct($login=null,$password=null){
+		public function __construct($login=null, $password=null){
 			if($login!==null){
-				$this->add_user($login,$password);
+				$this->add_user($login, $password);
 			}
 		}
 		
@@ -54,10 +54,10 @@
 		*/
 		public function remove_user($login=null){
 			if($login==null){
-				throw new Exception("Не задан логин пользователя",E_ERROR);
+				throw new Exception("Не задан логин пользователя", E_ERROR);
 			}
-			if(!array_key_exists($login,$this->user_list)){
-				throw new Exception("Пользователь не найден",E_ERROR);
+			if(!array_key_exists($login, $this->user_list)){
+				throw new Exception("Пользователь не найден", E_ERROR);
 			}
 			if($this->current_user->login==$login){
 				$this->current_user=null;
@@ -70,14 +70,14 @@
 			@param login строка, содержащая логин пользователя. Обязательный аргумент.
 			@param password строка, содержащая пароль пользователя. Необязательный аргумент. Если не указан пароль, то пользователь будет создан, но не будет аутентифицирован.
 		*/
-		public function add_user($login=null,$password=null){
+		public function add_user($login=null, $password=null){
 			if($login==null){
-				throw new Exception("Не задан логин пользователя",E_ERROR);
+				throw new Exception("Не задан логин пользователя", E_ERROR);
 			}
-			if(array_key_exists($login,$this->user_list)){
-				throw new Exception("Пользователь с таким логином уже существует",E_ERROR);
+			if(array_key_exists($login, $this->user_list)){
+				throw new Exception("Пользователь с таким логином уже существует", E_ERROR);
 			}
-			$this->user_list[$login] = new yandex_fotki_user($login,$password);
+			$this->user_list[$login] = new yandex_fotki_user($login, $password);
 			$this->select_user($login);
 			$this->current_user->get_service_document();
 			if($password!=null){

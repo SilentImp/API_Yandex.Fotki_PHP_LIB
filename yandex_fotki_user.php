@@ -36,9 +36,9 @@
 			@param login строка, содержащая логин пользователя. Обязательный аргумент.
 			@param password строка, содержащая пароль пользователя. Необязательный аргумент.
 		*/
-		public function __construct($login=null,$password=null){
+		public function __construct($login=null, $password=null){
 			if($login===null){
-				throw new Exception("Не задан логин пользователя",E_ERROR);
+				throw new Exception("Не задан логин пользователя", E_ERROR);
 			}
 			$this->login = $login;
 			$this->password = $password;
@@ -87,7 +87,7 @@
 		*/
 		public function remove_photo_collection($collection_name=null){
 			if($collection_name===null){
-				throw new Exception("Не выбрано имя коллекции",E_ERROR);
+				throw new Exception("Не выбрано имя коллекции", E_ERROR);
 			}
 			unset($this->photo_collection[$collection_name]);
 		}
@@ -99,7 +99,7 @@
 		*/		
 		public function remove_album_collection($collection_name=null){
 			if($collection_name===null){
-				throw new Exception("Не выбрано имя коллекции",E_ERROR);
+				throw new Exception("Не выбрано имя коллекции", E_ERROR);
 			}
 			unset($this->album_collection[$collection_name]);
 		}
@@ -112,10 +112,10 @@
 		*/	
 		public function add_photo_collection($collection_name=null){
 			if($collection_name===null){
-				throw new Exception("Не выбрано имя коллекции",E_ERROR);
+				throw new Exception("Не выбрано имя коллекции", E_ERROR);
 			}
 			
-			$this->photo_collection[$collection_name] = new yandex_fotki_photo_collection($this->photo_collection_href,$this->token);
+			$this->photo_collection[$collection_name] = new yandex_fotki_photo_collection($this->photo_collection_href, $this->token);
 			$this->photo_collection[$collection_name]->search($this->token);
 			return $this->photo_collection[$collection_name];
 		}
@@ -128,9 +128,9 @@
 		*/	
 		public function add_album_collection($collection_name=null){
 			if($collection_name===null){
-				throw new Exception("Не выбрано имя коллекции",E_ERROR);
+				throw new Exception("Не выбрано имя коллекции", E_ERROR);
 			}
-			$this->album_collection[$collection_name] = new yandex_fotki_album_collection($this->album_collection_href,$this->token);
+			$this->album_collection[$collection_name] = new yandex_fotki_album_collection($this->album_collection_href, $this->token);
 			$this->album_collection[$collection_name]->search($this->token);
 			return $this->album_collection[$collection_name];
 		}
@@ -145,23 +145,23 @@
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			$xml = curl_exec($curl);
 			$xml = $this->delete_ns($xml);
-			if(curl_getinfo($curl,CURLINFO_HTTP_CODE)!=200){
-				throw new Exception($xml,E_ERROR);
+			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
+				throw new Exception($xml, E_ERROR);
 			}
 			curl_close($curl);
 			
 			if(($sxml=simplexml_load_string($xml))===false){
-				throw new Exception("Нестандартный ответ.".$xml,E_ERROR);
+				throw new Exception("Нестандартный ответ.".$xml, E_ERROR);
 			}
 			
 			$result = $sxml->xpath("//collection[@id='album-list']");
 			if(count($result)<1){
-				throw new Exception("Адресс коллекции альбомов не был получен",E_ERROR);
+				throw new Exception("Адресс коллекции альбомов не был получен", E_ERROR);
 			}
 			$this->album_collection_href = $result[0]->attributes()->href;
 			$result = $sxml->xpath("//collection[@id='photo-list']");
 			if(count($result)<1){
-				throw new Exception("Адресс коллекции фотографий не был получен",E_ERROR);
+				throw new Exception("Адресс коллекции фотографий не был получен", E_ERROR);
 			}
 			$this->photo_collection_href = $result[0]->attributes()->href;
 		}
@@ -182,7 +182,7 @@
 			}			
 			
 			if($this->password===null){
-				throw new Exception("Не задан пароль",E_ERROR);
+				throw new Exception("Не задан пароль", E_ERROR);
 			}
 									
 			$curl = curl_init();
@@ -191,8 +191,8 @@
 			curl_setopt($curl, CURLOPT_HTTPGET, true);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			$xml = curl_exec($curl);
-			if(($sxml=simplexml_load_string($xml))===false||curl_getinfo($curl,CURLINFO_HTTP_CODE)!=200){
-				throw new Exception("RSA-ключ не был получен.".$xml,E_ERROR);
+			if(($sxml=simplexml_load_string($xml))===false||curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
+				throw new Exception("RSA-ключ не был получен.".$xml, E_ERROR);
 			}
 			curl_close($curl);
 			
@@ -204,21 +204,21 @@
 			curl_setopt($curl, CURLOPT_HEADER, false);
 			curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 			curl_setopt($curl, CURLOPT_POST, true);
-			curl_setopt($curl, CURLOPT_POSTFIELDS,'request_id='.$this->request_id.'&credentials='.$this->encrypt_yarsa($this->rsa_key,"<credentials login='".$this->login."' password='".$this->password."'/>"));
+			curl_setopt($curl, CURLOPT_POSTFIELDS, 'request_id='.$this->request_id.'&credentials='.$this->encrypt_yarsa($this->rsa_key, "<credentials login='".$this->login."' password='".$this->password."'/>"));
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			$xml = curl_exec($curl);
 			
-			if(curl_getinfo($curl,CURLINFO_HTTP_CODE)!=200){
+			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
 				$sxml = new SimpleXMLElement();
 				if($sxml->simplexml_load_string($xml)!==false||isset($sxml->error)){
-					throw new Exception($sxml->error,E_ERROR);
+					throw new Exception($sxml->error, E_ERROR);
 				}
-				throw new Exception("Ответ не well-formed XML.".$xml,E_ERROR);
+				throw new Exception("Ответ не well-formed XML.".$xml, E_ERROR);
 			}
 			curl_close($curl);
 			
 			if(($sxml=simplexml_load_string($xml))===false){
-				throw new Exception("Ответ не well-formed XML.".$xml,E_ERROR);
+				throw new Exception("Ответ не well-formed XML.".$xml, E_ERROR);
 			}
 			
 			$this->token = $sxml->token;
@@ -229,7 +229,7 @@
 			@param key ключ шифрования
 			@param data данные, которые будут зашифрованы
 		*/
-		private function encrypt_yarsa($key,$data){
+		private function encrypt_yarsa($key, $data){
 			$buffer = array();
 			list($nstr, $estr) = explode('#', $key);
 			$n = gmp_init($nstr,16);

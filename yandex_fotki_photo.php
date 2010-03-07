@@ -266,7 +266,7 @@
 			@param xml Atom Entry фотографии
 			@param token токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то нельзя будет удалить или отредактировать фотографию, если не введете токен в функцию редактирования или удаления
 		*/
-		public function __construct($xml=null,$token=null){
+		public function __construct($xml=null, $token=null){
 			$this->token=$token;
 			$this->reload_xml($xml);
 		}
@@ -280,7 +280,7 @@
 				$this->token = $token;
 			}
 			if($this->token===null){
-				throw new Exception("Эта операция доступна только для аутентифицированных пользователей",E_ERROR);
+				throw new Exception("Эта операция доступна только для аутентифицированных пользователей", E_ERROR);
 			}
 			$curl = curl_init();
 			curl_setopt($curl, CURLOPT_URL, $this->edit_url);
@@ -289,15 +289,66 @@
 			curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($curl, CURLINFO_HEADER_OUT, true);
-			curl_setopt($curl, CURLOPT_HTTPHEADER,array(
+			curl_setopt($curl, CURLOPT_HTTPHEADER, array(
 				'Authorization: FimpToken realm="fotki.yandex.ru", token="'.$this->token.'"'
 			));
 			$error = curl_exec($curl);
-			if(curl_getinfo($curl,CURLINFO_HTTP_CODE)!=204){
-				throw new Exception($error,E_ERROR);
+			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=204){
+				throw new Exception($error, E_ERROR);
 			}
 			curl_close($curl);
 			$this->dead=true;
+		}
+		
+		//! Метод является оберткой для edit и должен упростить работу с его аргументами.
+		/*!
+			@param args ассоциативный массив, в котором хранятся аргументы, значения которых отличаются от значений по умолчанию. Ключи ассоциативного массива: title, xxx, comments, hide, access, album, token. Точное описание аргументов смотрите в описании метода edit
+		*/
+		public function ed($args=array()){
+			
+			if(!array_key_exists($args, "token")){
+				$token=$args["token"];
+			}else{
+				$token=null;
+			}
+			
+			if(!array_key_exists($args, "album")){
+				$album_url=$args["album"];
+			}else{
+				$album_url=null;
+			}
+			
+			if(!array_key_exists($args, "access")){
+				$access=$args["access"];
+			}else{
+				$access="public";
+			}
+			
+			if(!array_key_exists($args, "hide")){
+				$hide_original=$args["hide"];
+			}else{
+				$hide_original=false;
+			}
+			
+			if(!array_key_exists($args, "comments")){
+				$disable_comments=$args["comments"];
+			}else{
+				$disable_comments=false;
+			}
+			
+			if(!array_key_exists($args, "xxx")){
+				$xxx=$args["xxx"];
+			}else{
+				$xxx=false;
+			}
+			
+			if(!array_key_exists($args, "title")){
+				$title=$args["title"];
+			}else{
+				$title=null;
+			}
+			
+			$this->edit($title, $xxx, $disable_comments, $hide_original, $access, $album_url, $token);
 		}
 		
 		//! Редактирует свойства фотографии
@@ -310,7 +361,7 @@
 			@param album_url Ссылка на альбом, в котором содержится фотография. Нужно для перемещение фотографии между альбомами.
 			@param token Токен, подтверждающий аутентификацию пользователя. Если не задан, используется токен, который был передан конструктору. Если не задан и он, то метод вызовет исключение.
 		*/
-		public function edit($title=null,$xxx=false,$disable_comments=false,$hide_original=false,$access="public",$album_url=null,$token=null){
+		public function edit($title=null, $xxx=false, $disable_comments=false, $hide_original=false, $access="public", $album_url=null, $token=null){
 			
 			$changes = false;
 			
@@ -318,7 +369,7 @@
 				$this->token = $token;
 			}
 			if($this->token===null){
-				throw new Exception("Эта операция доступна только для аутентифицированных пользователей",E_ERROR);
+				throw new Exception("Эта операция доступна только для аутентифицированных пользователей", E_ERROR);
 			}
 			
 			if($title!=null&&$title!=$this->title){
@@ -341,7 +392,7 @@
 				$changes = true;
 			}
 			
-			if(!in_array($access,array("public","friends","private"))){
+			if(!in_array($access, array("public","friends","private"))){
 				$access="public";
 			}
 			
@@ -356,7 +407,7 @@
 			}
 			
 			if($changes === false){
-				throw new Exception("Никаких изменений сделано не было",E_ERROR);
+				throw new Exception("Никаких изменений сделано не было", E_ERROR);
 			}
 			
 			$message = '
@@ -393,14 +444,14 @@
 			curl_setopt($curl, CURLOPT_INFILE, $putData);
 			curl_setopt($curl, CURLOPT_INFILESIZE, strlen($message));
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($curl, CURLOPT_HTTPHEADER,array(
+			curl_setopt($curl, CURLOPT_HTTPHEADER, array(
 				'Authorization: FimpToken realm="fotki.yandex.ru", token="'.$this->token.'"',
 				'Content-Type: application/atom+xml; charset=utf-8; type=entry',
 				'Expect:'
 			));
 			$response = curl_exec($curl);
-			if(curl_getinfo($curl,CURLINFO_HTTP_CODE)!=200){
-				throw new Exception($response,E_ERROR);
+			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
+				throw new Exception($response, E_ERROR);
 			}
 			
 			$this->xml = $this->delete_ns($response);
@@ -419,13 +470,13 @@
 			curl_setopt($curl, CURLOPT_HTTPGET, true);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			if($this->token!=null){
-				curl_setopt($curl, CURLOPT_HTTPHEADER,array(
+				curl_setopt($curl, CURLOPT_HTTPHEADER, array(
 					'Authorization: FimpToken realm="fotki.yandex.ru", token="'.$this->token.'"'
 				));
 			}			
 			$response = curl_exec($curl);
-			if(curl_getinfo($curl,CURLINFO_HTTP_CODE)!=200){
-				throw new Exception($response,E_ERROR);
+			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
+				throw new Exception($response, E_ERROR);
 			}
 			curl_close($curl);
 			$this->reload_xml($this->delete_ns($response));
@@ -440,7 +491,7 @@
 			$this->xml = '<?xml version="1.0" encoding="UTF-8"?>'.$xml;
 			
 			if(($sxml=simplexml_load_string($xml))===false){
-				throw new Exception("Ответ не well-formed XML.".$response,E_ERROR);
+				throw new Exception("Ответ не well-formed XML.".$response, E_ERROR);
 			}
 			$this->id = $sxml->id;
 			$this->author = $sxml->author->name;
@@ -510,13 +561,13 @@
 		private function delete_ns($xml){
 			$pattern = "|(<[/]*)[a-z][^:\s>]*:([^:\s>])[\s]*|sui";
 			$replacement="\\1\\2";
-			$xml = preg_replace($pattern,$replacement,$xml);
+			$xml = preg_replace($pattern, $replacement, $xml);
 			$pattern = "|(<[/]*[^\s>]+)[-]|sui";
 			$replacement="\\1_";
-			$xml = preg_replace($pattern,$replacement,$xml);
+			$xml = preg_replace($pattern, $replacement, $xml);
 			$pattern = "|xmlns[:a-z]*=\"[^\"]*\"|isu";
 			$replacement="";
-			return preg_replace($pattern,$replacement,$xml);
+			return preg_replace($pattern, $replacement, $xml);
 		}
 	}
 ?>

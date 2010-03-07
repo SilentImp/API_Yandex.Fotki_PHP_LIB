@@ -25,9 +25,9 @@
 			@param album_id числовой идентификатор альбома
 			@param token токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то в коллекции будут показаны только ресурсы с уровнем доступа "для всех"
 		*/
-		public function __construct($url=null,$token=null,$album_id=null){
+		public function __construct($url=null, $token=null, $album_id=null){
 			if($url===null){
-				throw new Exception("Не задан URL коллекции",E_ERROR);
+				throw new Exception("Не задан URL коллекции", E_ERROR);
 			}
 			$this->url = $url;
 			$this->token = $token;
@@ -41,20 +41,20 @@
 			@return В зависимости от переданных аргументов возвращает массив страниц, содержащих альбомы, страницу с альбомами или конкретный альбом
 			@see yandex_fotki_album
 		*/
-		public function photo_list($page=null,$index=null){
+		public function photo_list($page=null, $index=null){
 			if($page===null){
 				return $this->photo_list;
 			}else if($index===null&&$page!==null){
-				if(!array_key_exists($page,$this->photo_list)){
-					throw new Exception("Не найдена страница с указанным номером",E_ERROR);
+				if(!array_key_exists($page, $this->photo_list)){
+					throw new Exception("Не найдена страница с указанным номером", E_ERROR);
 				}
 				return $this->photo_list[$page];
 			}else{
-				if(!array_key_exists($page,$this->photo_list)){
-					throw new Exception("Не найдена страница с указанным номером",E_ERROR);
+				if(!array_key_exists($page, $this->photo_list)){
+					throw new Exception("Не найдена страница с указанным номером", E_ERROR);
 				}
-				if(!array_key_exists($index,$this->photo_list[$page])){
-					throw new Exception("Не найден альбом с указанным номером",E_ERROR);
+				if(!array_key_exists($index, $this->photo_list[$page])){
+					throw new Exception("Не найден альбом с указанным номером", E_ERROR);
 				}
 				return $this->photo_list[$page][$index];
 			}			
@@ -67,9 +67,9 @@
 			@return FALSE если альбомов с таким названием не найдено, альбом, если найдено единственное соответствие и массив альбомов, если найдено более одного вхождения.
 			@see yandex_fotki_photo
 		*/
-		public function get_by_title($title=null,$limit=null){
+		public function get_by_title($title=null, $limit=null){
 			if($title===null){
-				throw new Exception("Не задано название фотографии",E_ERROR);
+				throw new Exception("Не задано название фотографии", E_ERROR);
 			}
 			$photos = array();
 			foreach($this->photo_list as $photo_page){
@@ -101,11 +101,11 @@
 		*/
 		public function delete_photo_by_id($id=null){
 			if($id===null){
-				throw new Exception("Не задан идентификатор фотографии",E_ERROR);
+				throw new Exception("Не задан идентификатор фотографии", E_ERROR);
 			}
 			foreach($this->photo_list as $photo_page){
 				foreach($photo_page as $photo){
-					$parts = explode(":",$photo->get_id());
+					$parts = explode(":", $photo->get_id());
 					if($parts[count($parts)-1]==(int)$id){
 						$photo->delete();
 						return;
@@ -121,7 +121,7 @@
 		*/
 		public function delete_photo_by_title($title=null){
 			if($title===null){
-				throw new Exception("Не задано название фотографии",E_ERROR);
+				throw new Exception("Не задано название фотографии", E_ERROR);
 			}
 			foreach($this->photo_list as $photo_page){
 				foreach($photo_page as $photo){
@@ -130,6 +130,99 @@
 					}
 				}
 			}
+		}
+		
+		//!  Метод является оберткой для add_photo и должен упростить работу с его аргументами.
+		/*!
+			@param args ассоциативный массив, в котором хранятся аргументы, значения которых отличаются от значений по умолчанию. Ключи ассоциативного массива: path, channel, platform, version, title, tags, yaru, access, album, comments, xxx, hide, private, token. Точное описание аргументов смотрите в описании метода add_photo.
+		*/
+		public function up($args = array()){
+			
+			if(!array_key_exists($args, "path")){
+				$path=$args["path"];
+			}else{
+				$path=null;
+			}
+			
+			if(!array_key_exists($args, "channel")){
+				$pub_channel=$args["channel"];
+			}else{
+				$pub_channel=null;
+			}
+			
+			if(!array_key_exists($args, "platform")){
+				$app_platform=$args["platform"];
+			}else{
+				$app_platform=null;
+			}
+			
+			if(!array_key_exists($args, "version")){
+				$app_version=$args["version"];
+			}else{
+				$app_version=null;
+			}
+			
+			if(!array_key_exists($args, "title")){
+				$title=$args["title"];
+			}else{
+				$title=null;
+			}
+			
+			if(!array_key_exists($args, "tags")){
+				$tags=$args["tags"];
+			}else{
+				$tags=array();
+			}
+			
+			if(!array_key_exists($args, "yaru")){
+				$yaru=$args["yaru"];
+			}else{
+				$yaru=1;
+			}
+			
+			if(!array_key_exists($args, "access")){
+				$access_type=$args["access"];
+			}else{
+				$access_type="public";
+			}
+			
+			if(!array_key_exists($args, "album")){
+				$album=$args["album"];
+			}else{
+				$album=null;
+			}
+			
+			if(!array_key_exists($args, "comments")){
+				$disable_comments=$args["comments"];
+			}else{
+				$disable_comments=false;
+			}
+			
+			if(!array_key_exists($args, "xxx")){
+				$xxx=$args["xxx"];
+			}else{
+				$xxx=false;
+			}
+			
+			if(!array_key_exists($args, "hide")){
+				$hide=$args["hide"];
+			}else{
+				$hide=false;
+			}
+
+			if(!array_key_exists($args, "private")){
+				$storage_private=$args["private"];
+			}else{
+				$storage_private=false;
+			}
+			
+			if(!array_key_exists($args, "token")){
+				$token=$args["token"];
+			}else{
+				$token=null;
+			}
+									
+			return $this->add_photo($path, $pub_channel, $app_platform, $app_version, $title, $tags, $yaru, $access_type, $album, $disable_comments, $xxx, $hide_orig, $storage_private, $token);
 		}
 		
 		//! Добавляет ноую фотографию в коллекцию
@@ -150,20 +243,20 @@
 			@param token токен, подтверждающий аутентификацию пользователя. Обязательный аргумент.
 			@return ассоциативный массив. Если yaru==0, то возвращается array('image_id'=>photo_id), где {photo_id} - численный идентификатор фотографии. Если yaru==1 то возвращается array('image_id'=>photo_id,'post_id'=>post_id), где {photo_id} - идентификатор фотографии, а {post_id} - идентификатор поста на Я.ру.
 		*/
-		public function add_photo($path=null,$pub_channel=null,$app_platform=null,$app_version=null,$title=null,$tags=array(),$yaru=1,$access_type="public",$album=null,$disable_comments=false,$xxx=false,$hide_orig=false,$storage_private=false,$token=null){
+		public function add_photo($path=null, $pub_channel=null, $app_platform=null, $app_version=null, $title=null, $tags=array(), $yaru=1, $access_type="public", $album=null, $disable_comments=false, $xxx=false, $hide_orig=false, $storage_private=false, $token=null){
 			if($path===null){
-				throw new Exception("Не задан путь к файлу, содержащему изображение",E_ERROR);
+				throw new Exception("Не задан путь к файлу, содержащему изображение", E_ERROR);
 			}
 			$path = realpath($path);
 			if(!file_exists($path)){
-				throw new Exception("Файл, содержащий изображение, не найден",E_ERROR);
+				throw new Exception("Файл, содержащий изображение, не найден", E_ERROR);
 			}			
 			
 			if($token!==null){
 				$this->token=$token;
 			}
 			if($this->token===null){
-				throw new Exception("Эта операция доступна только для аутентифицированных пользователей",E_ERROR);
+				throw new Exception("Эта операция доступна только для аутентифицированных пользователей", E_ERROR);
 			}
 			
 			$url = array("image"=>"@".$path);
@@ -185,10 +278,10 @@
 			}
 			
 			if(count($tags)>0){
-				$url["tags"]=implode(",",$tags);
+				$url["tags"]=implode(",", $tags);
 			}
 			
-			if(!in_array($yaru,array(0,1))){
+			if(!in_array($yaru, array(0,1))){
 				$url["yaru"]=1;
 			}else{
 				$url["yaru"]=$yaru;
@@ -230,14 +323,14 @@
 			curl_setopt($curl, CURLOPT_POSTFIELDS, $url);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($curl, CURLINFO_HEADER_OUT, true);
-			curl_setopt($curl, CURLOPT_HTTPHEADER,array(
+			curl_setopt($curl, CURLOPT_HTTPHEADER, array(
 				'Authorization: FimpToken realm="fotki.yandex.ru", token="'.$this->token.'"',
 				'Accept: ',
 				'Expect: '
 			));
 			$response = curl_exec($curl);
-			if(curl_getinfo($curl,CURLINFO_HTTP_CODE)!=200){
-				throw new Exception(curl_getinfo($curl,CURLINFO_HTTP_CODE)." : ".$response,E_ERROR);
+			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
+				throw new Exception(curl_getinfo($curl, CURLINFO_HTTP_CODE)." : ".$response, E_ERROR);
 			}
 			curl_close($curl);
 			return $response = parse_str($response);
@@ -251,9 +344,48 @@
 		//! Получает следующую страницу коллекции. Если ее нет или вы предварительно не вызвали метод search, выполняющий поиск по коллекции, то метод вызовет исключение
 		public function next(){
 			if($this->next_url===null){
-				throw new Exception("Не задан URL следующей страницы. Вы уже получили последнюю страницу коллекции или поиск по коллекции не был выполнен.",E_ERROR);
+				throw new Exception("Не задан URL следующей страницы. Вы уже получили последнюю страницу коллекции или поиск по коллекции не был выполнен.", E_ERROR);
 			}
 			$this->query($this->next_url);
+		}
+		
+		//! Метод является оберткой для search и должен упростить работу с его аргументами.
+		/*!
+			@param args ассоциативный массив, в котором хранятся аргументы, значения которых отличаются от значений по умолчанию. Ключи ассоциативного массива: order, time, id, limit, token. Точное описание аргументов смотрите в описании метода search
+		*/
+		public function se($args = array()){
+			
+			if(!array_key_exists($args, "order")){
+				$order=$args["order"];
+			}else{
+				$order="updated";
+			}
+				
+			if(!array_key_exists($args, "time")){
+				$offset_time=$args["time"];
+			}else{
+				$offset_time=null;
+			}
+			
+			if(!array_key_exists($args, "id")){
+				$offset_id=$args["id"];
+			}else{
+				$offset_id="";
+			}
+			
+			if(!array_key_exists($args, "limit")){
+				$limit=$args["limit"];
+			}else{
+				$limit=100;
+			}
+			
+			if(!array_key_exists($args, "token")){
+				$token=$args["token"];
+			}else{
+				$token=null;
+			}
+						
+			$this->search($order, $offset_time, $offset_id, $limit, $token);
 		}
 		
 		//! Выполняет поиск по коллекции с заданными условиями
@@ -264,13 +396,13 @@
 			@param limit Количество элементов на странице выдачи.
 			@param token Токен, подтверждающий аутентификацию пользователя. Если не задан, используется токен, который был передан конструктору. Если не задан и он, то метод вызовет исключение.
 		*/
-		public function search($order="updated",$offset_time=null,$offset_id="",$limit=100,$token=null){
+		public function search($order="updated", $offset_time=null, $offset_id="", $limit=100, $token=null){
 			$this->photo_list = array();
 			$this->next_url = null;
 			if($token!=null){
 				$this->token = $token;
 			}
-			if(!in_array($order,array("updated","rupdated","published","rpublished","created","rcreated"))){
+			if(!in_array($order, array("updated","rupdated","published","rpublished","created","rcreated"))){
 				$order="updated";
 			}
 			if($offset_time===null){
@@ -300,19 +432,19 @@
 			curl_setopt($curl, CURLOPT_HTTPGET, true);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			if($this->token!=null){
-				curl_setopt($curl, CURLOPT_HTTPHEADER,array(
+				curl_setopt($curl, CURLOPT_HTTPHEADER, array(
 					'Authorization: FimpToken realm="fotki.yandex.ru", token="'.$this->token.'"'
 				));
 			}
 			$response = curl_exec($curl);
-			if(curl_getinfo($curl,CURLINFO_HTTP_CODE)!=200){
-				throw new Exception($response,E_ERROR);
+			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
+				throw new Exception($response, E_ERROR);
 			}
 			curl_close($curl);
 			
 			$response = $this->delete_ns($response);
 			if(($sxml=simplexml_load_string($response))===false){
-				throw new Exception("Ответ не well-formed XML.".$response,E_ERROR);
+				throw new Exception("Ответ не well-formed XML.".$response, E_ERROR);
 			}
 			
 			$result = $sxml->xpath("//link[@rel='next']");
@@ -323,7 +455,7 @@
 			$result = $sxml->xpath("//entry");
 			$photo = array();
 			foreach($result as $xml){
-				$photo[] = new yandex_fotki_photo($xml->asXML(),$this->token);
+				$photo[] = new yandex_fotki_photo($xml->asXML(), $this->token);
 			}
 			$this->photo_list[] = $photo;
 		}
@@ -335,13 +467,13 @@
 		private function delete_ns($xml){
 			$pattern = "|(<[/]*)[a-z][^:\s>]*:([^:\s>])[\s]*|sui";
 			$replacement="\\1\\2";
-			$xml = preg_replace($pattern,$replacement,$xml);
+			$xml = preg_replace($pattern, $replacement, $xml);
 			$pattern = "|(<[/]*[^\s>]+)[-]|sui";
 			$replacement="\\1_";
-			$xml = preg_replace($pattern,$replacement,$xml);
+			$xml = preg_replace($pattern, $replacement, $xml);
 			$pattern = "|xmlns[:a-z]*=\"[^\"]*\"|isu";
 			$replacement="";
-			return preg_replace($pattern,$replacement,$xml);
+			return preg_replace($pattern, $replacement, $xml);
 		}
 	}
 ?>

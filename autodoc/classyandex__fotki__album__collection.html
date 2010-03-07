@@ -67,6 +67,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acea62048bfee7b3cd80ed446c86fb78a"></a><!-- doxytag: member="yandex_fotki_album_collection::next" ref="acea62048bfee7b3cd80ed446c86fb78a" args="()" -->
 &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__album__collection.html#acea62048bfee7b3cd80ed446c86fb78a">next</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Получает следующую страницу коллекции. Если ее нет или вы предварительно не вызвали метод search, выполняющий поиск по коллекции, то метод вызовет исключение. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__album__collection.html#a29cdbc3167c317df6b7ed50de51d2d90">se</a> ($args=array())</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Метод является оберткой для search и должен упростить работу с его аргументами.  <a href="#a29cdbc3167c317df6b7ed50de51d2d90"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__album__collection.html#a37a322131ae92f1ac507a28783487d0c">search</a> ($order=&quot;updated&quot;, $offset_time=null, $offset_id=&quot;&quot;, $limit=100, $token=null)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Выполняет поиск по коллекции с заданными условиями.  <a href="#a37a322131ae92f1ac507a28783487d0c"></a><br/></td></tr>
 </table>
@@ -296,6 +298,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 
 </div>
 </div>
+<a class="anchor" id="a29cdbc3167c317df6b7ed50de51d2d90"></a><!-- doxytag: member="yandex_fotki_album_collection::se" ref="a29cdbc3167c317df6b7ed50de51d2d90" args="($args=array())" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">se </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>args</em> = <code>array()</code></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Метод является оберткой для search и должен упростить работу с его аргументами. </p>
+<dl><dt><b>Аргументы:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>args</em>&nbsp;</td><td>ассоциативный массив, в котором хранятся аргументы, значения которых отличаются от значений по умолчанию. Ключи ассоциативного массива: order, time, id, limit, token. Точное описание аргументов смотрите в описании метода search </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a37a322131ae92f1ac507a28783487d0c"></a><!-- doxytag: member="yandex_fotki_album_collection::search" ref="a37a322131ae92f1ac507a28783487d0c" args="($order=&quot;updated&quot;, $offset_time=null, $offset_id=&quot;&quot;, $limit=100, $token=null)" -->
 <div class="memitem">
 <div class="memproto">
@@ -354,7 +382,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 </div>
 </div>
 <hr/>Объявления и описания членов класса находятся в файле:<ul>
-<li>yandex_fotki_album_collection.php</li>
+<li>Yandex/API_Yandex.Fotki_PHP_LIB/yandex_fotki_album_collection.php</li>
 </ul>
 </div>
 <!--- window showing the filter options -->
@@ -371,7 +399,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 </iframe>
 </div>
 
-<hr class="footer"/><address style="text-align: right;"><small>Документация по Яндекс.Фотки. Последние изменения: Sun Mar 7 00:50:39 2010. Создано системой&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Документация по Яндекс.Фотки. Последние изменения: Sun Mar 7 13:47:45 2010. Создано системой&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>
