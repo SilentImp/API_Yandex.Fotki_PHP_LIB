@@ -2,8 +2,8 @@
 	//!	Класс, который позволяет вам работать с альбомом
 	/*!
 		@author SilentImp
-		@author http://twitter.com/SilentImp
-		@author http://silentimp.habrahabr.ru/
+		@author <a href="http://twitter.com/SilentImp/">http://twitter.com/SilentImp/</a>
+		@author <a href="http://silentimp.habrahabr.ru/">http://silentimp.habrahabr.ru/</a>
 		@author <a href="mailto:ravenb@mail.ru">ravenb@mail.ru</a>
 		@ingroup yandex_fotki
 	*/
@@ -235,8 +235,9 @@
 			}			
 			$response = curl_exec($curl);
 			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
-				throw new Exception($response, E_ERROR);
+				throw new RequestError($response, curl_getinfo($curl, CURLINFO_HTTP_CODE));
 			}
+
 			curl_close($curl);
 			$this->reload_xml($this->delete_ns($response));
 		}
@@ -258,7 +259,7 @@
 			}
 			
 			if($this->token===null){
-				throw new Exception("Эта операция доступна только для аутентифицированных пользователей", E_ERROR);
+				throw new AuthenticationError("Эта операция доступна только для аутентифицированных пользователей", E_ERROR);
 			}
 			
 			if($title!=null){
@@ -323,7 +324,7 @@
 			));
 			$response = curl_exec($curl);
 			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
-				throw new Exception($response, E_ERROR);
+				throw new RequestError($response, curl_getinfo($curl, CURLINFO_HTTP_CODE));
 			}
 			
 			$this->xml = $this->delete_ns($response);
@@ -341,7 +342,7 @@
 				$this->token = $token;
 			}
 			if($this->token===null){
-				throw new Exception("Эта операция доступна только для аутентифицированных пользователей", E_ERROR);
+				throw new AuthenticationError("Эта операция доступна только для аутентифицированных пользователей", E_ERROR);
 			}
 			$curl = curl_init();
 			curl_setopt($curl, CURLOPT_URL, $this->edit_url);
@@ -355,7 +356,7 @@
 			));
 			$error = curl_exec($curl);
 			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=204){
-				throw new Exception($error, E_ERROR);
+				throw new RequestError($error, curl_getinfo($curl, CURLINFO_HTTP_CODE));
 			}
 			
 			curl_close($curl);
@@ -370,7 +371,7 @@
 			$this->xml = '<?xml version="1.0" encoding="UTF-8"?>'.$xml;
 			
 			if(($sxml=simplexml_load_string($xml))===false){
-				throw new Exception("Ответ не well-formed XML.".$response, E_ERROR);
+				throw new XMLError("Ответ не well-formed XML.".$response, E_ERROR);
 			}
 			$this->id = $sxml->id;
 			$this->author = $sxml->author->name;

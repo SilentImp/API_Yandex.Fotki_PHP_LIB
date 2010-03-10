@@ -2,8 +2,8 @@
 	//!	Класс, который позволяет вам работать с коллекцией фотографий
 	/*!
 		@author SilentImp
-		@author http://twitter.com/SilentImp
-		@author http://silentimp.habrahabr.ru/
+		@author <a href="http://twitter.com/SilentImp/">http://twitter.com/SilentImp/</a>
+		@author <a href="http://silentimp.habrahabr.ru/">http://silentimp.habrahabr.ru/</a>
 		@author <a href="mailto:ravenb@mail.ru">ravenb@mail.ru</a>
 		@ingroup yandex_fotki
 	*/

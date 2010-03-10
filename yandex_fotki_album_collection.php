@@ -2,8 +2,8 @@
 	//!	Класс, который позволяет вам работать с коллекцией альбомов пользователя
 	/*!
 		@author SilentImp
-		@author http://twitter.com/SilentImp
-		@author http://silentimp.habrahabr.ru/
+		@author <a href="http://twitter.com/SilentImp/">http://twitter.com/SilentImp/</a>
+		@author <a href="http://silentimp.habrahabr.ru/">http://silentimp.habrahabr.ru/</a>
 		@author <a href="mailto:ravenb@mail.ru">ravenb@mail.ru</a>
 		@ingroup yandex_fotki
 	*/
@@ -52,7 +52,7 @@
 				return $this->album_list[$page][$index];
 			}			
 		}
-		
+
 		//! Осуществляет поиск по коллекции альбомов с заданным заголовком
 		/*!
 			@param title название альбома. Обязательный аргумент.
@@ -134,7 +134,7 @@
 				$this->token=$token;
 			}
 			if($this->token===null){
-				throw new Exception("Эта операция доступна только для аутентифицированных пользователей", E_ERROR);
+				throw new AuthenticationError("Эта операция доступна только для аутентифицированных пользователей", E_ERROR);
 			}
 			
 			$body='<entry xmlns="http://www.w3.org/2005/Atom" xmlns:f="yandex:fotki"><title>'.$title.'</title><summary>'.$summary.'</summary><f:password>'.$password.'</f:password></entry>';
@@ -152,7 +152,7 @@
 			));
 			$response = curl_exec($curl);
 			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=201){
-				throw new Exception(curl_getinfo($curl, CURLINFO_HTTP_CODE)." : ".$response, E_ERROR);
+				throw new RequestError($response, curl_getinfo($curl, curl_getinfo($curl, CURLINFO_HTTP_CODE)));
 			}
 			curl_close($curl);
 		}
@@ -264,13 +264,13 @@
 			}			
 			$response = curl_exec($curl);
 			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
-				throw new Exception($response, E_ERROR);
+				throw new RequestError($response, E_ERROR);
 			}
 			curl_close($curl);
 			
 			$response = $this->delete_ns($response);
 			if(($sxml=simplexml_load_string($response))===false){
-				throw new Exception("Ответ не well-formed XML.".$response, E_ERROR);
+				throw new XMLError("Ответ не well-formed XML.".$response, E_ERROR);
 			}
 			
 			$result = $sxml->xpath("//link[@rel='next']");
