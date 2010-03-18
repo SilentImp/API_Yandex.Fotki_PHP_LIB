@@ -43,15 +43,15 @@
 			if($page===null){
 				return $this->photo_list;
 			}else if($index===null&&$page!==null){
-				if(array_key_exists($page, $this->photo_list)){
+				if(count($this->photo_list)<($page-1)){
 					throw new Exception("Не найдена страница с указанным номером", E_ERROR);
 				}
 				return $this->photo_list[$page];
 			}else{
-				if(array_key_exists($page, $this->photo_list)){
+				if(count($this->photo_list)<($page-1)){
 					throw new Exception("Не найдена страница с указанным номером", E_ERROR);
 				}
-				if(array_key_exists($index, $this->photo_list[$page])){
+				if(count($this->photo_list[$page])<($index-1)){
 					throw new Exception("Не найден альбом с указанным номером", E_ERROR);
 				}
 				return $this->photo_list[$page][$index];
@@ -87,6 +87,21 @@
 				default:
 					return $photos;
 					break;
+			}
+		}
+
+		//! Ищет в коллекции фотографию по заданному id
+		/*!
+			@param id идентификатор фотографии, которую вы хотите найти
+		*/
+		public function get_photo_by_id($id){
+			foreach($this->photo_list as $photo_page){
+				foreach($photo_page as $photo){
+					$parts = explode(":", $photo->get_id());
+					if($parts[count($parts)-1]==(int)$id){
+						return $photo;
+					}
+				}
 			}
 		}
 		
@@ -319,7 +334,8 @@
 				throw new Exception(curl_getinfo($curl, CURLINFO_HTTP_CODE)." : ".$response, E_ERROR);
 			}
 			curl_close($curl);
-			return $response = parse_str($response);
+			parse_str($response,$response);
+			return $response;
 			//yaru==0
 			//image_id={photo_id}, где {photo_id} - численный идентификатор фотографии. 
 			//yaru==1

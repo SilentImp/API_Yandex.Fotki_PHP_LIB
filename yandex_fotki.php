@@ -36,10 +36,12 @@
 		/*!
 			@param login строка, содержащая логин пользователя. Необязательный аргумент. Если не указан, пользователь создан не будет.
 			@param password строка, содержащая пароль пользователя. Необязательный аргумент. Если указан логин, но не указан пароль, то пользователь будет создан, но не будет аутентифицирован.
+			@return текущего пользователя, если он был создан.
 		*/
-		public function __construct($login, $password=null){
-			libxml_use_internal_errors(true);
-			return $this->add_user($login, $password);
+		public function __construct($login=null, $password=null){
+			if($login!=null){
+				return $this->add_user($login, $password);
+			}
 		}
 		
 		//! Возвращает текущего пользователя

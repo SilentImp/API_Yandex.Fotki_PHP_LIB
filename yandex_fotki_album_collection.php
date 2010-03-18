@@ -39,15 +39,15 @@
 			if($page===null){
 				return $this->album_list;
 			}else if($index===null){
-				if(!array_key_exists($page, $this->album_list)){
+				if(count($this->album_list)<($page-1)){
 					throw new Exception("Не найдена страница с указанным номером", E_ERROR);
 				}
 				return $this->album_list[$page];
 			}else{
-				if(!array_key_exists($page, $this->album_list)){
+				if(count($this->album_list)<($page-1)){
 					throw new Exception("Не найдена страница с указанным номером", E_ERROR);
 				}
-				if(!array_key_exists($index, $this->album_list[$page])){
+				if(count($this->album_list[$page])<($index-1)){
 					throw new Exception("Не найден альбом с указанным номером", E_ERROR);
 				}
 				return $this->album_list[$page][$index];
