@@ -58,6 +58,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">В зависимости от переданных аргументов возвращает массив страниц, содержащих альбомы, страницу с альбомами или конкретный альбом.  <a href="#a4268fac3b7a1ddc45196ad6be1e20afe"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__photo__collection.html#af5db2e5a78b491ecadd45d4a7033ad7c">get_by_title</a> ($title, $limit=null)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Осуществляет поиск по коллекции фотографий с заданным заголовком.  <a href="#af5db2e5a78b491ecadd45d4a7033ad7c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__photo__collection.html#a9effcc4b377fe66f52821ba7f58d6531">get_photo_by_id</a> ($id)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Ищет в коллекции фотографию по заданному id.  <a href="#a9effcc4b377fe66f52821ba7f58d6531"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__photo__collection.html#aaebb68a72aad27be204c1f6fb2e93a3a">delete_photo_by_id</a> ($id)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Удаляет фотографию с указанным идентификатором.  <a href="#aaebb68a72aad27be204c1f6fb2e93a3a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyandex__fotki__photo__collection.html#a1314a74e37d10cef8f227f8c4216017c">delete_photo_by_title</a> ($title)</td></tr>
@@ -78,7 +80,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 <p>Класс, который позволяет вам работать с коллекцией фотографий. </p>
 <dl class="author"><dt><b>Автор:</b></dt><dd>SilentImp </dd>
 <dd>
-<a href="http://twitter.com/SilentImp">http://twitter.com/SilentImp</a> </dd>
+<a href="http://twitter.com/SilentImp/">http://twitter.com/SilentImp/</a> </dd>
 <dd>
 <a href="http://silentimp.habrahabr.ru/">http://silentimp.habrahabr.ru/</a> </dd>
 <dd>
@@ -336,7 +338,33 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
   </dd>
 </dl>
 <dl class="return"><dt><b>Возвращает:</b></dt><dd>FALSE если альбомов с таким названием не найдено, альбом, если найдено единственное соответствие и массив альбомов, если найдено более одного вхождения. </dd></dl>
-<dl class="see"><dt><b>См. также:</b></dt><dd>yandex_fotki_photo </dd></dl>
+<dl class="see"><dt><b>См. также:</b></dt><dd><a class="el" href="classyandex__fotki__photo.html" title="Класс, который позволяет вам работать с фотографией...">yandex_fotki_photo</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a9effcc4b377fe66f52821ba7f58d6531"></a><!-- doxytag: member="yandex_fotki_photo_collection::get_photo_by_id" ref="a9effcc4b377fe66f52821ba7f58d6531" args="($id)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">get_photo_by_id </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>id</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Ищет в коллекции фотографию по заданному id. </p>
+<dl><dt><b>Аргументы:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>id</em>&nbsp;</td><td>идентификатор фотографии, которую вы хотите найти </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -488,7 +516,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 </div>
 </div>
 <hr/>Объявления и описания членов класса находятся в файле:<ul>
-<li>Yandex/API_Yandex.Fotki_PHP_LIB/yandex_fotki_photo_collection.php</li>
+<li>Yandex/yandex_fotki_photo_collection.php</li>
 </ul>
 </div>
 <!--- window showing the filter options -->
@@ -505,7 +533,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 </iframe>
 </div>
 
-<hr class="footer"/><address style="text-align: right;"><small>Документация по Яндекс.Фотки. Последние изменения: Sun Mar 7 16:50:28 2010. Создано системой&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Документация по Яндекс.Фотки. Последние изменения: Thu Mar 18 22:29:56 2010. Создано системой&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>
