@@ -39,7 +39,7 @@
 		*/
 		public function __construct($login, $password=null){
 			libxml_use_internal_errors(true);
-			$this->add_user($login, $password);
+			return $this->add_user($login, $password);
 		}
 		
 		//! Возвращает текущего пользователя
@@ -80,6 +80,7 @@
 			if($password!=null){
 				$this->current_user->authentication();
 			}
+			return $this->current_user;
 		}
 		
 		//! Выбирает пользователя как текущего
@@ -90,7 +91,7 @@
 			if(!array_key_exists($login,$this->user_list)){
 				throw new UserError("Пользователь не найден",E_ERROR);
 			}
-			$this->current_user = &$this->user_list[$login];
+			return $this->current_user = &$this->user_list[$login];
 		}
 	}
 ?>
