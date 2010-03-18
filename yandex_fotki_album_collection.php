@@ -23,6 +23,7 @@
 			@param token токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то в коллекции будут показаны только ресурсы с уровнем доступа "для всех"
 		*/
 		public function __construct($url, $token=null){
+			libxml_use_internal_errors(true);
 			$this->url = $url;
 			$this->token = $token;
 		}
@@ -171,31 +172,31 @@
 		*/
 		public function se($args = array()){
 			
-			if(!array_key_exists($args, "order")){
+			if(array_key_exists("order", $args)){
 				$order=$args["order"];
 			}else{
 				$order="updated";
 			}
 				
-			if(!array_key_exists($args, "time")){
+			if(array_key_exists("time", $args)){
 				$offset_time=$args["time"];
 			}else{
 				$offset_time=null;
 			}
 			
-			if(!array_key_exists($args, "id")){
+			if(array_key_exists("id", $args)){
 				$offset_id=$args["id"];
 			}else{
 				$offset_id="";
 			}
 			
-			if(!array_key_exists($args, "limit")){
+			if(array_key_exists("limit", $args)){
 				$limit=$args["limit"];
 			}else{
 				$limit=100;
 			}
 			
-			if(!array_key_exists($args, "token")){
+			if(array_key_exists("token", $args)){
 				$token=$args["token"];
 			}else{
 				$token=null;

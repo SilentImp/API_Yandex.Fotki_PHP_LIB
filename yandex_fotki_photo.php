@@ -267,6 +267,7 @@
 			@param token токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то нельзя будет удалить или отредактировать фотографию, если не введете токен в функцию редактирования или удаления
 		*/
 		public function __construct($xml, $token=null){
+			libxml_use_internal_errors(true);
 			$this->token=$token;
 			$this->reload_xml($xml);
 		}
@@ -306,43 +307,43 @@
 		*/
 		public function ed($args=array()){
 			
-			if(!array_key_exists($args, "token")){
+			if(array_key_exists("token", $args)){
 				$token=$args["token"];
 			}else{
 				$token=null;
 			}
 			
-			if(!array_key_exists($args, "album")){
+			if(array_key_exists("album", $args)){
 				$album_url=$args["album"];
 			}else{
 				$album_url=null;
 			}
 			
-			if(!array_key_exists($args, "access")){
+			if(array_key_exists("access", $args)){
 				$access=$args["access"];
 			}else{
 				$access="public";
 			}
 			
-			if(!array_key_exists($args, "hide")){
+			if(array_key_exists("hide", $args)){
 				$hide_original=$args["hide"];
 			}else{
 				$hide_original=false;
 			}
 			
-			if(!array_key_exists($args, "comments")){
+			if(array_key_exists("comments", $args)){
 				$disable_comments=$args["comments"];
 			}else{
 				$disable_comments=false;
 			}
 			
-			if(!array_key_exists($args, "xxx")){
+			if(array_key_exists("xxx", $args)){
 				$xxx=$args["xxx"];
 			}else{
 				$xxx=false;
 			}
 			
-			if(!array_key_exists($args, "title")){
+			if(array_key_exists("title", $args)){
 				$title=$args["title"];
 			}else{
 				$title=null;
@@ -532,7 +533,6 @@
 			$this->photo_XXS = $photos_resourse."XXS";
 			$this->photo_XXXS = $photos_resourse."XXXS";
 			
-		
 			foreach($sxml->link as $link){
 				switch($link->attributes()->rel){
 					case "self":

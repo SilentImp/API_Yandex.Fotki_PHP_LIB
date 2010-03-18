@@ -26,6 +26,7 @@
 			@param token токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то в коллекции будут показаны только ресурсы с уровнем доступа "для всех"
 		*/
 		public function __construct($url, $token=null, $album_id=null){
+			libxml_use_internal_errors(true);
 			$this->url = $url;
 			$this->token = $token;
 			$this->album_id = $album_id;
@@ -42,15 +43,15 @@
 			if($page===null){
 				return $this->photo_list;
 			}else if($index===null&&$page!==null){
-				if(!array_key_exists($page, $this->photo_list)){
+				if(array_key_exists($page, $this->photo_list)){
 					throw new Exception("Не найдена страница с указанным номером", E_ERROR);
 				}
 				return $this->photo_list[$page];
 			}else{
-				if(!array_key_exists($page, $this->photo_list)){
+				if(array_key_exists($page, $this->photo_list)){
 					throw new Exception("Не найдена страница с указанным номером", E_ERROR);
 				}
-				if(!array_key_exists($index, $this->photo_list[$page])){
+				if(array_key_exists($index, $this->photo_list[$page])){
 					throw new Exception("Не найден альбом с указанным номером", E_ERROR);
 				}
 				return $this->photo_list[$page][$index];
@@ -126,91 +127,91 @@
 		*/
 		public function up($args = array()){
 			
-			if(!array_key_exists($args, "path")){
+			if(array_key_exists("path", $args)){
 				$path=$args["path"];
 			}else{
 				throw new Exception("Не задан путь к файлу, содержащему изображение", E_ERROR);
 			}
 			
-			if(!array_key_exists($args, "channel")){
+			if(array_key_exists("channel", $args)){
 				$pub_channel=$args["channel"];
 			}else{
 				$pub_channel=null;
 			}
 			
-			if(!array_key_exists($args, "platform")){
+			if(array_key_exists("platform", $args)){
 				$app_platform=$args["platform"];
 			}else{
 				$app_platform=null;
 			}
 			
-			if(!array_key_exists($args, "version")){
+			if(array_key_exists("version", $args)){
 				$app_version=$args["version"];
 			}else{
 				$app_version=null;
 			}
 			
-			if(!array_key_exists($args, "title")){
+			if(array_key_exists("title", $args)){
 				$title=$args["title"];
 			}else{
 				$title=null;
 			}
 			
-			if(!array_key_exists($args, "tags")){
+			if(array_key_exists("tags", $args)){
 				$tags=$args["tags"];
 			}else{
 				$tags=array();
 			}
 			
-			if(!array_key_exists($args, "yaru")){
+			if(array_key_exists("yaru", $args)){
 				$yaru=$args["yaru"];
 			}else{
 				$yaru=1;
 			}
 			
-			if(!array_key_exists($args, "access")){
+			if(array_key_exists("access", $args)){
 				$access_type=$args["access"];
 			}else{
 				$access_type="public";
 			}
 			
-			if(!array_key_exists($args, "album")){
+			if(array_key_exists("album", $args)){
 				$album=$args["album"];
 			}else{
 				$album=null;
 			}
 			
-			if(!array_key_exists($args, "comments")){
+			if(array_key_exists("comments", $args)){
 				$disable_comments=$args["comments"];
 			}else{
 				$disable_comments=false;
 			}
 			
-			if(!array_key_exists($args, "xxx")){
+			if(array_key_exists("xxx", $args)){
 				$xxx=$args["xxx"];
 			}else{
 				$xxx=false;
 			}
 			
-			if(!array_key_exists($args, "hide")){
+			if(array_key_exists("hide", $args)){
 				$hide=$args["hide"];
 			}else{
 				$hide=false;
 			}
 
-			if(!array_key_exists($args, "private")){
+			if(array_key_exists("private", $args)){
 				$storage_private=$args["private"];
 			}else{
 				$storage_private=false;
 			}
 			
-			if(!array_key_exists($args, "token")){
+			if(array_key_exists("token", $args)){
 				$token=$args["token"];
 			}else{
 				$token=null;
 			}
 									
-			return $this->add_photo($path, $pub_channel, $app_platform, $app_version, $title, $tags, $yaru, $access_type, $album, $disable_comments, $xxx, $hide_orig, $storage_private, $token);
+			return $this->add_photo($path, $pub_channel, $app_platform, $app_version, $title, $tags, $yaru, $access_type, $album, $disable_comments, $xxx, $hide, $storage_private, $token);
 		}
 		
 		//! Добавляет ноую фотографию в коллекцию
@@ -340,31 +341,31 @@
 		*/
 		public function se($args = array()){
 			
-			if(!array_key_exists($args, "order")){
+			if(array_key_exists("order", $args)){
 				$order=$args["order"];
 			}else{
 				$order="updated";
 			}
 				
-			if(!array_key_exists($args, "time")){
+			if(array_key_exists("time", $args)){
 				$offset_time=$args["time"];
 			}else{
 				$offset_time=null;
 			}
 			
-			if(!array_key_exists($args, "id")){
+			if(array_key_exists("id", $args)){
 				$offset_id=$args["id"];
 			}else{
 				$offset_id="";
 			}
 			
-			if(!array_key_exists($args, "limit")){
+			if(array_key_exists("limit", $args)){
 				$limit=$args["limit"];
 			}else{
 				$limit=100;
 			}
 			
-			if(!array_key_exists($args, "token")){
+			if(array_key_exists("token", $args)){
 				$token=$args["token"];
 			}else{
 				$token=null;
@@ -423,7 +424,7 @@
 			}
 			$response = curl_exec($curl);
 			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
-				throw new Exception($response, E_ERROR);
+				throw new Exception("Коллекция не была получена. Заголовок: ".curl_getinfo($curl, CURLINFO_HTTP_CODE)." Ответ:".$response, E_ERROR);
 			}
 			curl_close($curl);
 			

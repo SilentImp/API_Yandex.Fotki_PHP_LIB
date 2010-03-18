@@ -42,6 +42,7 @@
 		public function __construct($login, $password=null){
 			$this->login = $login;
 			$this->password = $password;
+			libxml_use_internal_errors(true);
 		}
 
 		//! Возвращает токен пользователя, подтверждающий его аутентификацию.
@@ -138,7 +139,7 @@
 			curl_close($curl);
 			
 			if(($sxml=simplexml_load_string($xml))===false){
-				throw new Exception("Нестандартный ответ.".$xml, E_ERROR);
+				throw new Exception("Нестандартный ответ. Текст ответа: ".$xml, E_ERROR);
 			}
 			
 			$result = $sxml->xpath("//collection[@id='album-list']");
@@ -178,8 +179,9 @@
 			curl_setopt($curl, CURLOPT_HTTPGET, true);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			$xml = curl_exec($curl);
+			
 			if(($sxml=simplexml_load_string($xml))===false||curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
-				throw new Exception("RSA-ключ не был получен.".$xml, E_ERROR);
+				throw new Exception("RSA-ключ не был получен. Текст ответа: ".$xml, E_ERROR);
 			}
 			curl_close($curl);
 			
@@ -200,12 +202,12 @@
 				if($sxml->simplexml_load_string($xml)!==false||isset($sxml->error)){
 					throw new Exception($sxml->error, E_ERROR);
 				}
-				throw new Exception("Ответ не well-formed XML.".$xml, E_ERROR);
+				throw new Exception("Ответ не well-formed XML. Текст ответа: ".$xml, E_ERROR);
 			}
 			curl_close($curl);
 			
 			if(($sxml=simplexml_load_string($xml))===false){
-				throw new Exception("Ответ не well-formed XML.".$xml, E_ERROR);
+				throw new Exception("Ответ не well-formed XML. Текст ответа: ".$xml, E_ERROR);
 			}
 			
 			$this->token = $sxml->token;

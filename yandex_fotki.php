@@ -38,6 +38,7 @@
 			@param password строка, содержащая пароль пользователя. Необязательный аргумент. Если указан логин, но не указан пароль, то пользователь будет создан, но не будет аутентифицирован.
 		*/
 		public function __construct($login, $password=null){
+			libxml_use_internal_errors(true);
 			$this->add_user($login, $password);
 		}
 		

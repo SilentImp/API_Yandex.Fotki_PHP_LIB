@@ -179,6 +179,7 @@
 			@param token токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то в коллекции будут показаны только ресурсы с уровнем доступа "для всех"
 		*/
 		public function __construct($xml, $token=null){
+			libxml_use_internal_errors(true);
 			$this->token = $token;
 			$this->reload_xml($xml);
 		}
@@ -387,23 +388,14 @@
 			}else{
 				$this->protected = true;
 			}
-			foreach($sxml->link as $link){
-				switch($link->attributes()->rel){
-					case "self":
-						$this->self_url = $link->attributes()->href;
+			
+			foreach ($sxml->link as $link) {
+				$rel = $link->attributes()->rel;
+				foreach (array('self','edit', 'photos', 'ymapsml', 'alternate') as $a) {
+					if ($a == $rel){
+						$this->{$a.'_url'} = $link->attributes()->href;
 						break;
-					case "edit":
-						$this->edit_url = $link->attributes()->href;
-						break;
-					case "photos":
-						$this->photos_url = $link->attributes()->href;
-						break;
-					case "ymapsml":
-						$this->ymapsml_url = $link->attributes()->href;
-						break;
-					case "alternate":
-						$this->alternate_url = $link->attributes()->href;
-						break;
+					}
 				}
 			}
 		}
