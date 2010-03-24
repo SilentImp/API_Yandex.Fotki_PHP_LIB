@@ -8,6 +8,8 @@
  * @link http://silentimp.habrahabr.ru/
  * 
  * @throws YFUserException|YFXMLException
+ * 
+ * @package YandexFotki
  *
  */
 class YFUser {	
@@ -26,7 +28,14 @@ class YFUser {
 	 */
 	private $token = null;
 
+	/**
+	 * @var string Логин пользователя
+	 */
 	private $login = null;
+	
+	/**
+	 * @var string Пароль пользователя
+	 */
 	private $password = null;
 
 	/**
@@ -40,12 +49,12 @@ class YFUser {
 	private $photoCollectionUrl = null;
 	
 	/**
-	 * @var YFAlbumCollection 
+	 * @var YFAlbumCollection Коллекция альбомов пользователя
 	 */
 	private $albumCollection = array();
 
 	/**
-	 * @var YFPhotoCollection 
+	 * @var YFPhotoCollection Коллекция фотографий пользователя
 	 */
 	private $photoCollection = array();
 	
@@ -85,7 +94,7 @@ class YFUser {
 	public function getAlbumCollection($name=null){
 		if($name===null)
 			return $this->albumCollection;
-		
+
 		return $this->albumCollection[$name];		
 	}
 
@@ -105,7 +114,7 @@ class YFUser {
 	/**
 	 * Удаляет именованную коллекцию фотографий
 	 *
-	 * @param  $name
+	 * @param $name Имя коллекции фотографий.
 	 * @return void
 	 */
 	public function removePhotoCollection($name){
@@ -194,7 +203,7 @@ class YFUser {
 	 * при создании экземпляра класса.
 	 *
 	 * @throws YFUserException|YFXMLException
-	 * @param string $password
+	 * @param string $password пароль пользователя
 	 * @return void
 	 */
 	public function authenticate($password=null){
@@ -248,8 +257,8 @@ class YFUser {
 	/**
 	 * RSA шифрование со вкусом Яндекса
 	 *
-	 * @param string $key
-	 * @param string $data
+	 * @param string $key ключ шифрования
+	 * @param string $data данные, которые будут зашифрованы
 	 * @return string
 	 */
 	private function encryptYFRSA($key, $data){

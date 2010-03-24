@@ -8,7 +8,8 @@
  * @link http://silentimp.habrahabr.ru/
  *
  * @throws YFUserException
- *
+ * @package YandexFotki
+ * 
  * @todo протестировать
  * @todo разделить исключения по типам
  * @todo подумать над тем, что нужно выделить в отдельные классы
