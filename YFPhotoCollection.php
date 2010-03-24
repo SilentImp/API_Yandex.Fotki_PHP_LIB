@@ -2,8 +2,12 @@
 /**
  * Класс, который позволяет вам работать с фотографией
  *
+ * @author SilentImp <ravenb@mail.ru>
+ * @link http://twitter.com/SilentImp/
+ * @link http://silentimp.habrahabr.ru/
+ * 
  * @package YandexFotki
- * @throws YFAuthenticationErrorException|YFException|YFRquestException|YFXMLErrorException
+ * @throws YFAuthenticationErrorException|YFException|YFRquestException|YFXMLErrorException|YFNotFoundException
  */
 class YFPhotoCollection {
 
@@ -53,44 +57,58 @@ class YFPhotoCollection {
 	}
 
 	/**
-	 * В зависимости от переданных аргументов возвращает массив страниц, содержащих альбомы, страницу с альбомами или конкретный альбом
-	 * 
-	 * @throws YFException
-	 * @param int $page числовой индекс страницы начиная с 0. Необязательный аргумент.
-	 * @param int $index числовой индекс альбома начиная с 0. Необязательный аргумент.
-	 * @return boolean|array|YHPhoto
+	 * Возвращает коллекцию альбомов
+	 *
+	 * @return array|YFPhoto
 	 * @see YFPhoto
 	 */
-	public function getPhotoList($page=null, $index=null){
-		if($page===null){
-			return $this->photoList;
-		}else if($index===null&&$page!==null){
+	 public function getList(){
+	 	return $this->photoList;
+	 }
+	 
+	/**
+	 * Возвращает страницу коллекции альбомов
+	 *
+	 * @throws YFException
+	 * @param int $page номер страницы
+	 * @return array|YFPhoto
+	 * @see YFPhoto
+	 */
+	 public function getPage($page){
 			if(count($this->photoList)<($page-1)){
 				throw new YFException("Не найдена страница с указанным номером", E_ERROR);
 			}
 			return $this->photoList[$page];
-		}else{
+	 }
+
+	/**
+	 * Возвращает фотографию
+	 *
+	 * @throws YFException
+	 * @param int $page номер страницы
+	 * @param int $index номер альбома на странице
+	 * @return YFPhoto
+	 * @see YFPhoto
+	 */
+	 public function getAlbum($page,$index){
 			if(count($this->photoList)<($page-1)){
 				throw new YFException("Не найдена страница с указанным номером", E_ERROR);
 			}
 			if(count($this->photoList[$page])<($index-1)){
-				throw new YFException("Не найден альбом с указанным номером", E_ERROR);
+				throw new YFException("Не найдена фотография с указанным номером", E_ERROR);
 			}
 			return $this->photoList[$page][$index];
-		}
-	}
+	 }
 
 	/**
-	 * Осуществляет поиск по коллекции фотографий с заданным заголовком
+	 * Осуществляет поиск по коллекции фотографий с заданным заголовком. Возвращает массив найденых соответствий.
 	 * 
-	 * Вернет FALSE если альбомов с таким названием не найдено, альбом, если найдено единственное соответствие и массив альбомов, если найдено более одного вхождения.
-	 *
 	 * @param string $title название фотографии. Обязательный аргумент.
 	 * @param int $limit максимально допустимое количество элементов выборки. Если установлено, то по достижении указанного числа найденных фотографий поиск будет завершен. В противном случае будут проверены все альбомы выборки на всех страницах. Если равно 0, то игнорируется.
-	 * @return boolean|array|YHPhoto
+	 * @return array|YHPhoto
 	 * @see YFPhoto
 	 */
-	public function getPhotoByTitle($title, $limit=null){
+	public function getPhotosByTitle($title, $limit=null){
 		$photos = array();
 		foreach($this->photoList as $photo_page){
 			foreach($photo_page as $photo){
@@ -102,50 +120,59 @@ class YFPhotoCollection {
 				}
 			}
 		}
-		switch(count($photos)){
-			case 0:
-				return false;
-				break;
-			case 1:
-				return $photos[0];
-				break;
-			default:
-				return $photos;
-				break;
+		return $photos;
+	}
+	
+	/**
+	 * Осуществляет поиск по коллекции фотографии с заданным заголовком. Возвращает первую найденую. Если поиск не дал результата, то вызовет исключение.
+	 * 
+	 * @throws YFNotFoundException
+	 * @param string $photoTitle название фотографии. Обязательный аргумент.
+	 * @return YHPhoto
+	 * @see YFPhoto
+	 */
+	public function getPhotoByTitle($photoTitle){
+		foreach($this->photoList as $photo_page){
+			foreach($photo_page as $photo){
+				if($photo->get_title()==$photoTitle){
+					return $photo;
+				}
+			}
 		}
+		throw new YFNotFoundException("Не найдена фотография с указанным названием", E_ERROR);
 	}
 
 	/**
 	 * Ищет в коллекции фотографию по заданному id
 	 * 
-	 * @param string $id идентификатор фотографии, которую вы хотите найти
-	 * @return YHPhoto|boolean
+	 * @param string $photoId идентификатор фотографии, которую вы хотите найти
+	 * @return YHPhoto
 	 * @see YFPhoto
 	 */
-	public function getPhotoById($id){
+	public function getPhotoById($photoId){
 		foreach($this->photoList as $photo_page){
 			foreach($photo_page as $photo){
 				$parts = explode(":", $photo->get_id());
-				if($parts[count($parts)-1]==(int)$id){
+				if($parts[count($parts)-1]==(int)$photoId){
 					return $photo;
 				}
 			}
 		}
-		return false;
+		throw new YFNotFoundException("Не найдена фотография с указанным номером", E_ERROR);
 	}
 
 	/**
 	 * Удаляет фотографию с указанным идентификатором
 	 * 
-	 * @param string $id идентификатор фотографии, которую вы хотите удалить
+	 * @param string $photoId идентификатор фотографии, которую вы хотите удалить
 	 * @return void
 	 * @see YFPhoto
 	 */
-	public function deletePhotoById($id){
+	public function deletePhotoById($photoId){
 		foreach($this->photoList as $photo_page){
 			foreach($photo_page as $photo){
 				$parts = explode(":", $photo->get_id());
-				if($parts[count($parts)-1]==(int)$id){
+				if($parts[count($parts)-1]==(int)$photoId){
 					$photo->delete();
 					return;
 				}
@@ -154,17 +181,43 @@ class YFPhotoCollection {
 	}
 
 	/**
-	 * Удаляет фотографию с указанным названием. Внимание! Будут удалены все фотографии с этим заголовком. Фотографии сами не исчезают из коллекции. Не забудьте ее обновить. Удаленная фотография при вызова метода is_dead аозвращает true.
+	 * Удаляет фотографии с указанным названием. Внимание! Будут удалены все фотографии с этим заголовком. Фотографии сами не исчезают из коллекции. Не забудьте ее обновить. Удаленная фотография при вызова метода is_dead аозвращает true.
 	 * 
-	 * @param string $title Название фотогрфии, который вы хотите удалить
+	 * @param string $photoTitle Название фотогрфии, который вы хотите удалить
+	 * @param int $limit Максимальное количество фотографий, которые будут удалены. Необязательный параметр.
 	 * @return void
 	 * @see YFPhoto
 	 */
-	public function deletePhotoByTitle($title){
+	public function deletePhotosByTitle($photoTitle,$limit=null){
+		if($limit!==null){
+			$limit=(int)$limit;
+		}
 		foreach($this->photoList as $photo_page){
 			foreach($photo_page as $photo){
-				if($photo->get_title()==$title){
+				if($photo->get_title()==$photoTitle){
 					$photo->delete();
+					if($limit!==null){
+						$limit--;
+						if($limit===0) return;
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Удаляет первую фотографию с указанным названием. Внимание! Фотографии сами не исчезают из коллекции. Не забудьте ее обновить. Удаленная фотография при вызова метода is_dead аозвращает true.
+	 * 
+	 * @param string $photoTitle Название фотогрфии, который вы хотите удалить
+	 * @return void
+	 * @see YFPhoto
+	 */
+	public function deletePhotoByTitle($photoTitle){
+		foreach($this->photoList as $photo_page){
+			foreach($photo_page as $photo){
+				if($photo->get_title()==$photoTitle){
+					$photo->delete();
+					return;
 				}
 			}
 		}

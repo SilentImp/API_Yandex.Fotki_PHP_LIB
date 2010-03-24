@@ -61,6 +61,7 @@ class YFUser {
 	/**
 	 * @param string $login Логин пользователя.
 	 * @param string $password Пароль пользователя.	 
+	 * @return void
 	 */
 	public function __construct($login, $password=null){
 		$this->login = $login;
@@ -92,9 +93,7 @@ class YFUser {
 	 * @return array|YFAlbumCollection
 	 */
 	public function getAlbumCollection($name=null){
-		if($name===null)
-			return $this->albumCollection;
-
+		if($name===null) return $this->albumCollection;
 		return $this->albumCollection[$name];		
 	}
 
@@ -105,9 +104,7 @@ class YFUser {
 	 * @return array|YFPhotoCollection
 	 */
 	public function getPhotoCollection($name=null){
-		if($name===null)
-			return $this->photoCollection;
-
+		if($name===null) return $this->photoCollection;
 		return $this->photoCollection[$collection_name];		
 	}
 	

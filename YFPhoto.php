@@ -2,6 +2,10 @@
 /**
  * Класс, который позволяет вам работать с фотографией
  *
+ * @author SilentImp <ravenb@mail.ru>
+ * @link http://twitter.com/SilentImp/
+ * @link http://silentimp.habrahabr.ru/
+ * 
  * @package YandexFotki
  * @throws YFAuthenticationErrorException|YFException|YFRquestException|YFXMLErrorException
  */

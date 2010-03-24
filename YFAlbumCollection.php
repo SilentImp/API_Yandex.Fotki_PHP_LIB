@@ -2,8 +2,12 @@
 /**
  * Класс, который позволяет вам работать с коллекцией альбомов пользователя
  *
+ * @author SilentImp <ravenb@mail.ru>
+ * @link http://twitter.com/SilentImp/
+ * @link http://silentimp.habrahabr.ru/
+ * 
  * @package YandexFotki
- * @throws YFAuthenticationErrorException|YFException|YFRequestErrorException|YFXMLErrorException
+ * @throws YFAuthenticationErrorException|YFException|YFRequestErrorException|YFXMLErrorException|YFNotFoundException
  */
 class YFAlbumCollection {	
 	/**
@@ -44,49 +48,64 @@ class YFAlbumCollection {
 	}
 
 	/**
-	 * Возвращает массив альбомов пользователя или конкретный альбом
-	 * 
-	 * Если не задана страница, то возвращается массив содержащий все загруженные страницы альбома, если задана страница не задан индекс альбома, то возвращается массив содержащий все альбомы страницы, если заданы индекс страницы и альбома, то возвращается альбом
+	 * Возвращает коллекцию альбомов
 	 *
-	 * @param int $page числовой индекс страницы начиная с 0. Необязательный аргумент.
-	 * @param int $index числовой индекс альбома начиная с 0. Необязательный аргумент.
 	 * @return array|YFAlbum
 	 * @see YFAlbum
 	 */
-	public function getAlbumList($page=null, $index=null){
-		if($page===null){
-			return $this->albumList;
-		}else if($index===null){
-			if(count($this->albumList)<($page-1)){
-				throw new YFException("Не найдена страница с указанным номером", E_ERROR);
+	 public function getList(){
+	 	return $this->albumList;
+	 }
+	 
+	/**
+	 * Возвращает страницу коллекции альбомов
+	 *
+	 * @throws YFNotFoundException
+	 * @param int $pageNumber номер страницы
+	 * @return array|YFAlbum
+	 * @see YFAlbum
+	 */
+	 public function getPage($pageNumber){
+			if(count($this->albumList)<($pageNumber-1)){
+				throw new YFNotFoundException("Не найдена страница с указанным номером", E_ERROR);
 			}
-			return $this->albumList[$page];
-		}else{
-			if(count($this->albumList)<($page-1)){
-				throw new YFException("Не найдена страница с указанным номером", E_ERROR);
+			return $this->albumList[$pageNumber];
+	 }
+
+	/**
+	 * Возвращает альбом
+	 *
+	 * @throws YFNotFoundException
+	 * @param int $pageNumber номер страницы
+	 * @param int $albumNumber номер альбома на странице
+	 * @return YFAlbum
+	 * @see YFAlbum
+	 */
+	 public function getAlbum($pageNumber,$albumNumber){
+			if(count($this->albumList)<($pageNumber-1)){
+				throw new YFNotFoundException("Не найдена страница с указанным номером", E_ERROR);
 			}
-			if(count($this->albumList[$page])<($index-1)){
-				throw new YFException("Не найден альбом с указанным номером", E_ERROR);
+			if(count($this->albumList[$pageNumber])<($albumNumber-1)){
+				throw new YFNotFoundException("Не найден альбом с указанным номером", E_ERROR);
 			}
-			return $this->albumList[$page][$index];
-		}
-	}
+			return $this->albumList[$pageNumber][$albumNumber];
+	 }
 
 	/**
 	 * Осуществляет поиск по коллекции альбомов с заданным заголовком
 	 * 
-	 * Возвращает false, если альбомов не найдено, альбом, если найдно одно вхождение или массив альбомов если больше одного
+	 * Возвращает массив найденый соответствий
 	 *
-	 * @param string $title название альбома. Обязательный аргумент.
+	 * @param string $albumTitle название альбома. Обязательный аргумент.
 	 * @param int $limit максимально допустимое количество элементов выборки. Если установлено, то по достижении указанного числа найденных альбомов поиск будет завершен. В противном случае будут проверены все альбомы выборки на всех страницах. Если равно 0, то игнорируется.
-	 * @return boolean|array|YFAlbum
+	 * @return array|YFAlbum
 	 * @see YFAlbum
 	 */
-	public function getAlbumByTitle($title, $limit=null){
+	public function getAlbumsByTitle($albumTitle, $limit=null){
 		$albums = array();
 		foreach($this->albumList as $album_page){
 			foreach($album_page as $album){
-				if($album->get_title()==$title){
+				if($album->get_title()==$albumTitle){
 					$albums[] = $album;
 					if($limit!=null&&(int)$limit>0&&count($albums)==(int)$limit){
 						break 2;
@@ -94,31 +113,43 @@ class YFAlbumCollection {
 				}
 			}
 		}
-		switch(count($albums)){
-			case 0:
-				return false;
-				break;
-			case 1:
-				return $albums[0];
-				break;
-			default:
-				return $albums;
-				break;
+		return $albums;
+	}
+	
+	/**
+	 * Осуществляет поиск по коллекции альбомов с заданным заголовком
+	 * 
+	 * Возвращает первый найденный альбом с указанным названием
+	 *
+	 * @throws YFNotFoundException
+	 * @param string $albumTitle название альбома. Обязательный аргумент.
+	 * @return YFAlbum
+	 * @see YFAlbum
+	 */
+	public function getAlbumByTitle($albumTitle){
+		$albums = array();
+		foreach($this->albumList as $album_page){
+			foreach($album_page as $album){
+				if($album->get_title()==$albumTitle){
+					return $album;
+				}
+			}
 		}
+		throw new YFNotFoundException("Не найден альбом с указанным названием", E_ERROR);
 	}
 
 	/**
 	 * Удаляет альбом с указанным идентификатором
 	 * 
-	 * @param string $id идентификатор альбома, который вы хотите удалить
+	 * @param string $albumId идентификатор альбома, который вы хотите удалить
 	 * @return void
 	 */
 
-	public function deleteAlbumById($id){
+	public function deleteAlbumById($albumId){
 		foreach($this->albumList as $album_page){
 			foreach($album_page as $album){
 				$parts = explode(":", $album->get_id());
-				if($parts[count($parts)-1]==(int)$id){
+				if($parts[count($parts)-1]==(int)$albumId){
 					$album->delete();
 					return;
 				}
@@ -129,14 +160,14 @@ class YFAlbumCollection {
 	/**
 	 * Удаляет альбомы с указанным заголовком. Внимание! Будут удалены все альбомы с этим заголовком. Альбомы сами не исчезают из коллекции. Не забудьте ее обновить. Удаленный альбом при вызова метода is_dead аозвращает true.
 	 * 
-	 * @param string $title заголовок альбома, который вы хотите удалить
+	 * @param string $albumTitle заголовок альбома, который вы хотите удалить
 	 * @see YFAlbum
 	 * @return void
 	 */
-	public function deleteAlbumByTitle($title){
+	public function deleteAlbumByTitle($albumTitle){
 		foreach($this->albumList as $album_page){
 			foreach($album_page as $album){
-				if($album->get_title()==$title){
+				if($album->get_title()==$albumTitle){
 					$album->delete();
 				}
 			}

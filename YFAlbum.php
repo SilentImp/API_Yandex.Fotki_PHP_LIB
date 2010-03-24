@@ -1,6 +1,10 @@
 <?php
 /**
  * Позволяет работать с альбомом.
+ *
+ * @author SilentImp <ravenb@mail.ru>
+ * @link http://twitter.com/SilentImp/
+ * @link http://silentimp.habrahabr.ru/
  * 
  * @package YandexFotki
  * @throws YFAuthenticationErrorException|YFException|YFRequestErrorException|YFXMLErrorException
