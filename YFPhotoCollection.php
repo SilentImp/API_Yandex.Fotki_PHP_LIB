@@ -155,7 +155,7 @@ class YFPhotoCollection {
 	public function getPhotoById($photoId){
 		foreach($this->photoList as $photo_page){
 			foreach($photo_page as $photo){
-				$parts = explode(":", $photo->get_id());
+				$parts = explode(":", $photo->getId());
 				if($parts[count($parts)-1]==(int)$photoId){
 					return $photo;
 				}
@@ -174,7 +174,7 @@ class YFPhotoCollection {
 	public function deletePhotoById($photoId){
 		foreach($this->photoList as $photo_page){
 			foreach($photo_page as $photo){
-				$parts = explode(":", $photo->get_id());
+				$parts = explode(":", $photo->getId());
 				if($parts[count($parts)-1]==(int)$photoId){
 					$photo->delete();
 					return;
@@ -557,7 +557,7 @@ class YFPhotoCollection {
 		}
 		curl_close($curl);
 
-		$response = $this->s($response);
+		$response = $this->deleteXmlNamespace($response);
 		if(($sxml=simplexml_load_string($response))===false){
 			throw new YFXMLException("Ответ не well-formed XML.".$response, E_ERROR);
 		}

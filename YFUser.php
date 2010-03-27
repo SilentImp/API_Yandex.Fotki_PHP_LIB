@@ -102,11 +102,11 @@ class YFUser {
 	/**
 	 * Возвращает именованную коллекцию фотографий
 	 * 
-	 * @param string $name Имя коллекции фотографий. Если не указано, метод вернет массив, содержащий все коллекции.
+	 * @param string $collection_name Имя коллекции фотографий. Если не указано, метод вернет массив, содержащий все коллекции.
 	 * @return array|YFPhotoCollection
 	 */
-	public function getPhotoCollection($name=null){
-		if($name===null) return $this->photoCollection;
+	public function getPhotoCollection($collection_name=null){
+		if($collection_name===null) return $this->photoCollection;
 		return $this->photoCollection[$collection_name];		
 	}
 	
@@ -166,7 +166,7 @@ class YFUser {
 	 * @throws YFXMLException
 	 * @return void
 	 */
-	private function getServiceDocument(){
+	public function getServiceDocument(){
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, "http://api-fotki.yandex.ru/api/users/".$this->login."/");
 		curl_setopt($curl, CURLOPT_HEADER, false);
@@ -206,51 +206,53 @@ class YFUser {
 	 * @return void
 	 */
 	public function authenticate($password=null){
-		if($this->password===null){
-			throw new YFUserException("Не задан пароль", E_ERROR);
-		}
-		else {
-			$this->password=$password;
-		}
-
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, "http://auth.mobile.yandex.ru/yamrsa/key/");
-		curl_setopt($curl, CURLOPT_HEADER, false);
-		curl_setopt($curl, CURLOPT_HTTPGET, true);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		$xml = curl_exec($curl);
-
-		if(($sxml=simplexml_load_string($xml))===false||curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
-			throw new YFXMLException("RSA-ключ не был получен. Текст ответа: ".$xml, E_ERROR);
-		}
-		curl_close($curl);
-
-		$this->rsaKey = $sxml->key;
-		$this->requestId = $sxml->request_id;
-
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, "http://auth.mobile.yandex.ru/yamrsa/token/");
-		curl_setopt($curl, CURLOPT_HEADER, false);
-		curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-		curl_setopt($curl, CURLOPT_POST, true);
-		curl_setopt($curl, CURLOPT_POSTFIELDS, 'request_id='.$this->requestId.'&credentials='.$this->encryptYFRSA($this->rsaKey, "<credentials login='".$this->login."' password='".$this->password."'/>"));
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		$xml = curl_exec($curl);
-
-		if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
-			$sxml = new SimpleXMLElement();
-			if($sxml->simplexml_load_string($xml)!==false||isset($sxml->error)){
-				throw new YFXMLException($sxml->error, E_ERROR);
+			
+			if($password!=null){
+				$this->password=$password;
+			}			
+			
+			if($this->password===null){
+				throw new Exception("Не задан пароль", E_ERROR);
 			}
-			throw new YFXMLException("Ответ не well-formed XML. Текст ответа: ".$xml, E_ERROR);
-		}
-		curl_close($curl);
-
-		if(($sxml=simplexml_load_string($xml))===false){
-			throw new YFXMLException("Ответ не well-formed XML. Текст ответа: ".$xml, E_ERROR);
-		}
-
-		$this->token = $sxml->token;
+									
+			$curl = curl_init();
+			curl_setopt($curl, CURLOPT_URL, "http://auth.mobile.yandex.ru/yamrsa/key/");
+			curl_setopt($curl, CURLOPT_HEADER, false);
+			curl_setopt($curl, CURLOPT_HTTPGET, true);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			$xml = curl_exec($curl);
+			
+			if(($sxml=simplexml_load_string($xml))===false||curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
+				throw new Exception("RSA-ключ не был получен. Текст ответа: ".$xml, E_ERROR);
+			}
+			curl_close($curl);
+			
+			$this->rsaKey = $sxml->key;
+			$this->requestId = $sxml->request_id;
+			
+			$curl = curl_init();
+			curl_setopt($curl, CURLOPT_URL, "http://auth.mobile.yandex.ru/yamrsa/token/");
+			curl_setopt($curl, CURLOPT_HEADER, false);
+			curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+			curl_setopt($curl, CURLOPT_POST, true);
+			curl_setopt($curl, CURLOPT_POSTFIELDS, 'request_id='.$this->requestId.'&credentials='.$this->encryptYFRSA($this->rsaKey, "<credentials login='".$this->login."' password='".$this->password."'/>"));
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			$xml = curl_exec($curl);
+			
+			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
+				curl_close($curl);
+				if(($sxml=simplexml_load_string($xml))!==false){
+					throw new Exception($sxml->error, E_ERROR);
+				}
+				throw new Exception("Ответ не well-formed XML. Текст ответа: ".$xml, E_ERROR);
+			}
+			curl_close($curl);
+			
+			if(($sxml=simplexml_load_string($xml))===false){
+				throw new Exception("Ответ не well-formed XML. Текст ответа: ".$xml, E_ERROR);
+			}
+			
+			$this->token = $sxml->token;
 	}	
 
 	/**
@@ -261,58 +263,59 @@ class YFUser {
 	 * @return string
 	 */
 	private function encryptYFRSA($key, $data){
-		$buffer = array();
-		list($nstr, $estr) = explode('#', $key);
-		$n = gmp_init($nstr,16);
-		$e = gmp_init($estr,16);
-		$stepSize = strlen($nstr)/2 - 1;
-		$prev_crypted = array();
-		$prev_crypted = array_fill(0, $stepSize, 0);
-		$hex_out = '';
-
-		for($i=0; $i<strlen($data); $i++){
-			$buffer[] = ord($data{$i});
+			$buffer = array();
+			
+			list($nstr, $estr) = explode('#', $key);
+			$n = gmp_init($nstr,16);
+			$e = gmp_init($estr,16);
+			$stepSize = strlen($nstr)/2 - 1;
+			$prev_crypted = array();
+			$prev_crypted = array_fill(0, $stepSize, 0);
+			$hex_out = '';
+		
+			for($i=0; $i<strlen($data); $i++){
+				$buffer[] = ord($data{$i});
+			}
+			
+			for($i=0; $i<(int)(((count($buffer)-1)/$stepSize)+1); $i++){
+				$tmp = array_slice($buffer, $i * $stepSize, ($i + 1) * $stepSize);
+				for ($j=0;$j<count($tmp); $j++){
+					$tmp[$j] = ($tmp[$j] ^ $prev_crypted[$j]);
+				}
+				$tmp = array_reverse($tmp);
+				$plain = gmp_init(0);
+				for($x = 0; $x < count($tmp); ++$x){
+					$pow = gmp_powm(gmp_init(256), gmp_init($x), $n);
+					$pow_mult = gmp_mul($pow, gmp_init($tmp[$x]));
+					$plain = gmp_add($plain, $pow_mult);
+				}
+				$plain_pow = gmp_powm($plain, $e, $n);
+				$plain_pow_str = strtoupper(gmp_strval($plain_pow, 16));
+				$hex_result = array();
+				for($k=0;$k<(strlen($nstr)-strlen($plain_pow_str))+ 1;$k++){
+					$hex_result[]="";
+				}
+				$hex_result = implode("0",$hex_result).$plain_pow_str;
+				$min_x = min(strlen($hex_result), count($prev_crypted) * 2);
+				
+				for($x=0;$x<$min_x;$x=$x+2){
+					$prev_crypted[$x/2] = hexdec('0x'.substr($hex_result,$x,2));
+				}
+				
+				
+				if(count($tmp) < 16){
+					$hex_out.= '00';
+				}
+				$hex_out.= strtoupper(dechex(count($tmp)).'00');
+				$ks = strlen($nstr) / 2;
+				if($ks<16){
+					$hex_out.='0';
+				}
+				$hex_out.= dechex($ks).'00';
+				$hex_out.= $hex_result;
+			}
+			return UrlEncode(base64_encode(pack("H*" , $hex_out)));
 		}
-
-		for($i=0; $i<(int)(((count($buffer)-1)/$stepSize)+1); $i++){
-			$tmp = array_slice($buffer, $i * $stepSize, ($i + 1) * $stepSize);
-			for ($j=0;$j<count($tmp); $j++){
-				$tmp[$j] = ($tmp[$j] ^ $prev_crypted[$j]);
-			}
-			$tmp = array_reverse($tmp);
-			$plain = gmp_init(0);
-			for($x = 0; $x < count($tmp); ++$x){
-				$pow = gmp_powm(gmp_init(256), gmp_init($x), $n);
-				$pow_mult = gmp_mul($pow, gmp_init($tmp[$x]));
-				$plain = gmp_add($plain, $pow_mult);
-			}
-			$plain_pow = gmp_powm($plain, $e, $n);
-			$plain_pow_str = strtoupper(gmp_strval($plain_pow, 16));
-			$hex_result = array();
-			for($k=0;$k<(strlen($nstr)-strlen($plain_pow_str))+ 1;$k++){
-				$hex_result[]="";
-			}
-			$hex_result = implode("0",$hex_result).$plain_pow_str;
-			$min_x = min(strlen($hex_result), count($prev_crypted) * 2);
-
-			for($x=0;$x<$min_x;$x=$x+2){
-				$prev_crypted[$x/2] = hexdec('0x'.substr($hex_result,$x,2));
-			}
-
-
-			if(count($tmp) < 16){
-				$hex_out.= '00';
-			}
-			$hex_out.= strtoupper(dechex(count($tmp)).'00');
-			$ks = strlen($nstr) / 2;
-			if($ks<16){
-				$hex_out.='0';
-			}
-			$hex_out.= dechex($ks).'00';
-			$hex_out.= $hex_result;
-		}
-		return UrlEncode(base64_encode(pack("H*" , $hex_out)));
-	}
 	
 	/**
 	 * Удаляет объявления пространств имён 
