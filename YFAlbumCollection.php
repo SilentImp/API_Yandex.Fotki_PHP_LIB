@@ -1,10 +1,13 @@
 <?php
 /**
- * Класс, который позволяет вам работать с коллекцией альбомов пользователя
- *
  * @author SilentImp <ravenb@mail.ru>
  * @link http://twitter.com/SilentImp/
  * @link http://silentimp.habrahabr.ru/
+ * @package YandexFotki
+ */
+ 
+/**
+ * Класс, который позволяет вам работать с коллекцией альбомов пользователя
  * 
  * @package YandexFotki
  * @throws YFAuthenticationErrorException|YFException|YFRequestErrorException|YFXMLErrorException|YFNotFoundException

@@ -1,16 +1,18 @@
 <?php
+
+/**
+ * @author SilentImp <ravenb@mail.ru>
+ * @link http://twitter.com/SilentImp/
+ * @link http://silentimp.habrahabr.ru/
+ * @package YandexFotki
+ */
+
 /**
  * Позволяет провести аутентификацию пользователя на сервисе Яндекс.Фотки и
  * получить коллекции фотографий и альбомов пользователя.
  *
- * @author SilentImp <ravenb@mail.ru>
- * @link http://twitter.com/SilentImp/
- * @link http://silentimp.habrahabr.ru/
- * 
  * @throws YFUserException|YFXMLException
- * 
  * @package YandexFotki
- *
  */
 class YFUser {	
 	/**

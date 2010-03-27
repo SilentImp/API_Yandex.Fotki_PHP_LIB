@@ -1,13 +1,16 @@
 <?php
 /**
- * Позволяет работать с альбомом.
- *
  * @author SilentImp <ravenb@mail.ru>
  * @link http://twitter.com/SilentImp/
  * @link http://silentimp.habrahabr.ru/
- * 
  * @package YandexFotki
+ */
+ 
+/**
+ * Позволяет работать с альбомом.
+ *
  * @throws YFAuthenticationErrorException|YFException|YFRequestErrorException|YFXMLErrorException
+ * @package YandexFotki
  */
 class YFAlbum {	
 	/**
@@ -483,14 +486,24 @@ class YFAlbum {
 		}else{
 			$this->isProtected = true;
 		}
-
-		foreach ($sxml->link as $link) {
-			$rel = $link->attributes()->rel;
-			foreach (array('self','edit', 'photos', 'ymapsml', 'alternate') as $a) {
-				if ($a == $rel){
-					$this->{$a.'_url'} = $link->attributes()->href;
+		
+		foreach($sxml->link as $link){
+			switch($link->attributes()->rel){
+				case "self":
+					$this->albumUrl = $link->attributes()->href;
 					break;
-				}
+				case "edit":
+					$this->albumEditUrl = $link->attributes()->href;
+					break;
+				case "photos":
+					$this->albumPhotosUrl = $link->attributes()->href;
+					break;
+				case "ymapsml":
+					$this->getYmapsmlUrl = $link->attributes()->href;
+					break;
+				case "alternate":
+					$this->albumPageUrl = $link->attributes()->href;
+					break;
 			}
 		}
 	}

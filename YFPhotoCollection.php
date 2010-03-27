@@ -1,13 +1,16 @@
 <?php
 /**
- * Класс, который позволяет вам работать с фотографией
- *
  * @author SilentImp <ravenb@mail.ru>
  * @link http://twitter.com/SilentImp/
  * @link http://silentimp.habrahabr.ru/
- * 
  * @package YandexFotki
+ */
+ 
+/**
+ * Класс, который позволяет вам работать с фотографией
+ *
  * @throws YFAuthenticationErrorException|YFException|YFRquestException|YFXMLErrorException|YFNotFoundException
+ * @package YandexFotki
  */
 class YFPhotoCollection {
 
