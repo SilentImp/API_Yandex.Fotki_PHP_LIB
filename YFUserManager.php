@@ -3,6 +3,7 @@
  * @author SilentImp <ravenb@mail.ru>
  * @link http://twitter.com/SilentImp/
  * @link http://silentimp.habrahabr.ru/
+ * @link http://code.websaints.net/
  * @package YandexFotki
  */
  
@@ -12,7 +13,10 @@
  * 
  * @throws YFUserException
  * @package YandexFotki
- * 
+ * @author SilentImp <ravenb@mail.ru>
+ * @link http://twitter.com/SilentImp/
+ * @link http://silentimp.habrahabr.ru/
+ * @link http://code.websaints.net/
  */
 class YFUserManager {
 	private $userList = array();

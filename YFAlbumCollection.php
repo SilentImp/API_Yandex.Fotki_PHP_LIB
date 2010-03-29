@@ -3,6 +3,7 @@
  * @author SilentImp <ravenb@mail.ru>
  * @link http://twitter.com/SilentImp/
  * @link http://silentimp.habrahabr.ru/
+ * @link http://code.websaints.net/
  * @package YandexFotki
  */
  
@@ -11,6 +12,10 @@
  * 
  * @package YandexFotki
  * @throws YFAuthenticationErrorException|YFException|YFRequestErrorException|YFXMLErrorException|YFNotFoundException
+ * @author SilentImp <ravenb@mail.ru>
+ * @link http://twitter.com/SilentImp/
+ * @link http://silentimp.habrahabr.ru/
+ * @link http://code.websaints.net/
  */
 class YFAlbumCollection {	
 	/**
