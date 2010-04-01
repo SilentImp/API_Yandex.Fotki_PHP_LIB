@@ -11,7 +11,7 @@
  * Класс, который позволяет вам работать с коллекцией альбомов пользователя
  * 
  * @package YandexFotki
- * @throws YFAuthenticationErrorException|YFException|YFRequestErrorException|YFXMLErrorException|YFNotFoundException
+ * @throws YFException|YFRequestException|YFXMLException|YFNotFoundException
  * @author SilentImp <ravenb@mail.ru>
  * @link http://twitter.com/SilentImp/
  * @link http://silentimp.habrahabr.ru/
@@ -82,7 +82,7 @@ class YFAlbumCollection {
 	 */
 	 public function getPage($pageNumber){
 			if(count($this->albumList)<($pageNumber-1)){
-				throw new YFNotFoundException("Не найдена страница с указанным номером", E_ERROR);
+				throw new YFException("Не найдена страница с указанным номером", E_ERROR, null, "pageNotFound");
 			}
 			return $this->albumList[$pageNumber];
 	 }
@@ -99,10 +99,10 @@ class YFAlbumCollection {
 	 */
 	 public function getAlbum($pageNumber,$albumNumber){
 			if(count($this->albumList)<($pageNumber-1)){
-				throw new YFNotFoundException("Не найдена страница с указанным номером", E_ERROR);
+				throw new YFException("Не найдена страница с указанным номером", E_ERROR, null, "pageNotFound");
 			}
 			if(count($this->albumList[$pageNumber])<($albumNumber-1)){
-				throw new YFNotFoundException("Не найден альбом с указанным номером", E_ERROR);
+				throw new YFException("Не найден альбом с указанным номером", E_ERROR, null, "albumNotFound");
 			}
 			return $this->albumList[$pageNumber][$albumNumber];
 	 }
@@ -153,7 +153,7 @@ class YFAlbumCollection {
 				}
 			}
 		}
-		throw new YFNotFoundException("Не найден альбом с указанным названием", E_ERROR);
+		throw new YFException("Не найден альбом с указанным названием", E_ERROR, null, "albumNotFound");
 	}
 
 	/**
@@ -197,7 +197,7 @@ class YFAlbumCollection {
 	/**
 	 * Создает новый альбом. Внимание! Не забудьте обновить коллекцию.
 	 * 
-	 * @throws YFAuthenticationError|YFException|YFRequestError
+	 * @throws YFRequestException|YFRequestError
 	 * @param string $title Заголовок альбома. Обязательный аргумент.
 	 * @param string $summary Описание альбома. Необязательный аргумент.
 	 * @param string $password Пароль альбома. Необязательный аргумент.
@@ -209,14 +209,17 @@ class YFAlbumCollection {
 		$title=trim($title);
 		$summary=trim($summary);
 		$password=trim($password);
+		
 		if(empty($title)){
-			throw new YFException("Не задан заголовок альбома", E_ERROR);
+			throw new YFException("Не задан заголовок альбома", E_ERROR, null, "titleNotSet");
 		}
+		
 		if($token!==null){
-			$this->token=$token;
+			$this->token = $token;
 		}
-		if($this->token===null){
-			throw new YFAuthenticationError("Эта операция доступна только для аутентифицированных пользователей", E_ERROR);
+		
+		if($this->token==null){
+			throw new YFException("Эта операция доступна только для аутентифицированных пользователей", E_ERROR,null,"authenticationNeeded");
 		}
 
 		$body='<entry xmlns="http://www.w3.org/2005/Atom" xmlns:f="yandex:fotki"><title>'.$title.'</title><summary>'.$summary.'</summary><f:password>'.$password.'</f:password></entry>';
@@ -232,24 +235,52 @@ class YFAlbumCollection {
 			'Authorization: FimpToken realm="fotki.yandex.ru", token="'.$this->token.'"',
 			'Content-Type: application/atom+xml; charset=utf-8; type=entry'
 		));
-		$response = curl_exec($curl);
-		if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=201){
-			throw new YFRequestError($response, curl_getinfo($curl, curl_getinfo($curl, CURLINFO_HTTP_CODE)));
-		}
+		$xml = curl_exec($curl);
+		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close($curl);
+	
+		switch((int)$code){
+			case 201:
+				//если код не 201 и не оговоренные в документации Яндекс ошибки, то будет вызвано прерывание общего типа.
+				break;
+			case 400:
+				throw new YFRequestException($xml, $code, "Переданный клиентским приложением XML не является валидным Atom Entry альбома или не задан title.", "badRequest");
+				break;
+			case 401:
+				throw new YFRequestException($xml, $code, null, "unauthorized");
+				break;
+			case 403:
+				throw new YFRequestException($xml, $code, "Для доступа к альбому требуется пароль.", "forbidden");
+				break;
+			case 404:
+				throw new YFRequestException($xml, $code, "Пользователя с указанным логином не существует.", "userNotFound");
+				break;
+			case 405:
+				throw new YFRequestException($xml, $code, "Клиентское приложение попыталось выполнить по данному адресу неправильный метод.", "methodNotAllowed");
+				break;
+			case 415:
+				throw new YFRequestException($xml, $code, "Заголовок Content-Type содержит тип, отличный от типа Atom Entry.", "notAtomEntry");
+				break;
+			case 500:
+				throw new YFRequestException($xml, $code, "Сервер не смог обработать запрос.","internalServerError");
+				break;
+			default:
+				throw new YFRequestException($xml, $code);
+				break;
+		}
 	}
 
 	/**
 	 * Получает следующую страницу коллекции. Если ее нет или вы предварительно не вызвали метод search, выполняющий поиск по коллекции, то метод вызовет исключение
 	 * 
-	 * @throws YFLastPageException|YFRequestException|YFXMLException
+	 * @throws YFException|YFRequestException|YFXMLException
 	 * @param array $args ассоциативный массив, в котором хранятся аргументы, значения которых отличаются от значений по умолчанию. Ключи ассоциативного массива: order, time, id, limit, token. Точное описание аргументов смотрите в описании метода search
 	 * @return void
 	 * @access public
 	 */
 	public function next(){
 		if($this->nextPageUrl===null){
-			throw new YFLastPageFound("Не задан URL следующей страницы. Вы уже получили последнюю страницу коллекции или поиск по коллекции не был выполнен.", E_ERROR);
+			throw new YFException("Не задан URL следующей страницы. Вы уже получили последнюю страницу коллекции или поиск по коллекции не был выполнен.", E_ERROR,null,"lastPageFound");
 		}
 		$this->query($this->nextPageUrl);
 	}
@@ -363,15 +394,37 @@ class YFAlbumCollection {
 				'Authorization: FimpToken realm="fotki.yandex.ru", token="'.$this->token.'"'
 			));
 		}
-		$response = curl_exec($curl);
-		if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
-			throw new YFRequestException($response, E_ERROR);
-		}
+		$xml = curl_exec($curl);
+		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close($curl);
-
-		$response = $this->deleteXmlNamespace($response);
-		if(($sxml=simplexml_load_string($response))===false){
-			throw new YFXMLException("Ответ не well-formed XML.".$response, E_ERROR);
+	
+		switch((int)$code){
+			case 200:
+				//если код не 200 и не оговоренные в документации Яндекс ошибки, то будет вызвано прерывание общего типа.
+				break;
+			case 400:
+				throw new YFRequestException($xml, $code, "Неправильно указан параметр limit.", "badRequest");
+				break;
+			case 401:
+				throw new YFRequestException($xml, $code, null, "unauthorized");
+				break;
+			case 403:
+				throw new YFRequestException($xml, $code, "Для доступа к альбому требуется пароль.", "forbidden");
+				break;
+			case 404:
+				throw new YFRequestException($xml, $code, "Запрашиваемый элемент коллекции отсутствует: неправильно указано значение параметра сортировки или неверно задано время.", "notFound");
+				break;
+			case 500:
+				throw new YFRequestException($xml, $code, "Сервер не смог обработать запрос.","internalServerError");
+				break;
+			default:
+				throw new YFRequestException($xml, $code);
+				break;
+		}	
+		
+		$xml = $this->deleteXmlNamespace($xml);
+		if(($sxml=simplexml_load_string($xml))===false){
+			throw new YFXMLException($xml, E_ERROR,"Не удалось распознать ответ Яндекс как валидный XML документ","canNotCreateXML");
 		}
 
 		$result = $sxml->xpath("//link[@rel='next']");

@@ -10,7 +10,7 @@
 /**
  * Позволяет работать с альбомом.
  *
- * @throws YFAuthenticationErrorException|YFException|YFRequestErrorException|YFXMLErrorException
+ * @throws YFException|YFRequestException|YFXMLException
  * @package YandexFotki
  * @author SilentImp <ravenb@mail.ru>
  * @link http://twitter.com/SilentImp/
@@ -371,13 +371,32 @@ class YFAlbum {
 				'Authorization: FimpToken realm="fotki.yandex.ru", token="'.$this->token.'"'
 			));
 		}
-		$response = curl_exec($curl);
-		if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
-			throw new YFRequestException($response, curl_getinfo($curl, CURLINFO_HTTP_CODE));
+		$xml = curl_exec($curl);
+		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		curl_close($curl);
+		
+		switch((int)$code){
+			case 200:
+				//если код не 200 и не оговоренные в документации Яндекс ошибки, то будет вызвано прерывание общего типа.
+				break;
+			case 401:
+				throw new YFRequestException($xml, $code, null, "unauthorized");
+				break;
+			case 403:
+				throw new YFRequestException($xml, $code, "Аутентифицированный пользователь попытался что-либо изменить в чужом альбоме", "forbidden");
+				break;
+			case 404:
+				throw new YFRequestException($xml, $code, "Такого пользователя или альбома не существует.","userOrAlbumNotFound");
+				break;
+			case 500:
+				throw new YFRequestException($xml, $code, "Сервер не смог обработать запрос.","internalServerError");
+				break;
+			default:
+				throw new YFRequestException($xml, $code);
+				break;
 		}
 
-		curl_close($curl);
-		$this->reloadXml($this->deleteXmlNamespace($response));
+		$this->reloadXml($this->deleteXmlNamespace($xml));
 	}
 
 	/**
@@ -392,15 +411,17 @@ class YFAlbum {
 	 * @access public
 	 */
 	public function edit($title=null, $summary=null, $password=null, $token=null){
+		
 		if($title===null&&$summary===null&&$password===null){
-			throw new YFException("Метод должен изменить заголовок, описание или пароль альбома", E_ERROR);
+			throw new YFException("Метод должен изменить заголовок, описание или пароль альбома", E_ERROR, null, "noDifference");
 		}
 
 		if($token!==null){
 			$this->token = $token;
 		}
-		else{
-			throw new YFAuthenticationException("Эта операция доступна только для аутентифицированных пользователей", E_ERROR);
+		
+		if($this->token==null){
+			throw new YFException("Эта операция доступна только для аутентифицированных пользователей", E_ERROR, null, "authenticationNeeded");
 		}
 
 		if($title!=null){
@@ -459,15 +480,39 @@ class YFAlbum {
 			'Content-Type: application/atom+xml; charset=utf-8; type=entry',
 			'Expect:'
 		));
-		$response = curl_exec($curl);
+		$xml = curl_exec($curl);
+		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		curl_close($curl);
 		fclose($putData);
 	
-		if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
-			throw new YFRequestError($response, curl_getinfo($curl, CURLINFO_HTTP_CODE));
+		switch((int)$code){
+			case 200:
+				//если код не 200 и не оговоренные в документации Яндекс ошибки, то будет вызвано прерывание общего типа.
+				break;
+			case 400:
+				throw new YFRequestException($xml, $code, null, "badRequest");
+				break;
+			case 401:
+				throw new YFRequestException($xml, $code, null, "unauthorized");
+				break;
+			case 403:
+				throw new YFRequestException($xml, $code, "Для доступа к альбому требуется пароль.", "forbidden");
+				break;
+			case 404:
+				throw new YFRequestException($xml, $code, "Такого пользователя или альбома не существует.","userOrAlbumNotFound");
+				break;
+			case 415:
+				throw new YFRequestException($xml, $code, "Заголовок Content-Type содержит тип, отличный от типа Atom Entry.","atomEntryNotFound");
+				break;
+			case 500:
+				throw new YFRequestException($xml, $code, "Сервер не смог обработать запрос.","internalServerError");
+				break;
+			default:
+				throw new YFRequestException($xml, $code);
+				break;
 		}
 
-		$this->xml = $this->deleteXmlNamespace($response);
-		curl_close($curl);
+		$this->xml = $this->deleteXmlNamespace($xml);
 		$this->refresh();
 	}
 
@@ -481,12 +526,15 @@ class YFAlbum {
 	 * @access public
 	 */
 	public function delete($token=null){
+		
 		if($token!==null){
 			$this->token = $token;
 		}
-		else{
-			throw new YFAuthenticationException("Эта операция доступна только для аутентифицированных пользователей", E_ERROR);
+		
+		if($this->token==null){
+			throw new YFException("Эта операция доступна только для аутентифицированных пользователей", E_ERROR,null,"authenticationNeeded");
 		}
+		
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $this->getAlbumEditUrl());
 		curl_setopt($curl, CURLOPT_HEADER, false);
@@ -497,12 +545,28 @@ class YFAlbum {
 		curl_setopt($curl, CURLOPT_HTTPHEADER, array(
 			'Authorization: FimpToken realm="fotki.yandex.ru", token="'.$this->token.'"'
 		));
-		$error = curl_exec($curl);
-		if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=204){
-			throw new YFRequestException($error, curl_getinfo($curl, CURLINFO_HTTP_CODE));
-		}
-
+		$xml = curl_exec($curl);
+		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close($curl);
+	
+		switch((int)$code){
+			case 204:
+				//если код не 204 и не оговоренные в документации Яндекс ошибки, то будет вызвано прерывание общего типа.
+				break;
+			case 401:
+				throw new YFRequestException($xml, $code, null, "unauthorized");
+				break;
+			case 403:
+				throw new YFRequestException($xml, $code, "Аутентифицированный пользователь попытался что-либо изменить в чужом альбоме.", "forbidden");
+				break;
+			case 500:
+				throw new YFRequestException($xml, $code, "Сервер не смог обработать запрос.","internalServerError");
+				break;
+			default:
+				throw new YFRequestException($xml, $code);
+				break;
+		}
+		
 		$this->isDeleted=true;
 	}	
 
@@ -518,8 +582,9 @@ class YFAlbum {
 		$this->xml = '<?xml version="1.0" encoding="UTF-8"?>'.$xml;
 
 		if(($sxml=simplexml_load_string($xml))===false){
-			throw new YFXMLException("Ответ не well-formed XML.".$response, E_ERROR);
+			throw new YFXMLException($xml, E_ERROR,"Не удалось распознать ответ Яндекс как валидный XML документ","canNotCreateXML");
 		}
+		
 		$this->id = $sxml->id;
 		$this->author = $sxml->author->name;
 		$this->title = $sxml->title;

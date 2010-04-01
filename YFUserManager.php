@@ -68,9 +68,6 @@ class YFUserManager {
 	 * @access public
 	 */
 	public function removeUser($login){
-		if(!array_key_exists($login, $this->userList)){
-			throw new YFUserException("Пользователь не найден", E_WARNING);
-		}
 		if($this->activeUser->login==$login){
 			$this->activeUser=null;
 		}
@@ -90,7 +87,7 @@ class YFUserManager {
 	 */
 	public function addUser($login, $password=null){
 		if(array_key_exists($login, $this->userList)){
-			throw new YFUserException("Пользователь с таким логином уже существует", E_ERROR);
+			throw new YFUserException("Пользователь с таким логином уже существует", E_ERROR,null,"dublicateUser");
 		}
 		$this->userList[$login] = new YFUser($login, $password);
 		$this->selectActiveUser($login);
@@ -111,7 +108,7 @@ class YFUserManager {
 	 */
 	public function selectActiveUser($login){
 		if(!array_key_exists($login,$this->userList)){
-			throw new YFUserException("Пользователь не найден", E_ERROR);
+			throw new YFUserException("Пользователь не найден", E_ERROR,null,"userNotFound");
 		}
 		return $this->activeUser = &$this->userList[$login];
 	}
