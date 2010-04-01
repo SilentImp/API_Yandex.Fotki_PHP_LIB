@@ -25,7 +25,7 @@ class YFAlbum {
 	 * с целью выявления дубликатов при постраничной выдаче коллекций).
 	 * @var string
 	 */
-	private $id = null;
+	protected $id = null;
 		
 	/**
 	 * Cодержит информацию о владельце альбома.
@@ -33,101 +33,101 @@ class YFAlbum {
 	 * который указывается во вложенном теге.
 	 * @var string
 	 */
-	private $author = null;
+	protected $author = null;
 		
 	/**
 	 * Название альбома
 	 * @var string
 	 */
-	private $title = null;
+	protected $title = null;
 		
 	/**
 	 * Описание альбома
 	 * @var string
 	 */
-	private $summary = null;
+	protected $summary = null;
 
 	/**
 	 * Ссылка на ресурс альбома
 	 * @var string
 	 */
-	private $albumUrl = null;
+	protected $albumUrl = null;
 
 	/**
 	 * Ссылка для редактирования ресурса альбома
 	 * @var string
 	 */
-	private $albumEditUrl = null;
+	protected $albumEditUrl = null;
 		
 	/**
 	 * Ссылка на коллекцию фотографий альбома
 	 * @var string
 	 */
-	private $albumPhotosUrl = null;
+	protected $albumPhotosUrl = null;
 		
 	/**
 	 * @todo По идее это разметка для Яндекс карт
 	 * @var string
 	 */
-	private $ymapsmlUrl = null;
+	protected $ymapsmlUrl = null;
 		
 	/**
 	 * Ссылка на веб-страницу альбома в интерфейсе Яндекс.Фоток
 	 * @var string
 	 */
-	private $albumPageUrl = null;
+	protected $albumPageUrl = null;
 	
 	/**
 	 * Время создания альбома
 	 */
-	private $createdOn = null;
+	protected $createdOn = null;
 
 	/**
 	 * Время последнего редактирования альбома
 	 */
-	private $updatedOn = null;
+	protected $updatedOn = null;
 
 	/**
 	 * Время последнего значимого с точки зрения системы изменения альбома
 	 * (в текущей версии API Фоток любое изменение считается значимым,
 	 * вследствие чего значение atom:updated совпадает с app:edited.
 	 */
-	private $editedOn = null;
+	protected $editedOn = null;
 	
 	/**
 	 * Флаг защиты альбома паролем
 	 * @var boolean
 	 */
-	private $isProtected = false;
+	protected $isProtected = false;
 
 	/**
 	 * Количество фотографий в альбоме
 	 * @var int
 	 */
-	private $imageCount = null;
+	protected $imageCount = null;
 
 	/**
 	 * XMLка с описанием альбома	 
 	 */
-	private $xml = null;
+	protected $xml = null;
 	
 	/**
 	 * Токен, подтверждающий аутентификацию пользователя
 	 * @var string
 	 */
-	private $token = null;
+	protected $token = null;
 
 	/**
 	 * Флаг, равный true, если альбом был удален
 	 * @var boolean
 	 */
-	private $isDeleted = false;
+	protected $isDeleted = false;
 
 	/**
 	 * Массив содержащий коллекцию фотографий альбома
 	 * @var array
 	 */
-	private $photoCollection = array();
+	protected $photoCollection = array();
 
 	/**
 	 * Возвращает идентификатор Atom Entry альбома.	 

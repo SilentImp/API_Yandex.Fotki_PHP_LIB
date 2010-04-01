@@ -23,158 +23,158 @@ class YFPhoto {
 	 * Идентификатор Atom Entry фотографии.
 	 * @var string
 	 */
-	private $id=null;
+	protected $id=null;
 
 	/**
 	 * Cодержит информацию о владельце фотографии. На данный момент информация ограничивается логином пользователя на Яндексе, который указывается во вложенном теге atom:name
 	 * @var string
 	 */
-	private $author=null;
+	protected $author=null;
 
 	/**
 	 * Название фотографии
 	 * @var string
 	 */
-	private $title=null;
+	protected $title=null;
 	
 	/**
 	 * Дата создания фотографии согласно ее EXIF-данным. Формат времени соответствует RFC3339 без указания часового пояса.
 	 * @var string
 	 */
-	private $exifDate=null;
+	protected $exifDate=null;
 
 	/**
 	 * Время загрузки фотографии. Формат времени соответствует RFC3339.
 	 * @var string
 	 */
-	private $publishedOn=null;
+	protected $publishedOn=null;
 	
 	/**
 	 * Время последнего редактирования фотографии. Формат времени соответствует RFC3339.
 	 * @var string
 	 */
-	private $editedOn=null;
+	protected $editedOn=null;
 		
 	/**
 	 * Время последнего значимого с точки зрения системы изменения альбома (в текущей версии API Фоток любое изменение считается значимым, вследствие чего значение atom:updated совпадает с app:edited. Формат времени соответствует RFC3339.
 	 * @var string
 	 */
-	private $updatedOn=null;
+	protected $updatedOn=null;
 	
 	/**
 	 * Уровень доступа к фотографии
 	 * @var string
 	 */
-	private $accessLevel=null;
+	protected $accessLevel=null;
 	
 	/**
 	 * Флаг доступности фотографии только взрослой аудитории. Данный параметр может быть установлен только один раз: после того, как фото было помечено "только для взрослых", сбросить данную установку будет невозможно.
 	 * @var boolean
 	 */
-	private $isAdultPhoto=null;
+	protected $isAdultPhoto=null;
 	
 	/**
 	 * Флаг, запрещающий показ оригинала фотографии.
 	 * @var boolean
 	 */	
-	private $hideOriginalPhoto=null;
+	protected $hideOriginalPhoto=null;
 	
 	/**
 	 * Флаг, запрещающий комментирование фотографии.
 	 * @var boolean
 	 */
-	private $commentsDisabled=null;
+	protected $commentsDisabled=null;
 
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится XL
 	 * @var string
 	 */
-	private $content=null;
+	protected $content=null;
 
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится изображение в оригинальном размере
 	 * @var string
 	 */
-	private $photoOriginalUrl=null;
+	protected $photoOriginalUrl=null;
 
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится изображение шириной в 800px
 	 * @var string
 	 */
-	private $photoXLUrl=null;
+	protected $photoXLUrl=null;
 	
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится изображение шириной в 500px
 	 * @var string
 	 */
-	private $photoLUrl=null;
+	protected $photoLUrl=null;
 	
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится изображение шириной в 300px
 	 * @var string
 	 */
-	private $photoMUrl=null;
+	protected $photoMUrl=null;
 	
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится изображение шириной в 150px
 	 * @var string
 	 */
-	private $photoSUrl=null;
+	protected $photoSUrl=null;
 	
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится изображение шириной в 100px
 	 * @var string
 	 */
-	private $photoXSUrl=null;
+	protected $photoXSUrl=null;
 	
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится изображение шириной в 75px
 	 * @var string
 	 */
-	private $photoXXSUrl=null;
+	protected $photoXXSUrl=null;
 	
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится изображение шириной в 50px
 	 * @var string
 	 */
-	private $photoXXXSUrl=null;
+	protected $photoXXXSUrl=null;
 	
 	/**
 	 * Ссылка на ресурс фотографии. Данная ссылка может, например, понадобиться для обращения к ресурсу, если его описание было получено в составе коллекции.
 	 * @var string
 	 */
-	private $selfUrl = null;
+	protected $selfUrl = null;
 	
 	/**
 	 * Ccылка для редактирования ресурса фотографии.
 	 * @var string
 	 */
-	private $editUrl = null;
+	protected $editUrl = null;
 	
 	/**
 	 * Ссылка на web-страницу фотографии в интерфейсе Яндекс.Фоток
 	 * @var string
 	 */
-	private $webUrl = null;
+	protected $webUrl = null;
 
 	/**
 	 * Ссылка для редактирования содержания ресурса фотографии (графического файла). Для каждой фотографии создается несколько графических файлов разного размера. Для доступа к фотографии в другом размере нужно изменить суффикс в вышеприведенном URL (см. Хранение графического файла фотографии).
 	 * @var string
 	 */
-	private $editMediaUrl = null;
+	protected $editMediaUrl = null;
 
 	/**
 	 * Ссылка на альбом, в котором содержится фотография.
 	 * @var string
 	 */
-	private $albumUrl = null;
+	protected $albumUrl = null;
 	
 
 	/**
 	 * Флаг того, что фотография была удалена
 	 * @var string
 	 */
-	private $isDeleted = false;
+	protected $isDeleted = false;
 
 	/**
 	 * Возвращает идентификатор Atom Entry фотографии. Идентификатор является глобально уникальным и позволяет клиентскому приложению однозначно определить некоторый Atom Entry (например, с целью выявления дубликатов при постраничной выдаче коллекций).

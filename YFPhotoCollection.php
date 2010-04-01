@@ -23,31 +23,31 @@ class YFPhotoCollection {
 	 * Токен, подтверждающий аутентификацию пользователя
 	 * @var string
 	 */
-	private $token = null;
+	protected $token = null;
 
 	/**
 	 * Адрес коллекции
 	 * @var string
 	 */
-	private $url = null;
+	protected $url = null;
 	
 	/**
 	 * URL следующей страницы коллекции
 	 * @var string
 	 */
-	private $nextPageUrl = null;
+	protected $nextPageUrl = null;
 	
 	/**
 	 * Массив, содержащий страницы(свой массив для каждой страницы), содержащие фотографии коллекции
 	 * @var string
 	 */
-	private $photoList = array();
+	protected $photoList = array();
 	
 	/**
 	 * Идентификатор альбома, если применимо
 	 * @var string
 	 */
-	private $albumId = null;
+	protected $albumId = null;
 
 	/**
 	 * Конструктор коллекции

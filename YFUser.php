@@ -18,47 +18,47 @@ class YFUser {
 	/**
 	 * @var string RSA ключ, необходимый для получения токена (аутентификации пользователя)
 	 */
-	private $rsaKey = null;
+	protected $rsaKey = null;
 	
 	/**
 	 * @var string Идентификатор запроса, необходимый для получения токена (аутентификации пользователя)
 	 */
-	private $requestId = null;
+	protected $requestId = null;
 
 	/**
 	 * @var string Токен, подтверждающий, что пользователь аутентифицирован
 	 */
-	private $token = null;
+	protected $token = null;
 
 	/**
 	 * @var string Логин пользователя
 	 */
-	private $login = null;
+	protected $login = null;
 	
 	/**
 	 * @var string Пароль пользователя
 	 */
-	private $password = null;
+	protected $password = null;
 
 	/**
 	 * @var string Адрес, по которому можно получить кллекцию альбомов пользователя
 	 */
-	private $albumCollectionUrl = null;
+	protected $albumCollectionUrl = null;
 
 	/**
 	 * @var string Адрес, по которому можно получить кллекцию фотографий пользователя
 	 */
-	private $photoCollectionUrl = null;
+	protected $photoCollectionUrl = null;
 	
 	/**
 	 * @var YFAlbumCollection Коллекция альбомов пользователя
 	 */
-	private $albumCollection = array();
+	protected $albumCollection = array();
 
 	/**
 	 * @var YFPhotoCollection Коллекция фотографий пользователя
 	 */
-	private $photoCollection = array();
+	protected $photoCollection = array();
 	
 	/**
 	 * @param string $login Логин пользователя.
@@ -69,6 +69,10 @@ class YFUser {
 		$this->login = $login;
 		$this->password = $password;
 		libxml_use_internal_errors(true);
+	}
+	
+	public function __get($name){
+		return $name;
 	}
 
 	/**
@@ -242,14 +246,14 @@ class YFUser {
 			if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
 				curl_close($curl);
 				if(($sxml=simplexml_load_string($xml))!==false){
-					throw new Exception($sxml->error, E_ERROR);
+					throw new YFXMLException($sxml->error, E_ERROR);
 				}
-				throw new Exception("Ответ не well-formed XML. Текст ответа: ".$xml, E_ERROR);
+				throw new YFXMLException("Ответ не well-formed XML. Текст ответа: ".$xml, E_ERROR);
 			}
 			curl_close($curl);
 			
 			if(($sxml=simplexml_load_string($xml))===false){
-				throw new Exception("Ответ не well-formed XML. Текст ответа: ".$xml, E_ERROR);
+				throw new YFXMLException("Ответ не well-formed XML. Текст ответа: ".$xml, E_ERROR);
 			}
 			
 			$this->token = $sxml->token;
