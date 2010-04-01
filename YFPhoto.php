@@ -22,150 +22,175 @@ class YFPhoto {
 	/**
 	 * Идентификатор Atom Entry фотографии.
 	 * @var string
+	 * @access protected
 	 */
 	protected $id=null;
 
 	/**
 	 * Cодержит информацию о владельце фотографии. На данный момент информация ограничивается логином пользователя на Яндексе, который указывается во вложенном теге atom:name
 	 * @var string
+	 * @access protected
 	 */
 	protected $author=null;
 
 	/**
 	 * Название фотографии
 	 * @var string
+	 * @access protected
 	 */
 	protected $title=null;
 	
 	/**
 	 * Дата создания фотографии согласно ее EXIF-данным. Формат времени соответствует RFC3339 без указания часового пояса.
 	 * @var string
+	 * @access protected
 	 */
 	protected $exifDate=null;
 
 	/**
 	 * Время загрузки фотографии. Формат времени соответствует RFC3339.
 	 * @var string
+	 * @access protected
 	 */
 	protected $publishedOn=null;
 	
 	/**
 	 * Время последнего редактирования фотографии. Формат времени соответствует RFC3339.
 	 * @var string
+	 * @access protected
 	 */
 	protected $editedOn=null;
 		
 	/**
 	 * Время последнего значимого с точки зрения системы изменения альбома (в текущей версии API Фоток любое изменение считается значимым, вследствие чего значение atom:updated совпадает с app:edited. Формат времени соответствует RFC3339.
 	 * @var string
+	 * @access protected
 	 */
 	protected $updatedOn=null;
 	
 	/**
 	 * Уровень доступа к фотографии
 	 * @var string
+	 * @access protected
 	 */
 	protected $accessLevel=null;
 	
 	/**
 	 * Флаг доступности фотографии только взрослой аудитории. Данный параметр может быть установлен только один раз: после того, как фото было помечено "только для взрослых", сбросить данную установку будет невозможно.
 	 * @var boolean
+	 * @access protected
 	 */
 	protected $isAdultPhoto=null;
 	
 	/**
 	 * Флаг, запрещающий показ оригинала фотографии.
 	 * @var boolean
+	 * @access protected
 	 */	
 	protected $hideOriginalPhoto=null;
 	
 	/**
 	 * Флаг, запрещающий комментирование фотографии.
 	 * @var boolean
+	 * @access protected
 	 */
 	protected $commentsDisabled=null;
 
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится XL
 	 * @var string
+	 * @access protected
 	 */
 	protected $content=null;
 
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится изображение в оригинальном размере
 	 * @var string
+	 * @access protected
 	 */
 	protected $photoOriginalUrl=null;
 
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится изображение шириной в 800px
 	 * @var string
+	 * @access protected
 	 */
 	protected $photoXLUrl=null;
 	
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится изображение шириной в 500px
 	 * @var string
+	 * @access protected
 	 */
 	protected $photoLUrl=null;
 	
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится изображение шириной в 300px
 	 * @var string
+	 * @access protected
 	 */
 	protected $photoMUrl=null;
 	
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится изображение шириной в 150px
 	 * @var string
+	 * @access protected
 	 */
 	protected $photoSUrl=null;
 	
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится изображение шириной в 100px
 	 * @var string
+	 * @access protected
 	 */
 	protected $photoXSUrl=null;
 	
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится изображение шириной в 75px
 	 * @var string
+	 * @access protected
 	 */
 	protected $photoXXSUrl=null;
 	
 	/**
 	 * Ссылка на графический файл фотографии. Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится изображение шириной в 50px
 	 * @var string
+	 * @access protected
 	 */
 	protected $photoXXXSUrl=null;
 	
 	/**
 	 * Ссылка на ресурс фотографии. Данная ссылка может, например, понадобиться для обращения к ресурсу, если его описание было получено в составе коллекции.
 	 * @var string
+	 * @access protected
 	 */
 	protected $selfUrl = null;
 	
 	/**
 	 * Ccылка для редактирования ресурса фотографии.
 	 * @var string
+	 * @access protected
 	 */
 	protected $editUrl = null;
 	
 	/**
 	 * Ссылка на web-страницу фотографии в интерфейсе Яндекс.Фоток
 	 * @var string
+	 * @access protected
 	 */
 	protected $webUrl = null;
 
 	/**
 	 * Ссылка для редактирования содержания ресурса фотографии (графического файла). Для каждой фотографии создается несколько графических файлов разного размера. Для доступа к фотографии в другом размере нужно изменить суффикс в вышеприведенном URL (см. Хранение графического файла фотографии).
 	 * @var string
+	 * @access protected
 	 */
 	protected $editMediaUrl = null;
 
 	/**
 	 * Ссылка на альбом, в котором содержится фотография.
 	 * @var string
+	 * @access protected
 	 */
 	protected $albumUrl = null;
 	
@@ -173,12 +198,14 @@ class YFPhoto {
 	/**
 	 * Флаг того, что фотография была удалена
 	 * @var string
+	 * @access protected
 	 */
 	protected $isDeleted = false;
 
 	/**
 	 * Возвращает идентификатор Atom Entry фотографии. Идентификатор является глобально уникальным и позволяет клиентскому приложению однозначно определить некоторый Atom Entry (например, с целью выявления дубликатов при постраничной выдаче коллекций).
 	 * @return string
+	 * @access public
 	 */
 	public function getId(){
 		return $this->id;
@@ -187,6 +214,7 @@ class YFPhoto {
 	/**
 	 * Возвращает  информацию о владельце фотографии. На данный момент информация ограничивается логином пользователя на Яндексе, который указывается во вложенном теге atom:name
 	 * @return string
+	 * @access public
 	 */
 	public function getAuthor(){
 		return $this->author;
@@ -195,6 +223,7 @@ class YFPhoto {
 	/**
 	 * Возвращает название фотографии
 	 * @return string
+	 * @access public
 	 */
 	public function getTitle(){
 		return $this->title;
@@ -203,6 +232,7 @@ class YFPhoto {
 	/**
 	 * Возвращает время загрузки фотографии. Формат времени соответствует RFC3339.
 	 * @return string
+	 * @access public
 	 */
 	public function getPublishedOn(){
 		return $this->publishedOn;
@@ -212,6 +242,7 @@ class YFPhoto {
 	 * Возвращает время загрузки фотографии. Формат времени соответствует RFC3339.
 	 * Возвращает время последнего редактирования фотографии.
 	 * @return string
+	 * @access public
 	 */
 	public function getEditedOn(){
 		return $this->editedOn;
@@ -220,6 +251,7 @@ class YFPhoto {
 	/**
 	 * Возвращает время последнего значимого с точки зрения системы изменения альбома (в текущей версии API Фоток любое изменение считается значимым, вследствие чего значение atom:updated совпадает с app:edited. Формат времени соответствует RFC3339.
 	 * @return string
+	 * @access public
 	 */
 	public function getUpdatedOn(){
 		return $this->updatedOn;
@@ -228,6 +260,7 @@ class YFPhoto {
 	/**
 	 * Возвращает уровень доступа к фотографии "Для всех" (по умолчанию) Фотографию может увидеть любой желающий, даже не авторизованный на Яндекс.Фотках. "Для друзей" Фотография доступна загрузившему ее пользователю и всем его "друзьям". Используется совместная с Я.ру система "друзей". "Для себя" Фотографию может просматривать только загрузивший ее пользователь.
 	 * @return string
+	 * @access public
 	 */
 	public function getAccessLevel(){
 		return $this->accessLevel;
@@ -236,6 +269,7 @@ class YFPhoto {
 	/**
 	 * Возвращает флаг доступности фотографии только взрослой аудитории. Данный параметр может быть установлен только один раз: после того, как фото было помечено "только для взрослых", сбросить данную установку будет невозможно.
 	 * @return boolean
+	 * @access public
 	 */
 	public function isAdultPhoto(){
 		return $this->isAdultPhoto;
@@ -244,6 +278,7 @@ class YFPhoto {
 	/**
 	 * Возвращает флаг, запрещающий показ оригинала фотографии.
 	 * @return boolean
+	 * @access public
 	 */
 	public function getHideOriginalPhoto(){
 		return $this->hideOriginalPhoto;
@@ -252,6 +287,7 @@ class YFPhoto {
 	/**
 	 * Возвращает флаг, запрещающий комментирование фотографии.
 	 * @return boolean
+	 * @access public
 	 */
 	public function commentsDisabled(){
 		return $this->commentsDisabled;
@@ -260,6 +296,7 @@ class YFPhoto {
 	/**
 	 * Возвращает  ссылку на графический файл фотографии.  Для каждой фотографии создается несколько графических файлов разного размера. Тут хранится XL.
 	 * @return string
+	 * @access public
 	 */
 	public function getContent(){
 		return $this->content;
@@ -268,6 +305,7 @@ class YFPhoto {
 	/**
 	 * Возвращает ссылку на графический файл фотографии в оргинальном размере.
 	 * @return string
+	 * @access public
 	 */
 	public function getPhotoOriginalUrl(){
 		return $this->photoOriginalUrl;
@@ -276,6 +314,7 @@ class YFPhoto {
 	/**
 	 * Возвращает ссылку на графический файл фотографии с шириной 800px.
 	 * @return string
+	 * @access public
 	 */
 	public function getPhotoXLUrl(){
 		return $this->photoXLUrl;
@@ -284,6 +323,7 @@ class YFPhoto {
 	/**
 	 * Возвращает ссылку на графический файл фотографии с шириной 500px.
 	 * @return string
+	 * @access public
 	 */
 	public function getPhotoLUrl(){
 		return $this->photoLUrl;
@@ -292,6 +332,7 @@ class YFPhoto {
 	/**
 	 * Возвращает ссылку на графический файл фотографии с шириной 300px.
 	 * @return string
+	 * @access public
 	 */
 	public function getPhotoMUrl(){
 		return $this->photoMUrl;
@@ -300,6 +341,7 @@ class YFPhoto {
 	/**
 	 * Возвращает ссылку на графический файл фотографии с шириной 150px.
 	 * @return string
+	 * @access public
 	 */
 	public function getPhotoSUrl(){
 		return $this->photoSUrl;
@@ -308,6 +350,7 @@ class YFPhoto {
 	/**
 	 * Возвращает ссылку на графический файл фотографии с шириной 100px.
 	 * @return string
+	 * @access public
 	 */
 	public function getPhotoXSUrl(){
 		return $this->photoXSUrl;
@@ -316,6 +359,7 @@ class YFPhoto {
 	/**
 	 * Возвращает ссылку на графический файл фотографии с шириной 75px.
 	 * @return string
+	 * @access public
 	 */
 	public function getPhotoXXSUrl(){
 		return $this->photoXXSUrl;
@@ -324,6 +368,7 @@ class YFPhoto {
 	/**
 	 * Возвращает ссылку на графический файл фотографии с шириной 50px.
 	 * @return string
+	 * @access public
 	 */
 	public function getPhotoXXXSUrl(){
 		return $this->photoXXXSUrl;
@@ -332,6 +377,7 @@ class YFPhoto {
 	/**
 	 * Возвращает ссылку на ресурс фотографии. Данная ссылка может, например, понадобиться для обращения к ресурсу, если его описание было получено в составе коллекции.
 	 * @return string
+	 * @access public
 	 */
 	public function getSelfUrl(){
 		return $this->selfUrl;
@@ -340,6 +386,7 @@ class YFPhoto {
 	/**
 	 * Возвращает ссылку для редактирования ресурса фотографии.
 	 * @return string
+	 * @access public
 	 */
 	public function getEditUrl(){
 		return $this->editUrl;
@@ -348,6 +395,7 @@ class YFPhoto {
 	/**
 	 * Возвращает ссылку на web-страницу фотографии в интерфейсе Яндекс.Фоток
 	 * @return string
+	 * @access public
 	 */
 	public function getWebUrl(){
 		return $this->webUrl;
@@ -356,6 +404,7 @@ class YFPhoto {
 	/**
 	 * Возвращает ссылку для редактирования содержания ресурса фотографии (графического файла). Для каждой фотографии создается несколько графических файлов разного размера. Для доступа к фотографии в другом размере нужно изменить суффикс в вышеприведенном URL (см. Хранение графического файла фотографии).
 	 * @return string
+	 * @access public
 	 */
 	public function getEditMediaUrl(){
 		return $this->editMediaUrl;
@@ -364,6 +413,7 @@ class YFPhoto {
 	/**
 	 * Возвращает ссылку на альбом, в котором содержится фотография.
 	 * @return string
+	 * @access public
 	 */
 	public function getAlbumUrl(){
 		return $this->albumUrl;
@@ -375,6 +425,7 @@ class YFPhoto {
 	 * Вернет FALSE если альбом не был удален и TRUE если альбом был удален вызовом метода delete
 	 *
 	 * @return boolean
+	 * @access public
 	 */
 	public function isDeleted(){
 		return $this->isDeleted;
@@ -385,6 +436,7 @@ class YFPhoto {
 	 * @param string $xml Atom Entry фотографии
 	 * @param string $token токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то нельзя будет удалить или отредактировать фотографию, если не введете токен в функцию редактирования или удаления
 	 * @return void
+	 * @access public
 	 */
 	public function __construct($xml, $token=null){
 		libxml_use_internal_errors(true);
@@ -398,6 +450,7 @@ class YFPhoto {
 	 * @throws YFAuthenticationException|YFRequestException
 	 * @param string $token токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то нельзя будет удалить или отредактировать фотографию, если не введете токен в функцию редактирования или удаления
 	 * @return void
+	 * @access public
 	 */
 	public function delete($token){
 		if($token!==null){
@@ -429,6 +482,7 @@ class YFPhoto {
 	 * 
 	 * @param array $args ассоциативный массив, в котором хранятся аргументы, значения которых отличаются от значений по умолчанию. Ключи ассоциативного массива: title, xxx, comments, hide, access, album, token. Точное описание аргументов смотрите в описании метода edit
 	 * @return void
+	 * @access public
 	 */
 	public function edit($args=array()){
 
@@ -489,6 +543,7 @@ class YFPhoto {
 	 * @param string $album_url Ссылка на альбом, в котором содержится фотография. Нужно для перемещение фотографии между альбомами.
 	 * @param string $token Токен, подтверждающий аутентификацию пользователя. Если не задан, используется токен, который был передан конструктору. Если не задан и он, то метод вызовет исключение.
 	 * @return void
+	 * @access public
 	 */
 	public function editEx($title=null, $xxx=false, $disable_comments=false, $hide_original=false, $access="public", $album_url=null, $token=null){
 
@@ -579,12 +634,12 @@ class YFPhoto {
 			'Expect:'
 		));
 		$response = curl_exec($curl);
+		fclose($putData);
 		if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
 			throw new YFRequestException($response, E_ERROR);
 		}
 
 		$this->xml = $this->deleteXmlNamespace($response);
-		fclose($putData);
 		curl_close($curl);
 		$this->refresh();
 	}
@@ -594,6 +649,7 @@ class YFPhoto {
 	 * 
 	 * @throws YFRequestException|YFXMLErrorException
 	 * @return void
+	 * @access public
 	 */
 	public function refresh(){
 		$curl = curl_init();
@@ -621,6 +677,7 @@ class YFPhoto {
 	 * @throws YFXMLErrorException
 	 * @param string $xml XML содержаий описание фотографии в формате атома
 	 * @return void
+	 * @access private
 	 */
 	private function reloadXml($xml){
 		//Не проверяется формат XML. Вот неясно стоит ли его проверять или нет.
@@ -696,6 +753,7 @@ class YFPhoto {
 	 * 
 	 * @param string $xml XML содержащий информацию о пространстве имен
 	 * @return string
+	 * @access private
 	 */
 	private function deleteXmlNamespace($xml){
 		$pattern = "|(<[/]*)[a-z][^:\s>]*:([^:\s>])[\s]*|sui";

@@ -17,46 +17,55 @@
 class YFUser {	
 	/**
 	 * @var string RSA ключ, необходимый для получения токена (аутентификации пользователя)
+	 * @access protected
 	 */
 	protected $rsaKey = null;
 	
 	/**
 	 * @var string Идентификатор запроса, необходимый для получения токена (аутентификации пользователя)
+	 * @access protected
 	 */
 	protected $requestId = null;
 
 	/**
 	 * @var string Токен, подтверждающий, что пользователь аутентифицирован
+	 * @access protected
 	 */
 	protected $token = null;
 
 	/**
 	 * @var string Логин пользователя
+	 * @access protected
 	 */
 	protected $login = null;
 	
 	/**
 	 * @var string Пароль пользователя
+	 * @access protected
 	 */
 	protected $password = null;
 
 	/**
 	 * @var string Адрес, по которому можно получить кллекцию альбомов пользователя
+	 * @access protected
 	 */
 	protected $albumCollectionUrl = null;
 
 	/**
 	 * @var string Адрес, по которому можно получить кллекцию фотографий пользователя
+	 * @access protected
 	 */
 	protected $photoCollectionUrl = null;
 	
 	/**
 	 * @var YFAlbumCollection Коллекция альбомов пользователя
+	 * @access protected
 	 */
 	protected $albumCollection = array();
 
 	/**
 	 * @var YFPhotoCollection Коллекция фотографий пользователя
+	 * @access protected
 	 */
 	protected $photoCollection = array();
 	
@@ -64,6 +73,7 @@ class YFUser {
 	 * @param string $login Логин пользователя.
 	 * @param string $password Пароль пользователя.	 
 	 * @return void
+	 * @access public
 	 */
 	public function __construct($login, $password=null){
 		$this->login = $login;
@@ -71,16 +81,13 @@ class YFUser {
 		libxml_use_internal_errors(true);
 	}
 	
-	public function __get($name){
-		return $name;
-	}
-
 	/**
 	 * Возвращает токен
 	 *
 	 * @return string
+	 * @access public
 	 */
-	function getToken(){
+	public function getToken(){
 		return $this->token;
 	}
 
@@ -89,14 +96,16 @@ class YFUser {
 	 * 
 	 * @param string $token
 	 * @return void
+	 * @access public
 	 */
-	function setToken($token){
+	public function setToken($token){
 		$this->token = $token;
 	}
 
 	/**
 	 * @param string $name Имя коллекции альбомов. Если не указано, метод вернет массив, содержащий все коллекции.
 	 * @return array|YFAlbumCollection
+	 * @access public
 	 */
 	public function getAlbumCollection($name=null){
 		if($name===null) return $this->albumCollection;
@@ -108,6 +117,7 @@ class YFUser {
 	 * 
 	 * @param string $collection_name Имя коллекции фотографий. Если не указано, метод вернет массив, содержащий все коллекции.
 	 * @return array|YFPhotoCollection
+	 * @access public
 	 */
 	public function getPhotoCollection($collection_name=null){
 		if($collection_name===null) return $this->photoCollection;
@@ -119,6 +129,7 @@ class YFUser {
 	 *
 	 * @param $name Имя коллекции фотографий.
 	 * @return void
+	 * @access public
 	 */
 	public function removePhotoCollection($name){
 		unset($this->photoCollection[$name]);
@@ -129,6 +140,7 @@ class YFUser {
 	 *
 	 * @param string $name Имя коллекции альбомов.
 	 * @return void
+	 * @access public
 	 */
 	public function removeAlbumCollection($name){
 		unset($this->albumCollection[$name]);
@@ -141,6 +153,7 @@ class YFUser {
 	 *
 	 * @param string $name Имя новой коллекции
 	 * @return array|YFPhotoCollection
+	 * @access public
 	 */
 	public function addPhotoCollection($name){
 		$this->photoCollection[$name] = new YFPhotoCollection($this->photoCollectionUrl, $this->getToken());
@@ -155,6 +168,7 @@ class YFUser {
 	 * 
 	 * @param string $name Имя новой коллекции.
 	 * @return YFAlbumCollection
+	 * @access public
 	 */
 	public function addAlbumCollection($name){
 		$this->albumCollection[$name] = new YFAlbumCollection($this->albumCollectionUrl, $this->getToken());
@@ -169,6 +183,7 @@ class YFUser {
 	 *
 	 * @throws YFXMLException
 	 * @return void
+	 * @access public
 	 */
 	public function getServiceDocument(){
 		$curl = curl_init();
@@ -208,6 +223,7 @@ class YFUser {
 	 * @throws YFUserException|YFXMLException
 	 * @param string $password пароль пользователя
 	 * @return void
+	 * @access public
 	 */
 	public function authenticate($password=null){
 			
@@ -266,12 +282,20 @@ class YFUser {
 	 * @param string $key ключ шифрования
 	 * @param string $data данные, которые будут зашифрованы
 	 * @return string
+	 * @access public
 	 */
 	private function encryptYFRSA($key, $data){
 		if(function_exists("gmp_strval")===true) return $this->encryptYFRSAGMP($key, $data);
 		return $this->encryptYFRSABCMath($key, $data);
 	}
-		
+
+	/**
+	 * Этот метод переводит большое шестнадцатиричное число в десятичное, использует BCMath
+	 *
+	 * @param string $hex очень большое шестнадцатеричное число в виде строки
+	 * @return string
+	 * @access private
+	 */		
 	private function bchexdec($hex){
 			$dec = 0;
 			$len = strlen($hex);
@@ -281,6 +305,13 @@ class YFUser {
 			return $dec;
 		}
 	
+	/**
+	 * Этот метод переводит большое десятичное число в шестнадцатиричное, использует BCMath
+	 *
+	 * @param string $number очень большое десятичное число в виде строки
+	 * @return string
+	 * @access private
+	 */		
 	private function dec2hex($number){
 			$hexvalues = array('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F');
 			$hexval = '';
@@ -299,6 +330,7 @@ class YFUser {
 	 * @param string $key ключ шифрования
 	 * @param string $data данные, которые будут зашифрованы
 	 * @return string
+	 * @access private
 	 */	
 	private function encryptYFRSABCMath($key, $data){
 		$buffer = array();
@@ -362,6 +394,7 @@ class YFUser {
 	 * @param string $key ключ шифрования
 	 * @param string $data данные, которые будут зашифрованы
 	 * @return string
+	 * @access private
 	 */
 	private function encryptYFRSAGMP($key, $data){
 		$buffer = array();
@@ -422,6 +455,7 @@ class YFUser {
 	 * 
 	 * @param string $xml
 	 * @return string
+	 * @access private
 	 */
 	private function deleteXMLNameSpace($xml){
 		$pattern = "|(<[/]*)[a-z][^:\s>]*:([^:\s>])[\s]*|sui";

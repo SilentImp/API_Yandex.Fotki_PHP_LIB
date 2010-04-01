@@ -22,30 +22,35 @@ class YFPhotoCollection {
 	/**
 	 * Токен, подтверждающий аутентификацию пользователя
 	 * @var string
+	 * @access protected
 	 */
 	protected $token = null;
 
 	/**
 	 * Адрес коллекции
 	 * @var string
+	 * @access protected
 	 */
 	protected $url = null;
 	
 	/**
 	 * URL следующей страницы коллекции
 	 * @var string
+	 * @access protected
 	 */
 	protected $nextPageUrl = null;
 	
 	/**
 	 * Массив, содержащий страницы(свой массив для каждой страницы), содержащие фотографии коллекции
 	 * @var string
+	 * @access protected
 	 */
 	protected $photoList = array();
 	
 	/**
 	 * Идентификатор альбома, если применимо
 	 * @var string
+	 * @access protected
 	 */
 	protected $albumId = null;
 
@@ -56,6 +61,7 @@ class YFPhotoCollection {
 	 * @param string $token числовой идентификатор альбома
 	 * @param string $album_id токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то в коллекции будут показаны только ресурсы с уровнем доступа "для всех"
 	 * @return void
+	 * @access public
 	 */
 	public function __construct($url, $token=null, $album_id=null){
 		libxml_use_internal_errors(true);
@@ -69,6 +75,7 @@ class YFPhotoCollection {
 	 *
 	 * @return array|YFPhoto
 	 * @see YFPhoto
+	 * @access public
 	 */
 	 public function getList(){
 	 	return $this->photoList;
@@ -81,6 +88,7 @@ class YFPhotoCollection {
 	 * @param int $page номер страницы
 	 * @return array|YFPhoto
 	 * @see YFPhoto
+	 * @access public
 	 */
 	 public function getPage($page){
 			if(count($this->photoList)<($page-1)){
@@ -97,6 +105,7 @@ class YFPhotoCollection {
 	 * @param int $index номер альбома на странице
 	 * @return YFPhoto
 	 * @see YFPhoto
+	 * @access public
 	 */
 	 public function getAlbum($page,$index){
 			if(count($this->photoList)<($page-1)){
@@ -115,6 +124,7 @@ class YFPhotoCollection {
 	 * @param int $limit максимально допустимое количество элементов выборки. Если установлено, то по достижении указанного числа найденных фотографий поиск будет завершен. В противном случае будут проверены все альбомы выборки на всех страницах. Если равно 0, то игнорируется.
 	 * @return array|YHPhoto
 	 * @see YFPhoto
+	 * @access public
 	 */
 	public function getPhotosByTitle($title, $limit=null){
 		$photos = array();
@@ -138,6 +148,7 @@ class YFPhotoCollection {
 	 * @param string $photoTitle название фотографии. Обязательный аргумент.
 	 * @return YHPhoto
 	 * @see YFPhoto
+	 * @access public
 	 */
 	public function getPhotoByTitle($photoTitle){
 		foreach($this->photoList as $photo_page){
@@ -156,6 +167,7 @@ class YFPhotoCollection {
 	 * @param string $photoId идентификатор фотографии, которую вы хотите найти
 	 * @return YHPhoto
 	 * @see YFPhoto
+	 * @access public
 	 */
 	public function getPhotoById($photoId){
 		foreach($this->photoList as $photo_page){
@@ -175,6 +187,7 @@ class YFPhotoCollection {
 	 * @param string $photoId идентификатор фотографии, которую вы хотите удалить
 	 * @return void
 	 * @see YFPhoto
+	 * @access public
 	 */
 	public function deletePhotoById($photoId){
 		foreach($this->photoList as $photo_page){
@@ -195,6 +208,7 @@ class YFPhotoCollection {
 	 * @param int $limit Максимальное количество фотографий, которые будут удалены. Необязательный параметр.
 	 * @return void
 	 * @see YFPhoto
+	 * @access public
 	 */
 	public function deletePhotosByTitle($photoTitle,$limit=null){
 		if($limit!==null){
@@ -219,6 +233,7 @@ class YFPhotoCollection {
 	 * @param string $photoTitle Название фотогрфии, который вы хотите удалить
 	 * @return void
 	 * @see YFPhoto
+	 * @access public
 	 */
 	public function deletePhotoByTitle($photoTitle){
 		foreach($this->photoList as $photo_page){
@@ -239,6 +254,7 @@ class YFPhotoCollection {
 	 * @throws YFException|YFRequestException
 	 * @param array $args ассоциативный массив, в котором хранятся аргументы, значения которых отличаются от значений по умолчанию. Ключи ассоциативного массива: path, channel, platform, version, title, tags, yaru, access, album, comments, xxx, hide, private, token. Точное описание аргументов смотрите в описании метода add_photo.
 	 * @return array
+	 * @access public
 	 */
 	public function addPhoto($args = array()){
 
@@ -350,6 +366,7 @@ class YFPhotoCollection {
 	 * @param boolean $storage_private Флаг, закрывающий доступ к фотографии по URL со страниц вне домена Яндекс.Фоток. Значение по умолчанию: false.
 	 * @param string $token токен, подтверждающий аутентификацию пользователя. Обязательный аргумент.
 	 * @return array
+	 * @access public
 	 */
 	public function addPhotoEx($path, $pub_channel=null, $app_platform=null, $app_version=null, $title=null, $tags=array(), $yaru=1, $access_type="public", $album=null, $disable_comments=false, $xxx=false, $hide_orig=false, $storage_private=false, $token=null){
 		$path = realpath($path);
@@ -452,6 +469,7 @@ class YFPhotoCollection {
 	 * @throws YFLastPageException|YFRequestException|YFXMLException
 	 * @param array $args ассоциативный массив, в котором хранятся аргументы, значения которых отличаются от значений по умолчанию. Ключи ассоциативного массива: order, time, id, limit, token. Точное описание аргументов смотрите в описании метода search
 	 * @return void
+	 * @access public
 	 */
 	public function next(){
 		if($this->nextPageUrl===null){
@@ -466,6 +484,7 @@ class YFPhotoCollection {
 	 * @throws YFRequestException|YFXMLException
 	 * @param array $args ассоциативный массив, в котором хранятся аргументы, значения которых отличаются от значений по умолчанию. Ключи ассоциативного массива: order, time, id, limit, token. Точное описание аргументов смотрите в описании метода search
 	 * @return void
+	 * @access public
 	 */
 	public function search($args = array()){
 
@@ -512,6 +531,7 @@ class YFPhotoCollection {
 	 * @param int $limit Количество элементов на странице выдачи.
 	 * @param string $token Токен, подтверждающий аутентификацию пользователя. Если не задан, используется токен, который был передан конструктору. Если не задан и он, то метод вызовет исключение.
 	 * @return void
+	 * @access public
 	 */
 	public function searchEx($order="updated", $offset_time=null, $offset_id="", $limit=100, $token=null){
 		$this->photoList = array();
@@ -543,6 +563,7 @@ class YFPhotoCollection {
 	 * @throws YFRequestException|YFXMLException
 	 * @param string $url URL содержащий адрес коллекции, параметры сортировки, смещение и количество элементов на странице
 	 * @return void
+	 * @access private
 	 */
 	private function query($url){
 		$curl = curl_init();
@@ -587,6 +608,7 @@ class YFPhotoCollection {
 	 * 
 	 * @param string $xml XML содержащий информацию о пространстве имен
 	 * @return string
+	 * @access private
 	 */
 	private function deleteXmlNamespace($xml){
 		$pattern = "|(<[/]*)[a-z][^:\s>]*:([^:\s>])[\s]*|sui";

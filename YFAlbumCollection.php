@@ -21,23 +21,27 @@ class YFAlbumCollection {
 	/**
 	 * Токен, подтверждающий аутентификацию пользователя
 	 * @var string
+	 * @access protected
 	 */
 	protected $token = null;
 
 	/**
 	 * Адрес коллекции
 	 * @var string
+	 * @access protected
 	 */
 	protected $url = null;
 
 	/**
 	 * URL следующей страницы коллекции
 	 * @var string
+	 * @access protected
 	 */
 	protected $nextPageUrl = null;
 
 	/**
 	 * Массив, содержащий страницы(свой массив для каждой страницы), содержащие альбомы коллекции
+	 * @access protected
 	 */
 	protected $albumList = array();
 
@@ -48,6 +52,7 @@ class YFAlbumCollection {
 	 * @param string $url адрес коллекции
 	 * @param string $token	 
 	 * @return void
+	 * @access public
 	 */
 	public function __construct($url, $token=null){
 		libxml_use_internal_errors(true);
@@ -60,6 +65,7 @@ class YFAlbumCollection {
 	 *
 	 * @return array|YFAlbum
 	 * @see YFAlbum
+	 * @access public
 	 */
 	 public function getList(){
 	 	return $this->albumList;
@@ -71,6 +77,7 @@ class YFAlbumCollection {
 	 * @throws YFNotFoundException
 	 * @param int $pageNumber номер страницы
 	 * @return array|YFAlbum
+	 * @access public
 	 * @see YFAlbum
 	 */
 	 public function getPage($pageNumber){
@@ -87,6 +94,7 @@ class YFAlbumCollection {
 	 * @param int $pageNumber номер страницы
 	 * @param int $albumNumber номер альбома на странице
 	 * @return YFAlbum
+	 * @access public
 	 * @see YFAlbum
 	 */
 	 public function getAlbum($pageNumber,$albumNumber){
@@ -108,6 +116,7 @@ class YFAlbumCollection {
 	 * @param int $limit максимально допустимое количество элементов выборки. Если установлено, то по достижении указанного числа найденных альбомов поиск будет завершен. В противном случае будут проверены все альбомы выборки на всех страницах. Если равно 0, то игнорируется.
 	 * @return array|YFAlbum
 	 * @see YFAlbum
+	 * @access public
 	 */
 	public function getAlbumsByTitle($albumTitle, $limit=null){
 		$albums = array();
@@ -133,6 +142,7 @@ class YFAlbumCollection {
 	 * @param string $albumTitle название альбома. Обязательный аргумент.
 	 * @return YFAlbum
 	 * @see YFAlbum
+	 * @access public
 	 */
 	public function getAlbumByTitle($albumTitle){
 		$albums = array();
@@ -151,6 +161,7 @@ class YFAlbumCollection {
 	 * 
 	 * @param string $albumId идентификатор альбома, который вы хотите удалить
 	 * @return void
+	 * @access public
 	 */
 
 	public function deleteAlbumById($albumId){
@@ -171,6 +182,7 @@ class YFAlbumCollection {
 	 * @param string $albumTitle заголовок альбома, который вы хотите удалить
 	 * @see YFAlbum
 	 * @return void
+	 * @access public
 	 */
 	public function deleteAlbumByTitle($albumTitle){
 		foreach($this->albumList as $album_page){
@@ -191,6 +203,7 @@ class YFAlbumCollection {
 	 * @param string $password Пароль альбома. Необязательный аргумент.
 	 * @param string $token Токен, подтверждающий аутентификацию пользователя. Если не задан, используется токен, который был передан конструктору. Если не задан и он, то метод вызовет исключение.
 	 * @return void
+	 * @access public
 	 */
 	public function addAlbum($title, $summary="", $password="", $token=null){
 		$title=trim($title);
@@ -232,6 +245,7 @@ class YFAlbumCollection {
 	 * @throws YFLastPageException|YFRequestException|YFXMLException
 	 * @param array $args ассоциативный массив, в котором хранятся аргументы, значения которых отличаются от значений по умолчанию. Ключи ассоциативного массива: order, time, id, limit, token. Точное описание аргументов смотрите в описании метода search
 	 * @return void
+	 * @access public
 	 */
 	public function next(){
 		if($this->nextPageUrl===null){
@@ -246,6 +260,7 @@ class YFAlbumCollection {
 	 * @throws YFRequestException|YFXMLException
 	 * @param array $args ассоциативный массив, в котором хранятся аргументы, значения которых отличаются от значений по умолчанию. Ключи ассоциативного массива: order, time, id, limit, token. Точное описание аргументов смотрите в описании метода search
 	 * @return void
+	 * @access public
 	 */
 	public function search($args = array()){
 
@@ -292,6 +307,7 @@ class YFAlbumCollection {
 	 * @param int $limit Количество элементов на странице выдачи.
 	 * @param string $token Токен, подтверждающий аутентификацию пользователя. Если не задан, используется токен, который был передан конструктору. Если не задан и он, то метод вызовет исключение.
 	 * @return void
+	 * @access public
 	 */
 	public function searchEx($order="updated", $offset_time=null, $offset_id="", $limit=100, $token=null){
 		$this->albumList = array();
@@ -333,6 +349,7 @@ class YFAlbumCollection {
 	 * @throws YFRequestException|YFXMLException
 	 * @param string $url URL содержащий адрес коллекции, параметры сортировки, смещение и количество элементов на странице
 	 * @return void
+	 * @access private
 	 */
 	private function query($url){
 		$curl = curl_init();
@@ -375,6 +392,7 @@ class YFAlbumCollection {
 	 * 
 	 * @param string $xml XML содержащий информацию о пространстве имен
 	 * @return string
+	 * @access private
 	 */
 	private function deleteXmlNamespace($xml){
 		$pattern = "|(<[/]*)[a-z][^:\s>]*:([^:\s>])[\s]*|sui";

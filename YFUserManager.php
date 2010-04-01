@@ -19,13 +19,19 @@
  * @link http://code.websaints.net/
  */
 class YFUserManager {
-	private $userList = array();
+	/**
+	 * Массив содержащий всех пользователей, добавленных в процессе работы
+	 * @var YFUser
+	 * @access protected
+	 */
+	protected $userList = array();
 
 	/**
 	 * Текущий активный пользователь
 	 * @var YFUser
+	 * @access protected
 	 */
-	private $activeUser = null;
+	protected $activeUser = null;
 
 	/**
 	 * Позволяет сразу создать первого пользователя.
@@ -34,6 +40,7 @@ class YFUserManager {
 	 * @param string $login Логин пользователя. Если не указан, пользователь создан не будет.
 	 * @param string $password Пароль пользователя. Если указан логин, но не указан пароль, то пользователь будет создан, но не будет аутентифицирован.
 	 * @return YFUser
+	 * @access public
 	 */
 	public function __construct($login=null, $password=null){
 		if($login!==null){
@@ -45,6 +52,7 @@ class YFUserManager {
 	 * Возвращает текущего активного пользователя
 	 *
 	 * @return YFUser
+	 * @access public
 	 */
 	public function getCurrentUser(){
 		return $this->activeUser;
@@ -57,6 +65,7 @@ class YFUserManager {
 	 * @throws YFUserException
 	 * @param string $login Логин пользователя.
 	 * @return boolean
+	 * @access public
 	 */
 	public function removeUser($login){
 		if(!array_key_exists($login, $this->userList)){
@@ -77,6 +86,7 @@ class YFUserManager {
 	 * @param string $login Логин пользователя.
 	 * @param string $password Пароль пользователя. Если не указан, то пользователь будет создан, но не будет аутентифицирован.
 	 * @return YFUser
+	 * @access public
 	 */
 	public function addUser($login, $password=null){
 		if(array_key_exists($login, $this->userList)){
@@ -97,6 +107,7 @@ class YFUserManager {
 	 * @throws YFUserException
 	 * @param string $login Логин пользователя. Обязательный аргумент.
 	 * @return YFUser
+	 * @access public
 	 */
 	public function selectActiveUser($login){
 		if(!array_key_exists($login,$this->userList)){

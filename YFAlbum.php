@@ -24,6 +24,7 @@ class YFAlbum {
 	 * приложению однозначно определить некоторый Atom Entry (например,
 	 * с целью выявления дубликатов при постраничной выдаче коллекций).
 	 * @var string
+	 * @access protected
 	 */
 	protected $id = null;
 		
@@ -32,58 +33,68 @@ class YFAlbum {
 	 * На данный момент информация ограничивается логином пользователя на Яндексе,
 	 * который указывается во вложенном теге.
 	 * @var string
+	 * @access protected
 	 */
 	protected $author = null;
 		
 	/**
 	 * Название альбома
 	 * @var string
+	 * @access protected
 	 */
 	protected $title = null;
 		
 	/**
 	 * Описание альбома
 	 * @var string
+	 * @access protected
 	 */
 	protected $summary = null;
 
 	/**
 	 * Ссылка на ресурс альбома
 	 * @var string
+	 * @access protected
 	 */
 	protected $albumUrl = null;
 
 	/**
 	 * Ссылка для редактирования ресурса альбома
 	 * @var string
+	 * @access protected
 	 */
 	protected $albumEditUrl = null;
 		
 	/**
 	 * Ссылка на коллекцию фотографий альбома
 	 * @var string
+	 * @access protected
 	 */
 	protected $albumPhotosUrl = null;
 		
 	/**
 	 * @todo По идее это разметка для Яндекс карт
 	 * @var string
+	 * @access protected
 	 */
 	protected $ymapsmlUrl = null;
 		
 	/**
 	 * Ссылка на веб-страницу альбома в интерфейсе Яндекс.Фоток
 	 * @var string
+	 * @access protected
 	 */
 	protected $albumPageUrl = null;
 	
 	/**
 	 * Время создания альбома
+	 * @access protected
 	 */
 	protected $createdOn = null;
 
 	/**
 	 * Время последнего редактирования альбома
+	 * @access protected
 	 */
 	protected $updatedOn = null;
 
@@ -91,47 +102,55 @@ class YFAlbum {
 	 * Время последнего значимого с точки зрения системы изменения альбома
 	 * (в текущей версии API Фоток любое изменение считается значимым,
 	 * вследствие чего значение atom:updated совпадает с app:edited.
+	 * @access protected
 	 */
 	protected $editedOn = null;
 	
 	/**
 	 * Флаг защиты альбома паролем
 	 * @var boolean
+	 * @access protected
 	 */
 	protected $isProtected = false;
 
 	/**
 	 * Количество фотографий в альбоме
 	 * @var int
+	 * @access protected
 	 */
 	protected $imageCount = null;
 
 	/**
 	 * XMLка с описанием альбома	 
+	 * @access protected
 	 */
 	protected $xml = null;
 	
 	/**
 	 * Токен, подтверждающий аутентификацию пользователя
 	 * @var string
+	 * @access protected
 	 */
 	protected $token = null;
 
 	/**
 	 * Флаг, равный true, если альбом был удален
 	 * @var boolean
+	 * @access protected
 	 */
 	protected $isDeleted = false;
 
 	/**
 	 * Массив содержащий коллекцию фотографий альбома
 	 * @var array
+	 * @access protected
 	 */
 	protected $photoCollection = array();
 
 	/**
 	 * Возвращает идентификатор Atom Entry альбома.	 
 	 * @return string
+	 * @access public
 	 */
 	public function getId(){
 		return $this->id;
@@ -140,6 +159,7 @@ class YFAlbum {
 	/**
 	 * Возвращает информацию о владельце альбома.
 	 * @return string
+	 * @access public
 	 */
 	public function getAuthor(){
 		return $this->author;
@@ -148,6 +168,7 @@ class YFAlbum {
 	/**
 	 * Возвращает описание альбома
 	 * @return string
+	 * @access public
 	 */
 	public function getSummary(){
 		return $this->summary;
@@ -156,6 +177,7 @@ class YFAlbum {
 	/**
 	 * Возвращает название альбома	 
 	 * @return string
+	 * @access public
 	 */
 	public function getTitle(){
 		return $this->title;
@@ -164,6 +186,7 @@ class YFAlbum {
 	/**
 	 * Возвращает ссылку на ресурс альбома
 	 * @return string
+	 * @access public
 	 */
 	public function getAlbumUrl(){
 		return $this->albumUrl;
@@ -172,6 +195,7 @@ class YFAlbum {
 	/**
 	 * Возвращает ссылку для редактирования ресурса альбома
 	 * @return string
+	 * @access public
 	 */
 	public function getAlbumEditUrl(){
 		return $this->albumEditUrl;
@@ -180,6 +204,7 @@ class YFAlbum {
 	/**
 	 * Возвращает ссылку на коллекцию фотографий альбома
 	 * @return string
+	 * @access public
 	 */
 	public function getAlbumPhotosUrl(){
 		return $this->albumPhotosUrl;
@@ -188,6 +213,7 @@ class YFAlbum {
 	/**
 	 * По идее возвращает разметкау для Яндекс карт
 	 * @return string
+	 * @access public
 	 */	
 	public function getYmapsmlUrl(){
 		return $this->ymapsmlUrl;
@@ -196,6 +222,7 @@ class YFAlbum {
 	/**
 	 * Возвращает ссылку на веб-страницу альбома в интерфейсе Яндекс.Фоток
 	 * @return string
+	 * @access public
 	 */
 	public function getAlbumPageUrl(){
 		return $this->albumPageUrl;
@@ -204,6 +231,7 @@ class YFAlbum {
 	/**
 	 * Возвращает время создания альбома
 	 * @return string
+	 * @access public
 	 */	
 	public function getCreatedOn(){
 		return $this->createdOn;
@@ -212,6 +240,7 @@ class YFAlbum {
 	/**
 	 * Возвращает время последнего редактирования альбома
 	 * @return string
+	 * @access public
 	 */	
 	public function getUpdatedOn(){
 		return $this->updatedOn;
@@ -222,6 +251,7 @@ class YFAlbum {
 	 * (в текущей версии API Фоток любое изменение считается значимым,
 	 * вследствие чего значение atom:updated совпадает с app:edited.
 	 * @return string
+	 * @access public
 	 */		
 	public function getEditedOn(){
 		return $this->editedOn;
@@ -230,6 +260,7 @@ class YFAlbum {
 	/**
 	 * Флаг защиты альбома паролем
 	 * @return boolean
+	 * @access public
 	 */
 	public function isProtected(){
 		return $this->isProtected;
@@ -238,6 +269,7 @@ class YFAlbum {
 	/**
 	 * Количество фотографий в альбоме
 	 * @return int
+	 * @access public
 	 */
 	public function getImageCount(){
 		return $this->imageCount;
@@ -246,6 +278,7 @@ class YFAlbum {
 	/**
 	 * XML с описанием альбома
 	 * @return boolean
+	 * @access public
 	 */
 	public function getXml(){
 		return $this->xml;
@@ -254,6 +287,7 @@ class YFAlbum {
 	/**
 	 * Проверяет был ли альбом удален вызовом метода delete
 	 * @return bool
+	 * @access public
 	 */
 	public function isDeleted(){
 		return $this->isDeleted;
@@ -266,6 +300,7 @@ class YFAlbum {
 	 * @param string $xml Atom Entry альбома
 	 * @param string $token аутентификационный токен пользователя, если не был задан, то будет использован токен установленный ранее, в том числе через конструктор
 	 * @return void
+	 * @access public
 	 */
 	public function __construct($xml, $token=null){
 		libxml_use_internal_errors(true);
@@ -280,6 +315,7 @@ class YFAlbum {
 	 * 
 	 * @param string $name имя коллекции фотографий
 	 * @return YFPhotoCollection
+	 * @access public
 	 */
 	public function addPhotoCollection($name){
 		$id = explode(":", $this->id);
@@ -296,6 +332,7 @@ class YFAlbum {
 	 *
 	 * @param string $name имя коллекции фотографий
 	 * @return YFPhotoCollection
+	 * @access public
 	 */
 	public function getPhotoCollection($name=null){
 		if($name===null)
@@ -309,6 +346,7 @@ class YFAlbum {
 	 *
 	 * @param string $name имя коллекции, которая будет удалена
 	 * @return void
+	 * @access public
 	 */
 	public function removePhotoCollection($name){
 		unset($this->photoCollection[$name]);
@@ -319,6 +357,7 @@ class YFAlbum {
 	 *
 	 * @throws YFRequestException
 	 * @return void
+	 * @access public
 	 */
 	public function refresh(){
 		$curl = curl_init();
@@ -350,6 +389,7 @@ class YFAlbum {
 	 * @param string $password Пароль альбома. Если выставлена пустая строка, то пароль будет снят.
 	 * @param string $token аутентификационный токен пользователя, если не был задан, то будет использован токен установленный ранее, в том числе через конструктор
 	 * @return void
+	 * @access public
 	 */
 	public function edit($title=null, $summary=null, $password=null, $token=null){
 		if($title===null&&$summary===null&&$password===null){
@@ -420,12 +460,13 @@ class YFAlbum {
 			'Expect:'
 		));
 		$response = curl_exec($curl);
+		fclose($putData);
+	
 		if(curl_getinfo($curl, CURLINFO_HTTP_CODE)!=200){
 			throw new YFRequestError($response, curl_getinfo($curl, CURLINFO_HTTP_CODE));
 		}
 
 		$this->xml = $this->deleteXmlNamespace($response);
-		fclose($putData);
 		curl_close($curl);
 		$this->refresh();
 	}
@@ -437,6 +478,7 @@ class YFAlbum {
 	 * @throws YFAuthenticationException|YFRequestException
 	 * @param string $token аутентификационный токен пользователя, если не был задан, то будет использован токен установленный ранее, в том числе через конструктор
 	 * @return void
+	 * @access public
 	 */
 	public function delete($token=null){
 		if($token!==null){
@@ -470,6 +512,7 @@ class YFAlbum {
 	 * @throws YFXMLException
 	 * @param string $xml XML содержащий информацию об Альбоме
 	 * @return void
+	 * @access private
 	 */
 	private function reloadXml($xml){
 		$this->xml = '<?xml version="1.0" encoding="UTF-8"?>'.$xml;
@@ -520,6 +563,7 @@ class YFAlbum {
 	 * 
 	 * @param string $xml XML содержащий информацию о пространстве имен
 	 * @return string
+	 * @access private
 	 */
 	private function deleteXmlNamespace($xml){
 		$pattern = "|(<[/]*)[a-z][^:\s>]*:([^:\s>])[\s]*|sui";
