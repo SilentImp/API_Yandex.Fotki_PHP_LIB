@@ -8,7 +8,7 @@
  */
  
 /**
- * Класс, который позволяет вам работать с фотографией
+ * Класс, который позволяет вам работать с коллекцией фотографий
  *
  * @throws YFAuthenticationErrorException|YFException|YFRquestException|YFXMLErrorException|YFNotFoundException
  * @package YandexFotki
@@ -120,7 +120,7 @@ class YFPhotoCollection {
 		$photos = array();
 		foreach($this->photoList as $photo_page){
 			foreach($photo_page as $photo){
-				if($photo->get_title()==$title){
+				if($photo->getTitle()==$title){
 					$photos[] = $photo;
 					if($limit!=null&&(int)$limit>0&&count($photos)==(int)$limit){
 						break 2;
@@ -142,7 +142,7 @@ class YFPhotoCollection {
 	public function getPhotoByTitle($photoTitle){
 		foreach($this->photoList as $photo_page){
 			foreach($photo_page as $photo){
-				if($photo->get_title()==$photoTitle){
+				if($photo->getTitle()==$photoTitle){
 					return $photo;
 				}
 			}
@@ -202,7 +202,7 @@ class YFPhotoCollection {
 		}
 		foreach($this->photoList as $photo_page){
 			foreach($photo_page as $photo){
-				if($photo->get_title()==$photoTitle){
+				if($photo->getTitle()==$photoTitle){
 					$photo->delete();
 					if($limit!==null){
 						$limit--;
@@ -223,7 +223,7 @@ class YFPhotoCollection {
 	public function deletePhotoByTitle($photoTitle){
 		foreach($this->photoList as $photo_page){
 			foreach($photo_page as $photo){
-				if($photo->get_title()==$photoTitle){
+				if($photo->getTitle()==$photoTitle){
 					$photo->delete();
 					return;
 				}

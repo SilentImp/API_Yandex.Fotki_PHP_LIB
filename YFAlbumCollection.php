@@ -113,7 +113,7 @@ class YFAlbumCollection {
 		$albums = array();
 		foreach($this->albumList as $album_page){
 			foreach($album_page as $album){
-				if($album->get_title()==$albumTitle){
+				if($album->getTitle()==$albumTitle){
 					$albums[] = $album;
 					if($limit!=null&&(int)$limit>0&&count($albums)==(int)$limit){
 						break 2;
@@ -138,7 +138,7 @@ class YFAlbumCollection {
 		$albums = array();
 		foreach($this->albumList as $album_page){
 			foreach($album_page as $album){
-				if($album->get_title()==$albumTitle){
+				if($album->getTitle()==$albumTitle){
 					return $album;
 				}
 			}
@@ -175,7 +175,7 @@ class YFAlbumCollection {
 	public function deleteAlbumByTitle($albumTitle){
 		foreach($this->albumList as $album_page){
 			foreach($album_page as $album){
-				if($album->get_title()==$albumTitle){
+				if($album->getTitle()==$albumTitle){
 					$album->delete();
 				}
 			}
