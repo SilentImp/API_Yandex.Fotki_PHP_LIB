@@ -11,7 +11,7 @@
  * Класс, который позволяет вам работать с коллекцией альбомов пользователя
  * 
  * @package YandexFotki
- * @throws YFException|YFRequestException|YFXMLException|YFNotFoundException
+ * @throws YFException|YFRequestException|YFXMLException
  * @author SilentImp <ravenb@mail.ru>
  * @link http://twitter.com/SilentImp/
  * @link http://silentimp.habrahabr.ru/
@@ -74,7 +74,7 @@ class YFAlbumCollection {
 	/**
 	 * Возвращает страницу коллекции альбомов
 	 *
-	 * @throws YFNotFoundException
+	 * @throws YFException
 	 * @param int $pageNumber номер страницы
 	 * @return array|YFAlbum
 	 * @access public
@@ -90,7 +90,7 @@ class YFAlbumCollection {
 	/**
 	 * Возвращает альбом
 	 *
-	 * @throws YFNotFoundException
+	 * @throws YFException
 	 * @param int $pageNumber номер страницы
 	 * @param int $albumNumber номер альбома на странице
 	 * @return YFAlbum
@@ -138,7 +138,7 @@ class YFAlbumCollection {
 	 * 
 	 * Возвращает первый найденный альбом с указанным названием
 	 *
-	 * @throws YFNotFoundException
+	 * @throws YFException
 	 * @param string $albumTitle название альбома. Обязательный аргумент.
 	 * @return YFAlbum
 	 * @see YFAlbum
@@ -197,7 +197,7 @@ class YFAlbumCollection {
 	/**
 	 * Создает новый альбом. Внимание! Не забудьте обновить коллекцию.
 	 * 
-	 * @throws YFRequestException|YFRequestError
+	 * @throws YFRequestException|YFException
 	 * @param string $title Заголовок альбома. Обязательный аргумент.
 	 * @param string $summary Описание альбома. Необязательный аргумент.
 	 * @param string $password Пароль альбома. Необязательный аргумент.
@@ -209,6 +209,9 @@ class YFAlbumCollection {
 		$title=trim($title);
 		$summary=trim($summary);
 		$password=trim($password);
+		$title=htmlentities($title,ENT_COMPAT,"UTF-8");
+		$summary=htmlentities($summary,ENT_COMPAT,"UTF-8");
+		$password=htmlentities($password,ENT_COMPAT,"UTF-8");
 		
 		if(empty($title)){
 			throw new YFException("Не задан заголовок альбома", E_ERROR, null, "titleNotSet");

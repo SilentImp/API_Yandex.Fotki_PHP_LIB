@@ -10,7 +10,7 @@
 /**
  * Класс, который позволяет вам работать с фотографией
  *
- * @throws YFAuthenticationErrorException|YFException|YFRquestException|YFXMLErrorException
+ * @throws YFException|YFRequestException|YFXMLException
  * @package YandexFotki
  * @author SilentImp <ravenb@mail.ru>
  * @link http://twitter.com/SilentImp/
@@ -45,7 +45,7 @@ class YFPhoto {
 	 * @var string
 	 * @access protected
 	 */
-	protected $exifDate=null;
+	protected $createdOn=null;
 
 	/**
 	 * Время загрузки фотографии. Формат времени соответствует RFC3339.
@@ -239,7 +239,15 @@ class YFPhoto {
 	}
 
 	/**
-	 * Возвращает время загрузки фотографии. Формат времени соответствует RFC3339.
+	 * Дата создания фотографии согласно ее EXIF-данным. Формат времени соответствует RFC3339 без указания часового пояса.
+	 * @return string
+	 * @access public
+	 */
+	public function getCreatedOn(){
+		return $this->createdOn;
+	}
+
+	/**
 	 * Возвращает время последнего редактирования фотографии.
 	 * @return string
 	 * @access public
@@ -447,7 +455,7 @@ class YFPhoto {
 	/**
 	 * Удаляет фотографию. В случае успешного удаления фотография будет помечена, как удаленная. Провреить удлаен ли объект можно с помощью метода is_dead
 	 * 
-	 * @throws YFAuthenticationException|YFRequestException
+	 * @throws YFException|YFRequestException
 	 * @param string $token токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то нельзя будет удалить или отредактировать фотографию, если не введете токен в функцию редактирования или удаления
 	 * @return void
 	 * @access public
@@ -554,7 +562,7 @@ class YFPhoto {
 	/**
 	 * Редактирует свойства фотографии
 	 * 
-	 * @throws YFRequestException|YFAuthenticationErrorException|YFXMLErrorException
+	 * @throws YFRequestException|YFException|YFXMLErrorException
 	 * @param string $title Название фотографии.
 	 * @param boolean $xxx Флаг «для взрослых», write-only (можно только установить, снять нельзя). Значение по умолчанию: "false".
 	 * @param boolean $disable_comments Флаг запрета комментариев. Значение по умолчанию: "false".
@@ -578,7 +586,7 @@ class YFPhoto {
 		}
 
 		if($title!=null&&$title!=$this->title){
-			$this->title = $title;
+			$this->title = htmlentities($title,ENT_COMPAT,"UTF-8");
 			$changes = true;
 		}
 
@@ -607,7 +615,7 @@ class YFPhoto {
 		}
 
 		if($album_url!=null&&$album_url!=$this->albumUrl){
-			$this->albumUrl = $album_url;
+			$this->albumUrl = htmlentities($album_url,ENT_COMPAT,"UTF-8");
 			$changes = true;
 		}
 
@@ -623,19 +631,19 @@ class YFPhoto {
 							<name>'.$this->author.'</name>
 						</author>
 						<link href="'.$this->selfUrl.'" rel="self" />
-						<link href="'.$this->author.'" rel="edit" />
-						<link href="'.$this->author.'" rel="alternate" />
-						<link href="'.$this->author.'" rel="edit-media" />
-						<link href="'.$this->author.'" rel="album" />
-						<published>'.$this->author.'</published>
-						<app:edited>'.$this->author.'</app:edited>
-						<updated>'.$this->author.'</updated>
-						<f:created>'.$this->author.'</f:created>
-						<f:access value="'.$this->author.'" />
-						<f:xxx value="'.$this->author.'" />
-						<f:hide_original value="'.$this->author.'" />
-						<f:disable_comments value="'.$this->author.'" />
-						<content src="'.$this->author.'" type="image/*" />
+						<link href="'.$this->editUrl.'" rel="edit" />
+						<link href="'.$this->webUrl.'" rel="alternate" />
+						<link href="'.$this->editMediaUrl.'" rel="edit-media" />
+						<link href="'.$this->albumUrl.'" rel="album" />
+						<published>'.$this->publishedOn.'</published>
+						<app:edited>'.$this->editedOn.'</app:edited>
+						<updated>'.$this->updatedOn.'</updated>
+						<f:created>'.$this->createdOn.'</f:created>
+						<f:access value="'.$this->accessLevel.'" />
+						<f:xxx value="'.$this->isAdultPhoto.'" />
+						<f:hide_original value="'.$this->hideOriginalPhoto.'" />
+						<f:disable_comments value="'.$this->commentsDisabled.'" />
+						<content src="'.$this->content.'" type="image/*" />
 					</entry>';
 
 		fwrite($putData, $message);
@@ -758,7 +766,7 @@ class YFPhoto {
 		$this->title = $sxml->title;
 		$this->publishedOn = $sxml->published;
 		$this->editedOn = $sxml->edited;
-		$this->exifDate = $sxml->created;
+		$this->createdOn = $sxml->created;
 		$this->updatedOn = $sxml->updated;
 
 		if($sxml->xxx->attributes()->value=="false"){

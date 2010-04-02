@@ -402,7 +402,7 @@ class YFAlbum {
 	/**
 	 * Редактирует данные альбома
 	 *
-	 * @throws RequestError|YFAuthenticationException|YFException
+	 * @throws YFRequestException|YFException
 	 * @param string $title Название альбома
 	 * @param string $summary Описание альбома
 	 * @param string $password Пароль альбома. Если выставлена пустая строка, то пароль будет снят.
@@ -425,13 +425,13 @@ class YFAlbum {
 		}
 
 		if($title!=null){
-			$this->title = (string)$title;
+			$this->title = htmlentities((string)$title,ENT_COMPAT,"UTF-8");
 		}
 		if($summary!=null){
-			$this->summary = (string)$summary;
+			$this->summary = htmlentities((string)$summary,ENT_COMPAT,"UTF-8");
 		}
 		if($password!=null){
-			$this->password = (string)$password;
+			$this->password = htmlentities((string)$password,ENT_COMPAT,"UTF-8");
 		}
 
 		$putData = tmpfile();
@@ -520,7 +520,7 @@ class YFAlbum {
 	 * Удаляет альбом. В случае успешного удаления альбом будет помечен, как удаленный.
 	 * Провреить удлаен ли объект можно с помощью метода isDeleted.
 	 *
-	 * @throws YFAuthenticationException|YFRequestException
+	 * @throws YFRequestException|YFException
 	 * @param string $token аутентификационный токен пользователя, если не был задан, то будет использован токен установленный ранее, в том числе через конструктор
 	 * @return void
 	 * @access public

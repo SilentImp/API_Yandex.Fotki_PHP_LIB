@@ -10,7 +10,7 @@
 /**
  * Класс, который позволяет вам работать с коллекцией фотографий
  *
- * @throws YFAuthenticationErrorException|YFException|YFRquestException|YFXMLErrorException|YFNotFoundException
+ * @throws YFException|YFRquestException|YFXMLException
  * @package YandexFotki
  * @author SilentImp <ravenb@mail.ru>
  * @link http://twitter.com/SilentImp/
@@ -144,7 +144,7 @@ class YFPhotoCollection {
 	/**
 	 * Осуществляет поиск по коллекции фотографии с заданным заголовком. Возвращает первую найденую. Если поиск не дал результата, то вызовет исключение.
 	 * 
-	 * @throws YFNotFoundException
+	 * @throws YFException
 	 * @param string $photoTitle название фотографии. Обязательный аргумент.
 	 * @return YHPhoto
 	 * @see YFPhoto
@@ -164,6 +164,7 @@ class YFPhotoCollection {
 	/**
 	 * Ищет в коллекции фотографию по заданному id
 	 * 
+	 * @throws YFException
 	 * @param string $photoId идентификатор фотографии, которую вы хотите найти
 	 * @return YHPhoto
 	 * @see YFPhoto
@@ -369,7 +370,9 @@ class YFPhotoCollection {
 	 * @access public
 	 */
 	public function addPhotoEx($path, $pub_channel=null, $app_platform=null, $app_version=null, $title=null, $tags=array(), $yaru=1, $access_type="public", $album=null, $disable_comments=false, $xxx=false, $hide_orig=false, $storage_private=false, $token=null){
+		
 		$path = realpath($path);
+		
 		if(!file_exists($path)){
 			throw new YFException("Файл, содержащий изображение, не найден", E_ERROR, null, "imageNotFound");
 		}
@@ -383,24 +386,25 @@ class YFPhotoCollection {
 
 		$url = array("image"=>"@".$path);
 
+
 		if($pub_channel!==null){
-			$url["pub_channel"]=$pub_channel;
+			$url["pub_channel"]=htmlentities($pub_channel,ENT_COMPAT,"UTF-8");
 		}
 
 		if($app_platform!==null){
-			$url["app_platform"]=$app_platform;
+			$url["app_platform"]=htmlentities($app_platform,ENT_COMPAT,"UTF-8");
 		}
 
 		if($app_version!==null){
-			$url["app_version"]=$app_version;
+			$url["app_version"]=htmlentities($app_version,ENT_COMPAT,"UTF-8");
 		}
 
 		if($title!==null){
-			$url["title"]=$title;
+			$url["title"]=htmlentities($title,ENT_COMPAT,"UTF-8");
 		}
 
 		if(count($tags)>0){
-			$url["tags"]=implode(",", $tags);
+			$url["tags"]=htmlentities(implode(",", $tags),ENT_COMPAT,"UTF-8");
 		}
 
 		if(!in_array($yaru, array(0,1))){
@@ -416,7 +420,7 @@ class YFPhotoCollection {
 		}
 
 		if($album!==null){
-			$url["album"]=$album;
+			$url["album"]=htmlentities($album,ENT_COMPAT,"UTF-8");
 		}else if($this->albumId!==null){
 			$url["album"]=$this->albumId;
 		}

@@ -11,7 +11,7 @@
  * Позволяет провести аутентификацию пользователя на сервисе Яндекс.Фотки и
  * получить коллекции фотографий и альбомов пользователя.
  *
- * @throws YFUserException|YFXMLException|YFRequestException|YFException
+ * @throws YFXMLException|YFRequestException|YFException
  * @package YandexFotki
  */
 class YFUser {	
