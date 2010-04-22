@@ -112,8 +112,8 @@ class YFSecurity {
 		$buffer = array();
 		list($nstr, $estr) = explode('#', $key);
 		
-		$nv = $this->bchexdec($nstr);
-		$ev = $this->bchexdec($estr);
+		$nv = YFSecurity::bchexdec($nstr);
+		$ev = YFSecurity::bchexdec($estr);
 		
 		$stepSize = strlen($nstr)/2 - 1;
 		$prev_crypted = array();
@@ -136,7 +136,7 @@ class YFSecurity {
 				$plain = bcadd($plain,$pow_mult);
 			}
 			$plain_pow = bcpowmod($plain, $ev, $nv);
-			$plain_pow_str = strtoupper($this->dec2hex($plain_pow));
+			$plain_pow_str = strtoupper(YFSecurity::dec2hex($plain_pow));
 			$hex_result = array();
 			
 			for($k=0;$k<(strlen($nstr)-strlen($plain_pow))+ 1;$k++){
