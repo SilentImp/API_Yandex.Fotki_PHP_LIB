@@ -81,6 +81,9 @@ class YFAlbumCollection {
 	 * @see YFAlbum
 	 */
 	 public function getPage($pageNumber){
+	 		
+			settype($pageNumber,"integer");
+	 	
 			if(count($this->albumList)<($pageNumber-1)){
 				throw new YFException("Не найдена страница с указанным номером", E_ERROR, null, "pageNotFound");
 			}
@@ -98,6 +101,10 @@ class YFAlbumCollection {
 	 * @see YFAlbum
 	 */
 	 public function getAlbum($pageNumber,$albumNumber){
+			
+			settype($pageNumber,"integer");
+			settype($albumNumber,"integer");
+	 	
 			if(count($this->albumList)<($pageNumber-1)){
 				throw new YFException("Не найдена страница с указанным номером", E_ERROR, null, "pageNotFound");
 			}
@@ -119,6 +126,9 @@ class YFAlbumCollection {
 	 * @access public
 	 */
 	public function getAlbumsByTitle($albumTitle, $limit=null){
+		
+		YFsecurity::clean($albumTitle);
+		
 		$albums = array();
 		foreach($this->albumList as $album_page){
 			foreach($album_page as $album){
@@ -145,6 +155,9 @@ class YFAlbumCollection {
 	 * @access public
 	 */
 	public function getAlbumByTitle($albumTitle){
+		
+		YFsecurity::clean($albumTitle);
+		
 		$albums = array();
 		foreach($this->albumList as $album_page){
 			foreach($album_page as $album){
@@ -165,6 +178,9 @@ class YFAlbumCollection {
 	 */
 
 	public function deleteAlbumById($albumId){
+		
+		YFsecurity::clean($albumId);
+		
 		foreach($this->albumList as $album_page){
 			foreach($album_page as $album){
 				$parts = explode(":", $album->get_id());
@@ -185,6 +201,9 @@ class YFAlbumCollection {
 	 * @access public
 	 */
 	public function deleteAlbumByTitle($albumTitle){
+		
+		YFsecurity::clean($albumTitle);
+		
 		foreach($this->albumList as $album_page){
 			foreach($album_page as $album){
 				if($album->getTitle()==$albumTitle){
@@ -206,13 +225,11 @@ class YFAlbumCollection {
 	 * @access public
 	 */
 	public function addAlbum($title, $summary="", $password="", $token=null){
-		$title=trim($title);
-		$summary=trim($summary);
-		$password=trim($password);
-		$title=htmlentities($title,ENT_COMPAT,"UTF-8");
-		$summary=htmlentities($summary,ENT_COMPAT,"UTF-8");
-		$password=htmlentities($password,ENT_COMPAT,"UTF-8");
 		
+		YFsecurity::clean($title);
+		YFsecurity::clean($summary);
+		YFsecurity::clean($password);
+
 		if(empty($title)){
 			throw new YFException("Не задан заголовок альбома", E_ERROR, null, "titleNotSet");
 		}
@@ -227,6 +244,17 @@ class YFAlbumCollection {
 
 		$body='<entry xmlns="http://www.w3.org/2005/Atom" xmlns:f="yandex:fotki"><title>'.$title.'</title><summary>'.$summary.'</summary><f:password>'.$password.'</f:password></entry>';
 
+		$connect = new YFConnect();
+		$connect->setUrl($this->url);
+		$connect->setToken($this->token);
+		$connect->setPost($body);
+		$connect->addHeader('Content-Type: application/atom+xml; charset=utf-8; type=entry');
+		$connect->exec();
+		$code = $connect->getCode();
+		$xml = $connect->getResponce();
+		unset($connect);
+
+		/*
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $this->url);
 		curl_setopt($curl, CURLOPT_HEADER, false);
@@ -239,11 +267,12 @@ class YFAlbumCollection {
 			'Content-Type: application/atom+xml; charset=utf-8; type=entry'
 		));
 		$xml = curl_exec($curl);
-		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		$code = (string)curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close($curl);
+		*/
 	
 		switch((int)$code){
-			case 200:
+			case 201:
 				//если код не 200 и не оговоренные в документации Яндекс ошибки, то будет вызвано прерывание общего типа.
 				break;
 			case 400:
@@ -386,6 +415,19 @@ class YFAlbumCollection {
 	 * @access private
 	 */
 	private function query($url){
+		
+		
+		$connect = new YFConnect();
+		$connect->setUrl($url);
+		if($this->token!=null){
+			$connect->setToken($this->token);
+		}
+		$connect->exec();
+		$code = $connect->getCode();
+		$xml = $connect->getResponce();
+		unset($connect);
+		
+		/*
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $url);
 		curl_setopt($curl, CURLOPT_HEADER, false);
@@ -398,9 +440,10 @@ class YFAlbumCollection {
 			));
 		}
 		$xml = curl_exec($curl);
-		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		$code = (string)curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close($curl);
-	
+		*/
+		
 		switch((int)$code){
 			case 200:
 				//если код не 200 и не оговоренные в документации Яндекс ошибки, то будет вызвано прерывание общего типа.
@@ -425,7 +468,7 @@ class YFAlbumCollection {
 				break;
 		}	
 		
-		$xml = $this->deleteXmlNamespace($xml);
+		YFSecurity::deleteXmlNamespace($xml);
 		if(($sxml=simplexml_load_string($xml))===false){
 			throw new YFXMLException($xml, E_ERROR,"Не удалось распознать ответ Яндекс как валидный XML документ","canNotCreateXML");
 		}
@@ -443,22 +486,4 @@ class YFAlbumCollection {
 		$this->albumList[] = $album;
 	}
 
-	/**
-	 * Удаление информации о пространствах имен.
-	 * 
-	 * @param string $xml XML содержащий информацию о пространстве имен
-	 * @return string
-	 * @access private
-	 */
-	private function deleteXmlNamespace($xml){
-		$pattern = "|(<[/]*)[a-z][^:\s>]*:([^:\s>])[\s]*|sui";
-		$replacement="\\1\\2";
-		$xml = preg_replace($pattern, $replacement, $xml);
-		$pattern = "|(<[/]*[^\s>]+)[-]|sui";
-		$replacement="\\1_";
-		$xml = preg_replace($pattern, $replacement, $xml);
-		$pattern = "|xmlns[:a-z]*=\"[^\"]*\"|isu";
-		$replacement="";
-		return preg_replace($pattern, $replacement, $xml);
-	}
 }

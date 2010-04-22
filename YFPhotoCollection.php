@@ -440,7 +440,19 @@ class YFPhotoCollection {
 		if($storage_private!==false){
 			$url["storage_private"]="true";
 		}
-
+		
+		$connect = new YFConnect();
+		$connect->setUrl("http://api-fotki.yandex.ru/post/");
+		$connect->setPost($url);
+		$connect->setToken($this->token);
+		$connect->addHeader('Content-Type: application/atom+xml; charset=utf-8; type=entry');
+		$connect->addHeader('Expect:');
+		$connect->exec();
+		$code = $connect->getCode();
+		$xml = $connect->getResponce();
+		unset($connect);
+		
+		/*
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, "http://api-fotki.yandex.ru/post/");
 		curl_setopt($curl, CURLOPT_HEADER, false);
@@ -457,6 +469,8 @@ class YFPhotoCollection {
 		$xml = curl_exec($curl);
 		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close($curl);
+		*/
+		
 		
 		switch((int)$code){
 			case 200:
@@ -593,6 +607,18 @@ class YFPhotoCollection {
 	 * @access private
 	 */
 	private function query($url){
+		
+		$connect = new YFConnect();
+		$connect->setUrl($url);
+		if($this->token!=null){
+			$connect->setToken($this->token);
+		}
+		$connect->exec();
+		$code = $connect->getCode();
+		$xml = $connect->getResponce();
+		unset($connect);		
+		
+		/*
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $url);
 		curl_setopt($curl, CURLOPT_HEADER, false);
@@ -607,6 +633,7 @@ class YFPhotoCollection {
 		$xml = curl_exec($curl);
 		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close($curl);
+		*/
 	
 		switch((int)$code){
 			case 200:
@@ -632,7 +659,7 @@ class YFPhotoCollection {
 				break;
 		}	
 
-		$xml = $this->deleteXmlNamespace($xml);
+		YFSecurity::deleteXmlNamespace($xml);
 		if(($sxml=simplexml_load_string($xml))===false){
 			throw new YFXMLException($xml, E_ERROR,"Не удалось распознать ответ Яндекс как валидный XML документ","canNotCreateXML");
 		}
@@ -648,26 +675,14 @@ class YFPhotoCollection {
 			$photo[] = new YFPhoto($xml->asXML(), $this->token);
 		}
 		$this->photoList[] = $photo;
-	}
-
-	/**
-	 * Удаление информации о пространствах имен.
-	 * Библиотеки php, работающие с XML просто не в состоянии
-	 * нормально работать с ним. Плохие, плохие функции.
-	 * 
-	 * @param string $xml XML содержащий информацию о пространстве имен
-	 * @return string
-	 * @access private
-	 */
-	private function deleteXmlNamespace($xml){
-		$pattern = "|(<[/]*)[a-z][^:\s>]*:([^:\s>])[\s]*|sui";
-		$replacement="\\1\\2";
-		$xml = preg_replace($pattern, $replacement, $xml);
-		$pattern = "|(<[/]*[^\s>]+)[-]|sui";
-		$replacement="\\1_";
-		$xml = preg_replace($pattern, $replacement, $xml);
-		$pattern = "|xmlns[:a-z]*=\"[^\"]*\"|isu";
-		$replacement="";
-		return preg_replace($pattern, $replacement, $xml);
-	}
+		$connect = new YFConnect();
+		$connect->setUrl("http://api-fotki.yandex.ru/post/");
+		$connect->setPost($url);
+		$connect->setToken($this->token);
+		$connect->addHeader('Content-Type: application/atom+xml; charset=utf-8; type=entry');
+		$connect->addHeader('Expect:');
+		$connect->exec();
+		$code = $connect->getCode();
+		$xml = $connect->getResponce();
+		unset($connect);	}
 }

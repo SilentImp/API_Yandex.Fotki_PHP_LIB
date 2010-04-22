@@ -360,6 +360,18 @@ class YFAlbum {
 	 * @access public
 	 */
 	public function refresh(){
+		
+		$connect = new YFConnect();
+		$connect->setUrl($this->getAlbumEditUrl());
+		if($this->token!=null){
+			$connect->setToken($this->token);
+		}
+		$connect->exec();
+		$code = $connect->getCode();
+		$xml = $connect->getResponce();
+		unset($connect);
+		
+		/*
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $this->getAlbumEditUrl());
 		curl_setopt($curl, CURLOPT_HEADER, false);
@@ -374,6 +386,7 @@ class YFAlbum {
 		$xml = curl_exec($curl);
 		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close($curl);
+		*/
 		
 		switch((int)$code){
 			case 200:
@@ -425,13 +438,13 @@ class YFAlbum {
 		}
 
 		if($title!=null){
-			$this->title = htmlentities((string)$title,ENT_COMPAT,"UTF-8");
+			$this->title = YFSecurity::clean((string)$title);
 		}
 		if($summary!=null){
-			$this->summary = htmlentities((string)$summary,ENT_COMPAT,"UTF-8");
+			$this->summary = YFSecurity::clean((string)$summary);
 		}
 		if($password!=null){
-			$this->password = htmlentities((string)$password,ENT_COMPAT,"UTF-8");
+			$this->password = YFSecurity::clean((string)$password);
 		}
 
 		$putData = tmpfile();
@@ -466,6 +479,19 @@ class YFAlbum {
 		fwrite($putData, $message);
 		fseek($putData, 0);
 
+
+		$connect = new YFConnect();
+		$connect->setUrl($this->getAlbumEditUrl());
+		$connect->setToken($this->token);
+		$connect->setPutFile($putData,strlen($message));
+		$connect->addHeader('Content-Type: application/atom+xml; charset=utf-8; type=entry');
+		$connect->addHeader('Expect:');
+		$connect->exec();
+		$code = $connect->getCode();
+		$xml = $connect->getResponce();
+		unset($connect);
+
+/*
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $this->getAlbumEditUrl());
 		curl_setopt($curl, CURLOPT_HEADER, false);
@@ -483,6 +509,8 @@ class YFAlbum {
 		$xml = curl_exec($curl);
 		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close($curl);
+*/
+
 		fclose($putData);
 	
 		switch((int)$code){
@@ -512,7 +540,7 @@ class YFAlbum {
 				break;
 		}
 
-		$this->xml = $this->deleteXmlNamespace($xml);
+		YFSecurity::deleteXmlNamespace($this->xml);
 		$this->refresh();
 	}
 
@@ -535,6 +563,16 @@ class YFAlbum {
 			throw new YFException("Эта операция доступна только для аутентифицированных пользователей", E_ERROR,null,"authenticationNeeded");
 		}
 		
+		$connect = new YFConnect();
+		$connect->setUrl($this->getAlbumEditUrl());
+		$connect->setToken($this->token);
+		$connect->setDelete();
+		$connect->exec();
+		$code = $connect->getCode();
+		$xml = $connect->getResponce();
+		unset($connect);
+		
+		/*
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $this->getAlbumEditUrl());
 		curl_setopt($curl, CURLOPT_HEADER, false);
@@ -548,7 +586,9 @@ class YFAlbum {
 		$xml = curl_exec($curl);
 		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close($curl);
-	
+		*/
+		
+		
 		switch((int)$code){
 			case 204:
 				//если код не 204 и не оговоренные в документации Яндекс ошибки, то будет вызвано прерывание общего типа.
@@ -619,26 +659,5 @@ class YFAlbum {
 					break;
 			}
 		}
-	}
-
-	/**
-	 * Удаление информации о пространствах имен.
-	 * Библиотеки php, работающие с XML просто не в состоянии
-	 * нормально работать с ним. Плохие, плохие функции.
-	 * 
-	 * @param string $xml XML содержащий информацию о пространстве имен
-	 * @return string
-	 * @access private
-	 */
-	private function deleteXmlNamespace($xml){
-		$pattern = "|(<[/]*)[a-z][^:\s>]*:([^:\s>])[\s]*|sui";
-		$replacement="\\1\\2";
-		$xml = preg_replace($pattern, $replacement, $xml);
-		$pattern = "|(<[/]*[^\s>]+)[-]|sui";
-		$replacement="\\1_";
-		$xml = preg_replace($pattern, $replacement, $xml);
-		$pattern = "|xmlns[:a-z]*=\"[^\"]*\"|isu";
-		$replacement="";
-		return preg_replace($pattern, $replacement, $xml);
 	}
 }

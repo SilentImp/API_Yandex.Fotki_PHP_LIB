@@ -79,6 +79,7 @@ class YFUser {
 		$this->login = $login;
 		$this->password = $password;
 		libxml_use_internal_errors(true);
+		$this->getServiceDocument();
 	}
 	
 	/**
@@ -186,6 +187,15 @@ class YFUser {
 	 * @access public
 	 */
 	public function getServiceDocument(){
+		
+		$connect = new YFConnect();
+		$connect->setUrl("http://api-fotki.yandex.ru/api/users/".$this->login."/");
+		$connect->exec();
+		$code = $connect->getCode();
+		$xml = $connect->getResponce();
+		unset($connect);
+		
+		/*
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, "http://api-fotki.yandex.ru/api/users/".$this->login."/");
 		curl_setopt($curl, CURLOPT_HEADER, false);
@@ -195,6 +205,7 @@ class YFUser {
 		$xml = curl_exec($curl);
 		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close($curl);
+		*/
 		
 		switch((int)$code){
 			case 200:
@@ -211,7 +222,7 @@ class YFUser {
 				break;
 		}
 		
-		$xml = $this->deleteXMLNameSpace($xml);
+		YFSecurity::deleteXmlNamespace($xml);
 		if(($sxml=simplexml_load_string($xml))===false){
 			throw new YFXMLException($xml, E_ERROR,"Не удалось распознать ответ Яндекс как валидный XML документ","canNotCreateXML");
 		}
@@ -248,7 +259,16 @@ class YFUser {
 		if($this->password===null){
 			throw new YFException("Не задан пароль", E_ERROR, null,"passwordNotSet");
 		}
-								
+		
+		
+		$connect = new YFConnect();
+		$connect->setUrl("http://auth.mobile.yandex.ru/yamrsa/key/");
+		$connect->exec();
+		$code = $connect->getCode();
+		$xml = $connect->getResponce();
+		unset($connect);
+						
+		/*
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, "http://auth.mobile.yandex.ru/yamrsa/key/");
 		curl_setopt($curl, CURLOPT_HEADER, false);
@@ -257,8 +277,9 @@ class YFUser {
 		$xml = curl_exec($curl);
 		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close($curl);
+		*/
 		
-		switch((int)$code){
+		switch($code){
 			case 200:
 				//если код не 200 и не оговоренные в документации Яндекс ошибки, то будет вызвано прерывание общего типа.
 				break;
@@ -277,6 +298,15 @@ class YFUser {
 		$this->rsaKey = $sxml->key;
 		$this->requestId = $sxml->request_id;
 		
+		$connect = new YFConnect();
+		$connect->setUrl("http://auth.mobile.yandex.ru/yamrsa/token/");
+		$connect->setPost('request_id='.$this->requestId.'&credentials='.YFSecurity::encryptYFRSA($this->rsaKey, "<credentials login='".$this->login."' password='".$this->password."'/>"));
+		$connect->exec();
+		$code = $connect->getCode();
+		$xml = $connect->getResponce();
+		unset($connect);
+		
+		/*
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, "http://auth.mobile.yandex.ru/yamrsa/token/");
 		curl_setopt($curl, CURLOPT_HEADER, false);
@@ -287,8 +317,9 @@ class YFUser {
 		$xml = curl_exec($curl);
 		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close($curl);
+		*/
 		
-		switch((int)$code){
+		switch($code){
 			case 200:
 				//если код не 200 и не оговоренные в документации Яндекс ошибки, то будет вызвано прерывание общего типа.
 				break;
@@ -313,197 +344,4 @@ class YFUser {
 		$this->token = $sxml->token;
 	}	
 
-	/**
-	 * RSA шифрование со вкусом Яндекса
-	 * Это обертка, которая выберет функцию в зависимости от того, какая из библиотек есть в наличии
-	 *
-	 * @param string $key ключ шифрования
-	 * @param string $data данные, которые будут зашифрованы
-	 * @return string
-	 * @access public
-	 */
-	private function encryptYFRSA($key, $data){
-		if(function_exists("gmp_strval")===true) return $this->encryptYFRSAGMP($key, $data);
-		return $this->encryptYFRSABCMath($key, $data);
-	}
-
-	/**
-	 * Этот метод переводит большое шестнадцатиричное число в десятичное, использует BCMath
-	 *
-	 * @param string $hex очень большое шестнадцатеричное число в виде строки
-	 * @return string
-	 * @access private
-	 */		
-	private function bchexdec($hex){
-			$dec = 0;
-			$len = strlen($hex);
-			for ($i = 1; $i <= $len; $i++) {
-				$dec = bcadd($dec, bcmul(strval(hexdec($hex[$i - 1])), bcpow('16', strval($len - $i))));
-			}
-			return $dec;
-		}
-	
-	/**
-	 * Этот метод переводит большое десятичное число в шестнадцатиричное, использует BCMath
-	 *
-	 * @param string $number очень большое десятичное число в виде строки
-	 * @return string
-	 * @access private
-	 */		
-	private function dec2hex($number){
-			$hexvalues = array('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F');
-			$hexval = '';
-			while($number != '0'){
-				$hexval = $hexvalues[bcmod($number,'16')].$hexval;
-				$number = bcdiv($number,'16',0);
-			}
-		return $hexval;
-		}
-
-
-	/**
-	 * RSA шифрование со вкусом Яндекса
-	 * Использует BCMath библиотеку
-	 *
-	 * @param string $key ключ шифрования
-	 * @param string $data данные, которые будут зашифрованы
-	 * @return string
-	 * @access private
-	 */	
-	private function encryptYFRSABCMath($key, $data){
-		$buffer = array();
-		list($nstr, $estr) = explode('#', $key);
-		
-		$nv = $this->bchexdec($nstr);
-		$ev = $this->bchexdec($estr);
-		
-		$stepSize = strlen($nstr)/2 - 1;
-		$prev_crypted = array();
-		$prev_crypted = array_fill(0, $stepSize, 0);
-		$hex_out = '';
-		for($i=0; $i<strlen($data); $i++){
-			$buffer[] = ord($data{$i});
-		}
-		for($i=0; $i<(int)(((count($buffer)-1)/$stepSize)+1); $i++){
-			$tmp = array_slice($buffer, $i * $stepSize, ($i + 1) * $stepSize);
-			for ($j=0;$j<count($tmp); $j++){
-				$tmp[$j] = ($tmp[$j] ^ $prev_crypted[$j]);
-			}				
-			$tmp = array_reverse($tmp);
-			$plain = "0";
-			$pn="0";
-			for($x = 0; $x < count($tmp); ++$x){
-				$pow = bcpowmod(256,$x,$nv);
-				$pow_mult = bcmul($pow,$tmp[$x]);
-				$plain = bcadd($plain,$pow_mult);
-			}
-			$plain_pow = bcpowmod($plain, $ev, $nv);
-			$plain_pow_str = strtoupper($this->dec2hex($plain_pow));
-			$hex_result = array();
-			
-			for($k=0;$k<(strlen($nstr)-strlen($plain_pow))+ 1;$k++){
-				$hex_result[]="";
-			}
-			
-			$hex_result = implode("0",$hex_result).$plain_pow_str;
-			$min_x = min(strlen($hex_result), count($prev_crypted) * 2);
-			
-			for($x=0;$x<$min_x;$x=$x+2){
-				$prev_crypted[$x/2] = hexdec('0x'.substr($hex_result,$x,2));
-			}
-			if(count($tmp) < 16){
-				$hex_out.= '00';
-			}
-			$hex_out.= strtoupper(dechex(count($tmp)).'00');
-			$ks = strlen($nstr) / 2;
-			if($ks<16){
-				$hex_out.='0';
-			}
-			$hex_out.= dechex($ks).'00';
-			$hex_out.= $hex_result;
-		}
-		return UrlEncode(base64_encode(pack("H*" , $hex_out)));
-	}
-	
-	/**
-	 * RSA шифрование со вкусом Яндекса
-	 * Использует GMP библиотеку
-	 *
-	 * @param string $key ключ шифрования
-	 * @param string $data данные, которые будут зашифрованы
-	 * @return string
-	 * @access private
-	 */
-	private function encryptYFRSAGMP($key, $data){
-		$buffer = array();
-		
-		list($nstr, $estr) = explode('#', $key);
-		$n = gmp_init($nstr,16);
-		$e = gmp_init($estr,16);
-		$stepSize = strlen($nstr)/2 - 1;
-		$prev_crypted = array();
-		$prev_crypted = array_fill(0, $stepSize, 0);
-		$hex_out = '';
-	
-		for($i=0; $i<strlen($data); $i++){
-			$buffer[] = ord($data{$i});
-		}
-		
-		for($i=0; $i<(int)(((count($buffer)-1)/$stepSize)+1); $i++){
-			$tmp = array_slice($buffer, $i * $stepSize, ($i + 1) * $stepSize);
-			for ($j=0;$j<count($tmp); $j++){
-				$tmp[$j] = ($tmp[$j] ^ $prev_crypted[$j]);
-			}
-			$tmp = array_reverse($tmp);
-			$plain = gmp_init(0);
-			for($x = 0; $x < count($tmp); ++$x){
-				$pow = gmp_powm(gmp_init(256), gmp_init($x), $n);
-				$pow_mult = gmp_mul($pow, gmp_init($tmp[$x]));
-				$plain = gmp_add($plain, $pow_mult);
-			}
-			$plain_pow = gmp_powm($plain, $e, $n);
-			$plain_pow_str = strtoupper(gmp_strval($plain_pow, 16));
-			$hex_result = array();
-			for($k=0;$k<(strlen($nstr)-strlen($plain_pow_str))+ 1;$k++){
-				$hex_result[]="";
-			}
-			$hex_result = implode("0",$hex_result).$plain_pow_str;
-			$min_x = min(strlen($hex_result), count($prev_crypted) * 2);
-			
-			for($x=0;$x<$min_x;$x=$x+2){
-				$prev_crypted[$x/2] = hexdec('0x'.substr($hex_result,$x,2));
-			}
-			
-			if(count($tmp) < 16){
-				$hex_out.= '00';
-			}
-			$hex_out.= strtoupper(dechex(count($tmp)).'00');
-			$ks = strlen($nstr) / 2;
-			if($ks<16){
-				$hex_out.='0';
-			}
-			$hex_out.= dechex($ks).'00';
-			$hex_out.= $hex_result;
-		}
-		return UrlEncode(base64_encode(pack("H*" , $hex_out)));
-	}
-	
-	/**
-	 * Удаляет объявления пространств имён 
-	 * 
-	 * @param string $xml
-	 * @return string
-	 * @access private
-	 */
-	private function deleteXMLNameSpace($xml){
-		$pattern = "|(<[/]*)[a-z][^:\s>]*:([^:\s>])[\s]*|sui";
-		$replacement="\\1\\2";
-		$xml = preg_replace($pattern, $replacement, $xml);
-		$pattern = "|(<[/]*[^\s>]+)[-]|sui";
-		$replacement="\\1_";
-		$xml = preg_replace($pattern,  $replacement, $xml);
-		$pattern = "|xmlns[:a-z]*=\"[^\"]*\"|isu";
-		$replacement="";
-		return preg_replace($pattern, $replacement, $xml);
-	}
 }

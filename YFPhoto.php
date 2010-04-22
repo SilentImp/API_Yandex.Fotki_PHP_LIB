@@ -470,6 +470,16 @@ class YFPhoto {
 			throw new YFException("Эта операция доступна только для аутентифицированных пользователей", E_ERROR,null,"authenticationNeeded");
 		}
 		
+		$connect = new YFConnect();
+		$connect->setUrl($this->editUrl);
+		$connect->setToken($this->token);
+		$connect->setDelete();
+		$connect->exec();
+		$code = $connect->getCode();
+		$xml = $connect->getResponce();
+		unset($connect);
+		
+		/*
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $this->editUrl);
 		curl_setopt($curl, CURLOPT_HEADER, false);
@@ -483,7 +493,8 @@ class YFPhoto {
 		$xml = curl_exec($curl);
 		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close($curl);
-	
+		*/
+		
 		switch((int)$code){
 			case 204:
 				//если код не 204 и не оговоренные в документации Яндекс ошибки, то будет вызвано прерывание общего типа.
@@ -648,6 +659,19 @@ class YFPhoto {
 
 		fwrite($putData, $message);
 		fseek($putData, 0);
+		
+		$connect = new YFConnect();
+		$connect->setUrl($this->editUrl);
+		$connect->setToken($this->token);
+		$connect->setPutFile($putData,strlen($message));
+		$connect->addHeader('Content-Type: application/atom+xml; charset=utf-8; type=entry');
+		$connect->addHeader('Expect:');
+		$connect->exec();
+		$code = $connect->getCode();
+		$xml = $connect->getResponce();
+		unset($connect);
+		
+		/*
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $this->editUrl);
 		curl_setopt($curl, CURLOPT_HEADER, false);
@@ -665,6 +689,8 @@ class YFPhoto {
 		$xml = curl_exec($curl);
 		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close($curl);
+		*/
+		
 		fclose($putData);
 	
 		switch((int)$code){
@@ -695,7 +721,7 @@ class YFPhoto {
 		}
 
 
-		$this->xml = $this->deleteXmlNamespace($xml);
+		YFSecurity::deleteXmlNamespace($this->xml);
 		$this->refresh();
 	}
 
@@ -707,6 +733,18 @@ class YFPhoto {
 	 * @access public
 	 */
 	public function refresh(){
+		
+		$connect = new YFConnect();
+		$connect->setUrl($this->editUrl);
+		if($this->token!=null){
+			$connect->setToken($this->token);
+		}
+		$connect->exec();
+		$code = $connect->getCode();
+		$xml = $connect->getResponce();
+		unset($connect);
+		
+		/*
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $this->editUrl);
 		curl_setopt($curl, CURLOPT_HEADER, false);
@@ -721,6 +759,8 @@ class YFPhoto {
 		$xml = curl_exec($curl);
 		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close($curl);
+		*/
+		
 		
 		switch((int)$code){
 			case 200:
@@ -819,26 +859,5 @@ class YFPhoto {
 					break;
 			}
 		}
-	}
-
-	/**
-	 * Удаление информации о пространствах имен.
-	 * Библиотеки php, работающие с XML просто не в состоянии
-	 * нормально работать с ним. Плохие, плохие функции.
-	 * 
-	 * @param string $xml XML содержащий информацию о пространстве имен
-	 * @return string
-	 * @access private
-	 */
-	private function deleteXmlNamespace($xml){
-		$pattern = "|(<[/]*)[a-z][^:\s>]*:([^:\s>])[\s]*|sui";
-		$replacement="\\1\\2";
-		$xml = preg_replace($pattern, $replacement, $xml);
-		$pattern = "|(<[/]*[^\s>]+)[-]|sui";
-		$replacement="\\1_";
-		$xml = preg_replace($pattern, $replacement, $xml);
-		$pattern = "|xmlns[:a-z]*=\"[^\"]*\"|isu";
-		$replacement="";
-		return preg_replace($pattern, $replacement, $xml);
 	}
 }
