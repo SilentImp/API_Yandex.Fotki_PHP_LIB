@@ -38,12 +38,6 @@ class YFUser {
 	 * @access protected
 	 */
 	protected $login = null;
-	
-	/**
-	 * @var string Пароль пользователя
-	 * @access protected
-	 */
-	protected $password = null;
 
 	/**
 	 * @var string Адрес, по которому можно получить кллекцию альбомов пользователя
@@ -71,13 +65,11 @@ class YFUser {
 	
 	/**
 	 * @param string $login Логин пользователя.
-	 * @param string $password Пароль пользователя.	 
 	 * @return void
 	 * @access public
 	 */
-	public function __construct($login, $password=null){
+	public function __construct($login){
 		$this->login = $login;
-		$this->password = $password;
 		libxml_use_internal_errors(true);
 		$this->getServiceDocument();
 	}
@@ -195,18 +187,6 @@ class YFUser {
 		$xml = $connect->getResponce();
 		unset($connect);
 		
-		/*
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, "http://api-fotki.yandex.ru/api/users/".$this->login."/");
-		curl_setopt($curl, CURLOPT_HEADER, false);
-		curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-		curl_setopt($curl, CURLOPT_HTTPGET, true);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		$xml = curl_exec($curl);
-		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		curl_close($curl);
-		*/
-		
 		switch((int)$code){
 			case 200:
 				//если код не 200 и не оговоренные в документации Яндекс ошибки, то будет вызвано прерывание общего типа.
@@ -250,34 +230,14 @@ class YFUser {
 	 * @return void
 	 * @access public
 	 */
-	public function authenticate($password=null){
+	public function authenticate($password){
 			
-		if($password!=null){
-			$this->password=$password;
-		}			
-		
-		if($this->password===null){
-			throw new YFException("Не задан пароль", E_ERROR, null,"passwordNotSet");
-		}
-		
-		
 		$connect = new YFConnect();
 		$connect->setUrl("http://auth.mobile.yandex.ru/yamrsa/key/");
 		$connect->exec();
 		$code = $connect->getCode();
 		$xml = $connect->getResponce();
 		unset($connect);
-						
-		/*
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, "http://auth.mobile.yandex.ru/yamrsa/key/");
-		curl_setopt($curl, CURLOPT_HEADER, false);
-		curl_setopt($curl, CURLOPT_HTTPGET, true);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		$xml = curl_exec($curl);
-		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		curl_close($curl);
-		*/
 		
 		switch($code){
 			case 200:
@@ -298,27 +258,16 @@ class YFUser {
 		$this->rsaKey = $sxml->key;
 		$this->requestId = $sxml->request_id;
 		
+		YFSecurity::clean($password);
+		
 		$connect = new YFConnect();
 		$connect->setUrl("http://auth.mobile.yandex.ru/yamrsa/token/");
-		$connect->setPost('request_id='.$this->requestId.'&credentials='.YFSecurity::encryptYFRSA($this->rsaKey, "<credentials login='".$this->login."' password='".$this->password."'/>"));
+		$connect->setPost('request_id='.$this->requestId.'&credentials='.YFSecurity::encryptYFRSA($this->rsaKey, "<credentials login='".$this->login."' password='".$password."'/>"));
 		$connect->exec();
 		$code = $connect->getCode();
 		$xml = $connect->getResponce();
 		unset($connect);
-		
-		/*
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, "http://auth.mobile.yandex.ru/yamrsa/token/");
-		curl_setopt($curl, CURLOPT_HEADER, false);
-		curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-		curl_setopt($curl, CURLOPT_POST, true);
-		curl_setopt($curl, CURLOPT_POSTFIELDS, 'request_id='.$this->requestId.'&credentials='.$this->encryptYFRSA($this->rsaKey, "<credentials login='".$this->login."' password='".$this->password."'/>"));
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		$xml = curl_exec($curl);
-		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		curl_close($curl);
-		*/
-		
+
 		switch($code){
 			case 200:
 				//если код не 200 и не оговоренные в документации Яндекс ошибки, то будет вызвано прерывание общего типа.

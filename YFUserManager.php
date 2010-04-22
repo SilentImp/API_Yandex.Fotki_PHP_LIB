@@ -89,11 +89,11 @@ class YFUserManager {
 		if(array_key_exists($login, $this->userList)){
 			throw new YFUserException("Пользователь с таким логином уже существует", E_ERROR,null,"dublicateUser");
 		}
-		$this->userList[$login] = new YFUser($login, $password);
+		$this->userList[$login] = new YFUser($login);
 		$this->selectActiveUser($login);
 		$this->activeUser->getServiceDocument();
 		if($password!==null){
-			$this->activeUser->authenticate();
+			$this->activeUser->authenticate($password);
 		}
 		return $this->activeUser;
 	}

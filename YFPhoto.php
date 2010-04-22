@@ -479,22 +479,6 @@ class YFPhoto {
 		$xml = $connect->getResponce();
 		unset($connect);
 		
-		/*
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, $this->editUrl);
-		curl_setopt($curl, CURLOPT_HEADER, false);
-		curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLINFO_HEADER_OUT, true);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-			'Authorization: FimpToken realm="fotki.yandex.ru", token="'.$this->token.'"'
-		));
-		$xml = curl_exec($curl);
-		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		curl_close($curl);
-		*/
-		
 		switch((int)$code){
 			case 204:
 				//если код не 204 и не оговоренные в документации Яндекс ошибки, то будет вызвано прерывание общего типа.
@@ -633,7 +617,7 @@ class YFPhoto {
 		if($changes === false){
 			throw new YFException("Никаких изменений сделано не было", E_ERROR, null, "noDifference");
 		}
-
+		/*
 		$message = '
 					<entry>
 						<id>'.$this->id.'</id>
@@ -656,40 +640,56 @@ class YFPhoto {
 						<f:disable_comments value="'.$this->commentsDisabled.'" />
 						<content src="'.$this->content.'" type="image/*" />
 					</entry>';
+					*/
+					$message = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><entry xmlns="http://www.w3.org/2005/Atom" xmlns:app="http://www.w3.org/2007/app" xmlns:f="yandex:fotki"/>');
+					$message->addChild('id',$this->id);
+					$message->addChild('title',$this->title);
+					$message->addChild('author');
+					$message->author->addChild('name',$this->author);
+					$message->addChild('link');
+					$message->link->addAttribute("href",$this->selfUrl);
+					$message->link->addAttribute("rel","self");
+					$message->addChild('link');
+					$message->link[1]->addAttribute("href",$this->editUrl);
+					$message->link[1]->addAttribute("rel","edit");
+					$message->addChild('link');
+					$message->link[2]->addAttribute("href",$this->webUrl);
+					$message->link[2]->addAttribute("rel","alternate");
+					$message->addChild('link');
+					$message->link[3]->addAttribute("href",$this->editMediaUrl);
+					$message->link[3]->addAttribute("rel","edit-media");
+					$message->addChild('link');
+					$message->link[4]->addAttribute("href",$this->albumUrl);
+					$message->link[4]->addAttribute("rel","album");
+					$message->addChild('published',$this->publishedOn);
+					$message->addChild('edited',$this->editedOn,"http://www.w3.org/2007/app");
+					$message->addChild('updated',$this->updatedOn);
+					$message->addChild('created',$this->createdOn,"yandex:fotki");
+					$tmp = $message->addChild('access',null,"yandex:fotki");
+					$tmp->addAttribute("value",$this->accessLevel);
+					$tmp = $message->addChild('xxx',null,"yandex:fotki");
+					$tmp->addAttribute("value",$this->isAdultPhoto);
+					$tmp = $message->addChild('hide_original',null,"yandex:fotki");
+					$tmp->addAttribute("value",$this->hideOriginalPhoto);
+					$tmp = $message->addChild('disable_comments',null,"yandex:fotki");
+					$tmp->addAttribute("value",$this->commentsDisabled);
+					$message->addChild('content');
+					$message->content->addAttribute("src",$this->content);
+					$message->content->addAttribute("type","image/*");
 
-		fwrite($putData, $message);
+		fwrite($putData, $message->asXML());
 		fseek($putData, 0);
 		
 		$connect = new YFConnect();
 		$connect->setUrl($this->editUrl);
 		$connect->setToken($this->token);
-		$connect->setPutFile($putData,strlen($message));
+		$connect->setPutFile($putData,strlen($message->asXML()));
 		$connect->addHeader('Content-Type: application/atom+xml; charset=utf-8; type=entry');
 		$connect->addHeader('Expect:');
 		$connect->exec();
 		$code = $connect->getCode();
 		$xml = $connect->getResponce();
 		unset($connect);
-		
-		/*
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, $this->editUrl);
-		curl_setopt($curl, CURLOPT_HEADER, false);
-		curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-		curl_setopt($curl, CURLOPT_PUT, true);
-		curl_setopt($curl, CURLINFO_HEADER_OUT, true);
-		curl_setopt($curl, CURLOPT_INFILE, $putData);
-		curl_setopt($curl, CURLOPT_INFILESIZE, strlen($message));
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-			'Authorization: FimpToken realm="fotki.yandex.ru", token="'.$this->token.'"',
-			'Content-Type: application/atom+xml; charset=utf-8; type=entry',
-			'Expect:'
-		));
-		$xml = curl_exec($curl);
-		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		curl_close($curl);
-		*/
 		
 		fclose($putData);
 	
@@ -743,24 +743,6 @@ class YFPhoto {
 		$code = $connect->getCode();
 		$xml = $connect->getResponce();
 		unset($connect);
-		
-		/*
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, $this->editUrl);
-		curl_setopt($curl, CURLOPT_HEADER, false);
-		curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-		curl_setopt($curl, CURLOPT_HTTPGET, true);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		if($this->token!=null){
-			curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-				'Authorization: FimpToken realm="fotki.yandex.ru", token="'.$this->token.'"'
-			));
-		}
-		$xml = curl_exec($curl);
-		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		curl_close($curl);
-		*/
-		
 		
 		switch((int)$code){
 			case 200:

@@ -452,26 +452,6 @@ class YFPhotoCollection {
 		$xml = $connect->getResponce();
 		unset($connect);
 		
-		/*
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, "http://api-fotki.yandex.ru/post/");
-		curl_setopt($curl, CURLOPT_HEADER, false);
-		curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-		curl_setopt($curl, CURLOPT_POST, true);
-		curl_setopt($curl, CURLOPT_POSTFIELDS, $url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLINFO_HEADER_OUT, true);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-			'Authorization: FimpToken realm="fotki.yandex.ru", token="'.$this->token.'"',
-			'Accept: ',
-			'Expect: '
-		));
-		$xml = curl_exec($curl);
-		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		curl_close($curl);
-		*/
-		
-		
 		switch((int)$code){
 			case 200:
 				//если код не 200 и не оговоренные в документации Яндекс ошибки, то будет вызвано прерывание общего типа.
@@ -498,10 +478,6 @@ class YFPhotoCollection {
 		
 		parse_str($xml,$xml);
 		return $xml;
-		//yaru==0
-		//image_id={photo_id}, где {photo_id} - численный идентификатор фотографии.
-		//yaru==1
-		//image_id={photo_id}&post_id={post_id}, где {photo_id} - идентификатор фотографии, а {post_id} - идентификатор поста на Я.ру.
 	}
 
 	/**
@@ -617,23 +593,6 @@ class YFPhotoCollection {
 		$code = $connect->getCode();
 		$xml = $connect->getResponce();
 		unset($connect);		
-		
-		/*
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_HEADER, false);
-		curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-		curl_setopt($curl, CURLOPT_HTTPGET, true);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		if($this->token!=null){
-			curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-				'Authorization: FimpToken realm="fotki.yandex.ru", token="'.$this->token.'"'
-			));
-		}
-		$xml = curl_exec($curl);
-		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		curl_close($curl);
-		*/
 	
 		switch((int)$code){
 			case 200:
