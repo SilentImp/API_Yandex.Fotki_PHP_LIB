@@ -433,33 +433,6 @@ class YFAlbum {
 		$putData = tmpfile();
 		$protected = $this->isProtected() ? "true" : "false";			
 
-/*
-		$pass = "";
-		if($password!==null){
-			$pass = "<f:password>$password</f:password>";
-		}
-
-		$message = '
-		<entry xmlns="http://www.w3.org/2005/Atom" xmlns:app="http://www.w3.org/2007/app" xmlns:f="yandex:fotki">
-			<id>'.$this->getId().'</id>
-			<author>
-				<name>'.$this->getAuthor().'</name>
-			</author>
-			<title>'.$this->getTitle().'</title>
-			<summary>'.$this->getSummary().'</summary>
-			<link href="'.$this->getAlbumUrl().'" rel="self" />
-			<link href="'.$this->getAlbumEditUrl().'" rel="edit" />
-			<link href="'.$this->getAlbumPhotosUrl().'" rel="photos" />
-			<link href="'.$this->getAlbumPageUrl().'" rel="alternate" />
-			<published>'.$this->getCreatedOn().'</published>
-			<app:edited>'.$this->getUpdatedOn().'</app:edited>
-			<updated>'.$this->getEditedOn().'</updated>
-			<f:protected value="'.$this->getImageCount().'" />
-			'.$pass.'
-			<f:image-count value="'.$protected.'" />
-		</entry>';
-*/
-		
 		$message = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><entry xmlns="http://www.w3.org/2005/Atom" xmlns:app="http://www.w3.org/2007/app" xmlns:f="yandex:fotki">');
 		$message->addChild("id",$this->getId());
 		$message->addChild('author');
@@ -534,7 +507,6 @@ class YFAlbum {
 				break;
 		}
 
-		YFSecurity::deleteXmlNamespace($this->xml);
 		$this->refresh();
 	}
 

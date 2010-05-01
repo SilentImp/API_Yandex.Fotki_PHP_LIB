@@ -617,30 +617,7 @@ class YFPhoto {
 		if($changes === false){
 			throw new YFException("Никаких изменений сделано не было", E_ERROR, null, "noDifference");
 		}
-		/*
-		$message = '
-					<entry>
-						<id>'.$this->id.'</id>
-						<title>'.$this->title.'</title>
-						<author>
-							<name>'.$this->author.'</name>
-						</author>
-						<link href="'.$this->selfUrl.'" rel="self" />
-						<link href="'.$this->editUrl.'" rel="edit" />
-						<link href="'.$this->webUrl.'" rel="alternate" />
-						<link href="'.$this->editMediaUrl.'" rel="edit-media" />
-						<link href="'.$this->albumUrl.'" rel="album" />
-						<published>'.$this->publishedOn.'</published>
-						<app:edited>'.$this->editedOn.'</app:edited>
-						<updated>'.$this->updatedOn.'</updated>
-						<f:created>'.$this->createdOn.'</f:created>
-						<f:access value="'.$this->accessLevel.'" />
-						<f:xxx value="'.$this->isAdultPhoto.'" />
-						<f:hide_original value="'.$this->hideOriginalPhoto.'" />
-						<f:disable_comments value="'.$this->commentsDisabled.'" />
-						<content src="'.$this->content.'" type="image/*" />
-					</entry>';
-					*/
+
 					$message = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><entry xmlns="http://www.w3.org/2005/Atom" xmlns:app="http://www.w3.org/2007/app" xmlns:f="yandex:fotki"/>');
 					$message->addChild('id',$this->id);
 					$message->addChild('title',$this->title);
@@ -720,8 +697,6 @@ class YFPhoto {
 				break;
 		}
 
-
-		YFSecurity::deleteXmlNamespace($this->xml);
 		$this->refresh();
 	}
 
