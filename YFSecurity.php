@@ -26,7 +26,7 @@ class YFSecurity {
 	 * @return void
 	 * @access public
 	 */
-	static function clean(&$data){
+	static public function clean(&$data){
 		return $data = trim(htmlentities($data,ENT_COMPAT,"UTF-8"));
 	}
 	
@@ -39,7 +39,7 @@ class YFSecurity {
 	 * @return string
 	 * @access public
 	 */
-	static function deleteXmlNamespace(&$xml){
+	static public function deleteXmlNamespace(&$xml){
 		$pattern = "|(<[/]*)[a-z][^:\s>]*:([^:\s>])[\s]*|sui";
 		$replacement="\\1\\2";
 		$xml = preg_replace($pattern, $replacement, $xml);
@@ -60,7 +60,7 @@ class YFSecurity {
 	 * @return string
 	 * @access public
 	 */
-	static function encryptYFRSA($key, $data){
+	static public function encryptYFRSA($key, $data){
 		if(function_exists("gmp_strval")===true) return YFSecurity::encryptYFRSAGMP($key, $data);
 		return YFSecurity::encryptYFRSABCMath($key, $data);
 	}
@@ -72,7 +72,7 @@ class YFSecurity {
 	 * @return string
 	 * @access private
 	 */		
-	static function bchexdec($hex){
+	static private function bchexdec($hex){
 			$dec = 0;
 			$len = strlen($hex);
 			for ($i = 1; $i <= $len; $i++) {
@@ -88,7 +88,7 @@ class YFSecurity {
 	 * @return string
 	 * @access private
 	 */		
-	static function dec2hex($number){
+	static private function dec2hex($number){
 			$hexvalues = array('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F');
 			$hexval = '';
 			while($number != '0'){
@@ -108,7 +108,7 @@ class YFSecurity {
 	 * @return string
 	 * @access private
 	 */	
-	static function encryptYFRSABCMath($key, $data){
+	static private function encryptYFRSABCMath($key, $data){
 		$buffer = array();
 		list($nstr, $estr) = explode('#', $key);
 		
@@ -172,7 +172,7 @@ class YFSecurity {
 	 * @return string
 	 * @access private
 	 */
-	static function encryptYFRSAGMP($key, $data){
+	static private function encryptYFRSAGMP($key, $data){
 		$buffer = array();
 		
 		list($nstr, $estr) = explode('#', $key);
