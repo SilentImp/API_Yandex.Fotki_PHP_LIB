@@ -321,7 +321,7 @@ class YFAlbum {
 		$id = explode(":", $this->id);
 		$id = $id[count($id)-1];
 		$this->photoCollection[$name] = new YFPhotoCollection($this->getAlbumPhotosUrl(), $this->token, $id);
-		$this->photoCollection[$name]->search($this->token);
+		$this->photoCollection[$name]->search();
 		return $this->photoCollection[$name];
 	}
 

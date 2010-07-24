@@ -443,10 +443,9 @@ class YFPhotoCollection {
 		
 		$connect = new YFConnect();
 		$connect->setUrl("http://api-fotki.yandex.ru/post/");
-		$connect->setPost($url);
+		$connect->addHeader('Content-Type: multipart/form-data; charset=utf-8; type=entry');
 		$connect->setToken($this->token);
-		$connect->addHeader('Content-Type: application/atom+xml; charset=utf-8; type=entry');
-		$connect->addHeader('Expect:');
+		$connect->setPost($url);
 		$connect->exec();
 		$code = $connect->getCode();
 		$xml = $connect->getResponce();

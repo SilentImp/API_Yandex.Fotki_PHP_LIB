@@ -150,7 +150,7 @@ class YFUser {
 	 */
 	public function addPhotoCollection($name){
 		$this->photoCollection[$name] = new YFPhotoCollection($this->photoCollectionUrl, $this->getToken());
-		$this->photoCollection[$name]->searchEx($this->getToken());
+		$this->photoCollection[$name]->search();
 		return $this->photoCollection[$name];
 	}
 
@@ -165,7 +165,7 @@ class YFUser {
 	 */
 	public function addAlbumCollection($name){
 		$this->albumCollection[$name] = new YFAlbumCollection($this->albumCollectionUrl, $this->getToken());
-		$this->albumCollection[$name]->search($this->getToken());
+		$this->albumCollection[$name]->search();
 		return $this->albumCollection[$name];
 	}
 
